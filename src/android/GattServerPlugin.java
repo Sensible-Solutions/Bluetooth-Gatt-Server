@@ -100,7 +100,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return;
 		}
 		
-		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 		
 		BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
 		
@@ -141,7 +141,7 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 		};
 		
-		BluetoothGattServer gattServer = bluetoothManager.openGattServer(getApplicationContext(), mBluetoothGattServerCallback);
+		BluetoothGattServer gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		BluetoothGattService service = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 		characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
