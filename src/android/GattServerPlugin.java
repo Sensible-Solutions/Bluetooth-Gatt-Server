@@ -81,7 +81,7 @@ public class GattServerPlugin extends CordovaPlugin
 		} 
 	}
 	
-	private void startServerAction(JSONArray args, CallbackContext callbackContext)
+	private void startServerAction(CallbackContext callbackContext)
 	{
 		/*if (isNotInitialized(callbackContext, true))
 		{
