@@ -44,7 +44,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	//Action Name Strings
 	//private final String initializeActionName = "initialize";
-	private final START_GATT_SERVER = "startServer";
+	private final String START_GATT_SERVER = "startServer";
 	
 	//Object keys
 	private final String keyStatus = "status";
