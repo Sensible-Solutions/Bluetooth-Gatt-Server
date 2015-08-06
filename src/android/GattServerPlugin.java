@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
@@ -148,12 +149,22 @@ public class GattServerPlugin extends CordovaPlugin
 		gattServer.addService(service);
 	
 		//Save the callback context for setting up GATT server
-		scanCallbackContext = callbackContext;
+		serverRunningCallbackContext = callbackContext;
 
 		//Notify user of started server and save callback
 		addProperty(returnObj, keyStatus, statusServerStarted);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(true);
 		callbackContext.sendPluginResult(pluginResult);
+  }
+  
+  private void addProperty(JSONObject obj, String key, Object value)
+  {
+		try
+		{
+		  obj.put(key, value);
+		}
+		catch (JSONException e)
+		{ /* Ignore */ }
   }
 }
