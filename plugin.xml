@@ -1,1 +1,42 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.sensiblesolutions.gattserver" version="0.1.0">
+  <engines>
+    <engine name="cordova" version=">=3.0.0" />
+  </engines>
+  <name>Bluetooth LE GATT Server</name>
+  <description>Use the Bluetooth Low Energy GATT Server plugin to run your Cordova app as a Bluetooth LE GATT server with Immediate Alert service added</description>
+  <author>Sensible Solutions</author>
+  <keywords>bluetooth,low energy,smart,gatt server</keywords>
+  <license>No license</license>
+  <js-module src="www/gattserver.js" name="BluetoothLeGattServer">
+    <clobbers target="window.gattserver" />
+  </js-module>
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="GattServerPlugin">
+        <param name="android-package" value="com.sensiblesolutions.gattserver.GattServerPlugin" />
+      </feature>
+    </config-file>
+    <source-file src="src/android/GattServerPlugin.java" target-dir="src/com/sensiblesolutions/gattserver" />
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.BLUETOOTH"/>
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    </config-file>
+  </platform>
+  <!-- <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="GattServerPlugin">
+        <param name="ios-package" value="GattServerPlugin" />
+      </feature>
+    </config-file>
+    <config-file target="*-Info.plist" parent="UIBackgroundModes">
+      <array>
+        <string>bluetooth-central</string>
+      </array>
+    </config-file>
+    <header-file src="src/ios/GattServerPlugin.h" />
+    <source-file src="src/ios/GattServerPlugin.m" />
+    <framework src="CoreBluetooth.framework" />
+  </platform> -->
+  <info>This plugin only adds Bluetooth LE GATT server with Immediate Alerts service added to your cordova app. To use your cordova app also as a GATT client, you need to use a 3rd party plugin for that</info>
+</plugin>
