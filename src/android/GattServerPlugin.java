@@ -28,6 +28,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.media.RingtoneManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +153,13 @@ public class GattServerPlugin extends CordovaPlugin
 		{
 			return;
 		}*/
+		try {
+    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+    			r.play();
+		} catch (Exception e) {
+    			
+		}
 
 		JSONObject returnObj = new JSONObject();
 		
@@ -160,8 +168,11 @@ public class GattServerPlugin extends CordovaPlugin
 		{
 			addProperty(returnObj, keyError, errorStartServer);
 			addProperty(returnObj, keyMessage, logServerAlreadyRunning);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			//callbackContext.error(returnObj);
-			serverRunningCallbackContext.error(returnObj);	// Added 7/8 instead of line above
+			//serverRunningCallbackContext.error(returnObj);	// Added 7/8 instead of line above
 			return;
 		}
 		
