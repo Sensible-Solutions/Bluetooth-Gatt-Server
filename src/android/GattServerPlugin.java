@@ -100,6 +100,7 @@ public class GattServerPlugin extends CordovaPlugin
 			super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
 			//Notify user of started server and save callback
+			JSONObject returnObj = new JSONObject();
 			addProperty(returnObj, keyStatus, statusWriteRequest);
 			addProperty(returnObj, "device", device.getAddress());
 			addProperty(returnObj, "characteristic", characteristic.getUuid());
