@@ -101,6 +101,14 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
 			super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+			
+			try {
+	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+	    			r.play();
+			} catch (Exception e) {
+	    			
+			}
 				
 			//Notify user of started server and save callback
 			JSONObject returnObj = new JSONObject();
