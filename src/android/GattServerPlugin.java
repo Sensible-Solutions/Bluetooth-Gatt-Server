@@ -154,7 +154,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}*/
 
 		JSONObject returnObj = new JSONObject();
-
+		/*
 		//If the GATT server is already running, don't start it again. Invoke the error callback and return
 		if (serverRunningCallbackContext != null)
 		{
@@ -166,7 +166,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		
+		*/
 		/*BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
 		
 			@Override
@@ -208,7 +208,7 @@ public class GattServerPlugin extends CordovaPlugin
 				// Not implemented
 			}
 		};*/
-		
+		/*
 		// Create and add an Immediate Alert service with proper characteristic
 		BluetoothGattServer gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		BluetoothGattService service = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY);
@@ -216,7 +216,7 @@ public class GattServerPlugin extends CordovaPlugin
 		characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
 		service.addCharacteristic(characteristic);
 		gattServer.addService(service);
-	
+		*/
 		//Save the callback context for setting up GATT server
 		serverRunningCallbackContext = callbackContext;
 
