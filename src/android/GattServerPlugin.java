@@ -90,6 +90,13 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			// Not implemented
+			try {
+	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+	    			r.play();
+			} catch (Exception e) {
+	    			
+			}
 		}
 
 		@Override
@@ -163,13 +170,13 @@ public class GattServerPlugin extends CordovaPlugin
 		{
 			return;
 		}*/
-		try {
+		/*try {
     			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
     			r.play();
 		} catch (Exception e) {
     			
-		}
+		}*/
 
 		JSONObject returnObj = new JSONObject();
 		
