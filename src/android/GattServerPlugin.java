@@ -29,6 +29,8 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
+import android.media.Ringtone;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;
