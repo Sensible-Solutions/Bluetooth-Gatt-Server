@@ -22,6 +22,7 @@ import org.json.JSONException;
 
 import android.content.Context;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
