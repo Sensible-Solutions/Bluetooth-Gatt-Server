@@ -42,8 +42,8 @@ import java.util.UUID;
 public class GattServerPlugin extends CordovaPlugin
 {
 	// Immediate alert service
-	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");		// Service UUID
-	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");				// Characteristic UUID
+	public final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");		// Service UUID
+	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");				// Characteristic UUID
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_VALUE = 2;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE = 17;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_OFFSET = 0;
@@ -54,7 +54,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static byte[] ALERT_LEVEL_HIGH = {0x02};
 	
 	// Linkloss service
-	private final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
+	public final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
 	
 	// General callback variables
 	private CallbackContext serverRunningCallbackContext = null;
@@ -86,7 +86,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final String logConnectionState = "Connection state changed with error";
 	
 	private BluetoothGattServer gattServer;
-	private BluetoothGattService immediateAlertService;
+	//private BluetoothGattService immediateAlertService;
 	
 	// Bluetooth GATT interface callbacks
 	private final BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
@@ -148,7 +148,7 @@ public class GattServerPlugin extends CordovaPlugin
 			
 		// Remote client characteristic write request
 		@Override
-		public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
+		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			characteristic.setValue(value);
 			
@@ -237,11 +237,11 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		// Create an Immediate Alert service if not already provided by the device
+		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
-			BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
+			final BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
 			characteristic.setValue(ALERT_LEVEL_HIGH);
-			immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 			immediateAlertService.addCharacteristic(characteristic);
 		}
 		else {
