@@ -99,7 +99,7 @@ public class GattServerPlugin extends CordovaPlugin
 				addProperty(returnObj, "state", "connected");
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				pluginResult.setKeepCallback(true);														// Save the callback so it can be invoked several times
-				serverRunningCallbackContext.sendPluginResult(pluginResult)
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
 				addProperty(returnObj, keyStatus, statusConnectionState);
@@ -107,7 +107,7 @@ public class GattServerPlugin extends CordovaPlugin
 				addProperty(returnObj, "state", "disconnected");
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				pluginResult.setKeepCallback(true);														// Save the callback so it can be invoked several times
-				serverRunningCallbackContext.sendPluginResult(pluginResult)
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else {
 				addProperty(returnObj, keyError, errorConnectionState);
