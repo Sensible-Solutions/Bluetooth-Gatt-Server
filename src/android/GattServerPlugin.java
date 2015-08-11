@@ -91,6 +91,36 @@ public class GattServerPlugin extends CordovaPlugin
 	// Bluetooth GATT interface callbacks
 	private final BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
 		
+		// Remote client characteristic write request
+		@Override
+		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
+			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+			characteristic.setValue(value);
+			
+			try {
+	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+	    			r.play();
+			} catch (Exception e) {
+	    			
+			}
+			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+				
+			//Notify user of started server and save callback
+			JSONObject returnObj = new JSONObject();
+			addProperty(returnObj, keyStatus, statusWriteRequest);
+			addProperty(returnObj, "device", device.getAddress());
+			addProperty(returnObj, "characteristic", characteristic.getUuid());
+			addProperty(returnObj, "value", value.toString());
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
+
+			if (responseNeeded)
+				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
+		}
+		
 		@Override
 		public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
 			
@@ -146,35 +176,6 @@ public class GattServerPlugin extends CordovaPlugin
 			// Not implemented
 		}
 			
-		// Remote client characteristic write request
-		@Override
-		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
-			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-			characteristic.setValue(value);
-			
-			try {
-	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
-	    			r.play();
-			} catch (Exception e) {
-	    			
-			}
-			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-				
-			//Notify user of started server and save callback
-			JSONObject returnObj = new JSONObject();
-			addProperty(returnObj, keyStatus, statusWriteRequest);
-			addProperty(returnObj, "device", device.getAddress());
-			addProperty(returnObj, "characteristic", characteristic.getUuid());
-			addProperty(returnObj, "value", value.toString());
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-
-			if (responseNeeded)
-				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
-		}
 
 		@Override
 		public void onDescriptorReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattDescriptor descriptor) {
