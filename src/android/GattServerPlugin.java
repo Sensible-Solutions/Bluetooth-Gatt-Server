@@ -77,6 +77,7 @@ public class GattServerPlugin extends CordovaPlugin
 	// Error Types
 	//private final String errorInitialize = "initialize";
 	private final String errorStartServer = "startServer";
+	private final String errorConnectionState = "serverConnectionState";
 	
 	// Error Messages
 	private final String logServerAlreadyRunning = "GATT server is already running";
