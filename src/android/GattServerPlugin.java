@@ -68,7 +68,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private final String keyMessage = "message";
 	
 	// Status Types
-	private final String statusServerStarted = "serverStarted";
+	private final String statusServiceAdded = "serviceAdded";
+	private final String statusServiceExists = "serviceAlreadyProvided";
 	private final String statusWriteRequest = "serverRemoteWriteRequest";
 	//private final String statusServerStopped = "scanStopped";
   
@@ -78,6 +79,9 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	// Error Messages
 	private final String logServerAlreadyRunning = "GATT server is already running";
+	private final String logService = "Immediate Alert service could not be added";
+	
+	private BluetoothGattServer gattServer;
 	
 	// Bluetooth GATT interface callbacks
 	private final BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
@@ -85,6 +89,16 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
 			// Not implemented
+			//Notify user of connection status change and save callback
+			JSONObject returnObj = new JSONObject();
+			addProperty(returnObj, keyStatus, statusConnectionState);
+			addProperty(returnObj, "device", device.getAddress());
+			addProperty(returnObj, "opStatus", status.toString());
+			addProperty(returnObj, "state", newState.toString());
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
 		}
 
 		@Override
@@ -97,6 +111,13 @@ public class GattServerPlugin extends CordovaPlugin
 			} catch (Exception e) {
 	    			
 			}
+			try {
+				 super.onServiceAdded(status, service);
+            } catch (Exception ex) {
+				System.err.println("Exception: " + ex.getMessage());
+				callbackContext.error(ex.getMessage());
+				return;
+			}
 		}
 
 		@Override
@@ -107,7 +128,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// Remote client characteristic write request
 		@Override
 		public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
-			super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			
 			try {
 	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -116,6 +137,7 @@ public class GattServerPlugin extends CordovaPlugin
 			} catch (Exception e) {
 	    			
 			}
+			super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
 			//Notify user of started server and save callback
 			JSONObject returnObj = new JSONObject();
@@ -157,9 +179,9 @@ public class GattServerPlugin extends CordovaPlugin
 			callbackContext.error("Invalid action");
 			return false;
 		} 
-		catch(Exception e) {
-			System.err.println("Exception: " + e.getMessage());
-			callbackContext.error(e.getMessage());
+		catch(Exception ex) {
+			System.err.println("Exception: " + ex.getMessage());
+			callbackContext.error(ex.getMessage());
 			return false;
 		} 
 	}
@@ -180,12 +202,11 @@ public class GattServerPlugin extends CordovaPlugin
 
 		JSONObject returnObj = new JSONObject();
 		
-		//If the GATT server is already running, don't start it again. Invoke the error callback and return
+		//If the GATT server is already running, don't start it again. Invoke the success callback and return
 		if (serverRunningCallbackContext != null)
 		{
-			addProperty(returnObj, keyError, errorStartServer);
-			addProperty(returnObj, keyMessage, logServerAlreadyRunning);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			addProperty(returnObj, keyStatus, statusServiceExists);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			//callbackContext.error(returnObj);
@@ -201,12 +222,10 @@ public class GattServerPlugin extends CordovaPlugin
 			public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
 				// Not implemented
 			}
-
 			@Override
 			public void onServiceAdded(int status, BluetoothGattService service) {
 				// Not implemented
 			}
-
 			@Override
 			public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
 				// Not implemented
@@ -220,40 +239,60 @@ public class GattServerPlugin extends CordovaPlugin
 				
 				
 			}
-
 			@Override
 			public void onDescriptorReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattDescriptor descriptor) {
 				// Not implemented
 			}
-
 			@Override
 			public void onDescriptorWriteRequest(BluetoothDevice device, int requestId, BluetoothGattDescriptor descriptor, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
 				// Not implemented
 			}
-
 			@Override
 			public void onExecuteWrite(BluetoothDevice device, int requestId, boolean execute) {
 				// Not implemented
 			}
 		};*/
 		
-		// Create and add an Immediate Alert service with proper characteristic
-		BluetoothGattServer gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
-		BluetoothGattService service = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY);
-		BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
-		characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
-		service.addCharacteristic(characteristic);
-		gattServer.addService(service);
-		
 		//Save the callback context for setting up GATT server
 		serverRunningCallbackContext = callbackContext;
-
-		//Notify user of started server and save callback
-		addProperty(returnObj, keyStatus, statusServerStarted);
-		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-		pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-		//callbackContext.sendPluginResult(pluginResult);
-		serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+		
+		gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
+		// Create an Immediate Alert service if not already supported by the device
+		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE) == null){
+			//gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
+			BluetoothGattService service = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+			BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
+			characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
+			service.addCharacteristic(characteristic);
+			//gattServer.addService(service);
+		}
+		else {
+			//Notify user of started server and save callback
+			addProperty(returnObj, keyStatus, statusServiceExists);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+			return;
+		}
+			
+		if(gattServer.addService(service)) {
+			//Notify user of started server and save callback
+			addProperty(returnObj, keyStatus, statusServiceAdded);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+		}
+		else {
+			//Notify user of error adding service and save callback
+			addProperty(returnObj, keyError, errorStartServer);
+			addProperty(returnObj, keyMessage, logService);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(true);	
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			return;
+		}
   }
   
   private void addProperty(JSONObject obj, String key, Object value)
