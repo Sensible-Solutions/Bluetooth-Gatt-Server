@@ -28,6 +28,7 @@ import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
@@ -137,6 +138,7 @@ public class GattServerPlugin extends CordovaPlugin
 				serverRunningCallbackContext.error(ex.getMessage());
 				return;
 			}*/
+			
 		}
 
 		@Override
@@ -269,6 +271,12 @@ public class GattServerPlugin extends CordovaPlugin
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			return;
 		}
+		
+		// Test
+		BluetoothAdapter bluetoothAdapter;
+		bluetoothAdapter = bluetoothManager.getAdapter();
+		BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
+		gattServer.connect(device, false);
   }
   
   private void addProperty(JSONObject obj, String key, Object value)
