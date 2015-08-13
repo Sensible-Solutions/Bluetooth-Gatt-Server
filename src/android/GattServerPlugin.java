@@ -42,7 +42,7 @@ import java.util.UUID;
 public class GattServerPlugin extends CordovaPlugin
 {
 	// Immediate alert service
-	public final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");		// Service UUID
+	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");		// Service UUID
 	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");				// Characteristic UUID
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_VALUE = 2;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE = 17;
@@ -54,38 +54,38 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static byte[] ALERT_LEVEL_HIGH = {0x02};
 	
 	// Linkloss service
-	public final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
+	private final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
 	
 	// General callback variables
 	private CallbackContext serverRunningCallbackContext = null;
 	
 	// Action Name Strings
 	//private final String initializeActionName = "initialize";
-	private final String START_GATT_SERVER = "startServer";
+	private final static String START_GATT_SERVER = "startServer";
 	
 	// Object keys
-	private final String keyStatus = "status";
-	private final String keyError = "error";
-	private final String keyMessage = "message";
+	private final static String keyStatus = "status";
+	private final static String keyError = "error";
+	private final static String keyMessage = "message";
 	
 	// Status Types
-	private final String statusServiceAdded = "serviceAdded";
-	private final String statusServiceExists = "serviceAlreadyProvided";
-	private final String statusWriteRequest = "serviceRemoteWriteRequest";
-	private final String statusConnectionState = "serverConnectionState";
+	private final static String statusServiceAdded = "serviceAdded";
+	private final static String statusServiceExists = "serviceAlreadyProvided";
+	private final static String statusWriteRequest = "characteristicWriteRequest";
+	private final static String statusConnectionState = "serverConnectionState";
 	//private final String statusServerStopped = "scanStopped";
   
 	// Error Types
 	//private final String errorInitialize = "initialize";
-	private final String errorStartServer = "startServer";
-	private final String errorConnectionState = "serverConnectionState";
+	private final static String errorStartServer = "startServer";
+	private final static String errorConnectionState = "serverConnectionState";
 	
 	// Error Messages
-	private final String logServerAlreadyRunning = "GATT server is already running";
-	private final String logService = "Immediate Alert service could not be added";
-	private final String logConnectionState = "Connection state changed with error";
+	private final static String logServerAlreadyRunning = "GATT server is already running";
+	private final static String logService = "Immediate Alert service could not be added";
+	private final static String logConnectionState = "Connection state changed with error";
 	
-	private BluetoothGattServer gattServer;
+	private final static BluetoothGattServer gattServer;
 	//private BluetoothGattService immediateAlertService;
 	
 	// Bluetooth GATT interface callbacks
@@ -111,7 +111,7 @@ public class GattServerPlugin extends CordovaPlugin
 			addProperty(returnObj, keyStatus, statusWriteRequest);
 			addProperty(returnObj, "device", device.getAddress());
 			addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
-			addProperty(returnObj, "value", parseAlertLevel(value));
+			addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 			//callbackContext.sendPluginResult(pluginResult);
@@ -278,45 +278,37 @@ public class GattServerPlugin extends CordovaPlugin
 		//bluetoothAdapter = bluetoothManager.getAdapter();
 		//BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
 		//gattServer.connect(device, false);
-  }
+	}
   
-  private void addProperty(JSONObject obj, String key, Object value)
-  {
-		try
-		{
-		  obj.put(key, value);
-		}
-		catch (JSONException e)
-		{ /* Ignore */ }
-  }
+	  private void addProperty(JSONObject obj, String key, Object value)
+	  {
+			try
+			{
+			  obj.put(key, value);
+			}
+			catch (JSONException e)
+			{ /* Ignore */ }
+	  }
   
-  private static String parseAlertLevel(final byte[] data) {
-	  
-		final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-		
-		if (data == null || data.length == 0)
+	private String parseCharacteristicValue(final BluetoothGattCharacteristic characteristic)
+	{
+		if (characteristic == null)
 			return "";
 
-		final char[] out = new char[data.length * 3 - 1];
-		for (int j = 0; j < data.length; j++) {
-			int v = data[j] & 0xFF;
-			out[j * 3] = HEX_ARRAY[v >>> 4];
-			out[j * 3 + 1] = HEX_ARRAY[v & 0x0F];
-			if (j != data.length - 1)
-				out[j * 3 + 2] = '-';
-		}
-		
-		String outString = String.valueOf(out);
-		switch (outString) {
-			case "00":
-				return "No Alert";
-			case "01":
-				return "Mild Alert";
-			case "02":
-				return "High Alert";
-			default:
-				return "Reserved value (" + outString + ")";
-		}
-		return outString;
-   }
+		if (characteristic.getUuid == UUID ALERT_LEVEL_CHAR_UUID) {
+			final int value = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+			switch (value) {
+				case 0:
+					return "No Alert";
+				case 1:
+					return "Mild Alert";
+				case 2:
+					return "High Alert";
+				default:
+					return "Parse Error";
+			}
+		}	
+		else	
+			return characteristic.getStringValue(0);
+	}
 }
