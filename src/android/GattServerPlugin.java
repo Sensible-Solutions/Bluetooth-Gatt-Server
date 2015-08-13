@@ -110,7 +110,7 @@ public class GattServerPlugin extends CordovaPlugin
 			JSONObject returnObj = new JSONObject();
 			addProperty(returnObj, keyStatus, statusWriteRequest);
 			addProperty(returnObj, "device", device.getAddress());
-			addProperty(returnObj, "characteristic", characteristic.getUuid());
+			addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
 			addProperty(returnObj, "value", value.toString());
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
@@ -274,10 +274,10 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Test
-		BluetoothAdapter bluetoothAdapter;
-		bluetoothAdapter = bluetoothManager.getAdapter();
-		BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
-		gattServer.connect(device, false);
+		//BluetoothAdapter bluetoothAdapter;
+		//bluetoothAdapter = bluetoothManager.getAdapter();
+		//BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
+		//gattServer.connect(device, false);
   }
   
   private void addProperty(JSONObject obj, String key, Object value)
