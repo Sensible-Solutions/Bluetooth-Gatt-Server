@@ -305,6 +305,18 @@ public class GattServerPlugin extends CordovaPlugin
 			if (j != data.length - 1)
 				out[j * 3 + 2] = '-';
 		}
-		return "(0x) " + new String(out);
-	}
+		
+		String outString = String.valueOf(out);
+		switch (outString) {
+			case "00":
+				return "No Alert";
+			case "01":
+				return "Mild Alert";
+			case "02":
+				return "High Alert";
+			default:
+				return "Reserved value (" + outString + ")";
+		}
+		return outString;
+   }
 }
