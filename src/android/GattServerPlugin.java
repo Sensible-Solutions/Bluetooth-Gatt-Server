@@ -292,7 +292,7 @@ public class GattServerPlugin extends CordovaPlugin
   
   private static String parseAlertLevel(final byte[] data) {
 	  
-		final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+		final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 		
 		if (data == null || data.length == 0)
 			return "";
