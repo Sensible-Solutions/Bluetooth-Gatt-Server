@@ -85,7 +85,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
 	
-	private final BluetoothGattServer gattServer;
+	private BluetoothGattServer gattServer;
 	//private BluetoothGattService immediateAlertService;
 	
 	// Bluetooth GATT interface callbacks
