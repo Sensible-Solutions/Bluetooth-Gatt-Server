@@ -85,7 +85,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
 	
-	private final static BluetoothGattServer gattServer;
+	private final BluetoothGattServer gattServer;
 	//private BluetoothGattService immediateAlertService;
 	
 	// Bluetooth GATT interface callbacks
@@ -295,7 +295,7 @@ public class GattServerPlugin extends CordovaPlugin
 		if (characteristic == null)
 			return "";
 
-		if (characteristic.getUuid == ALERT_LEVEL_CHAR_UUID) {
+		if (characteristic.getUuid() == ALERT_LEVEL_CHAR_UUID) {
 			final int value = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
 			switch (value) {
 				case 0:
