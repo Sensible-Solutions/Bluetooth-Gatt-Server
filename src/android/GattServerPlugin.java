@@ -111,7 +111,7 @@ public class GattServerPlugin extends CordovaPlugin
 			addProperty(returnObj, keyStatus, statusWriteRequest);
 			addProperty(returnObj, "device", device.getAddress());
 			addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
-			addProperty(returnObj, "value", value.toString());
+			addProperty(returnObj, "value", parseAlertLevel(value));
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 			//callbackContext.sendPluginResult(pluginResult);
@@ -289,4 +289,22 @@ public class GattServerPlugin extends CordovaPlugin
 		catch (JSONException e)
 		{ /* Ignore */ }
   }
+  
+  private static String parseAlertLevel(final byte[] data) {
+	  
+		final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+		
+		if (data == null || data.length == 0)
+			return "";
+
+		final char[] out = new char[data.length * 3 - 1];
+		for (int j = 0; j < data.length; j++) {
+			int v = data[j] & 0xFF;
+			out[j * 3] = HEX_ARRAY[v >>> 4];
+			out[j * 3 + 1] = HEX_ARRAY[v & 0x0F];
+			if (j != data.length - 1)
+				out[j * 3 + 2] = '-';
+		}
+		return "(0x) " + new String(out);
+	}
 }
