@@ -295,7 +295,7 @@ public class GattServerPlugin extends CordovaPlugin
 		if (characteristic == null)
 			return "";
 
-		if (characteristic.getUuid == UUID ALERT_LEVEL_CHAR_UUID) {
+		if (characteristic.getUuid == ALERT_LEVEL_CHAR_UUID) {
 			final int value = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
 			switch (value) {
 				case 0:
