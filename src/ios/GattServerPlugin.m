@@ -61,7 +61,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
     serverRunningCallback = command.callbackId;
 	
 	// Init GATT server, that is create a peripheral manager, this will call peripheralManagerDidUpdateState
-	self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+	peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	
 }
 
