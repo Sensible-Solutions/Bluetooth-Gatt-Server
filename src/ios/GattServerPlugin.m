@@ -85,7 +85,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2A06"] properties:properties value:nil permissions:permissions];
 			CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
 			//service.characteristics = [NSArray arrayWithObject:[self createCharacteristic]];
-			service.characteristics = [NSArray arrayWithObject:[characteristic]];
+			//service.characteristics = [NSArray arrayWithObject:[characteristic]];
+			service.characteristics = @[characteristic];
 			//[self.peripheralManager addService:service];
 			[peripheralManager addService:service];
 			
