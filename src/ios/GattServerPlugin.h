@@ -11,8 +11,9 @@
 */
 
 #import <Cordova/CDV.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface GattServerPlugin : CDVPlugin
+@interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
 {
 	CBPeripheralManager *peripheralManager;
 	
