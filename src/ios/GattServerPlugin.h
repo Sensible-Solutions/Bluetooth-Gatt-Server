@@ -1,1 +1,24 @@
+/*
+* Copyright (C) 2015 Sensible Solutions Sweden AB
+*
+*
+* Cordova Plugin header for the Bluetooth GATT Profile server role.
+*
+* This class provides Bluetooth GATT server role functionality,
+* allowing applications to create and advertise the Bluetooth
+* Smart immediate alert service.
+* 
+*/
 
+#import <Cordova/CDV.h>
+
+@interface GattServerPlugin : CDVPlugin
+{
+	CBPeripheralManager *peripheralManager;
+	
+	NSString* serverRunningCallback;
+}
+
+- (void)startServer:(CDVInvokedUrlCommand *)command;
+
+@end
