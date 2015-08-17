@@ -24,7 +24,7 @@
       <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     </config-file>
   </platform>
-  <!-- <platform name="ios">
+  <platform name="ios">
     <config-file target="config.xml" parent="/*">
       <feature name="GattServerPlugin">
         <param name="ios-package" value="GattServerPlugin" />
@@ -38,6 +38,6 @@
     <header-file src="src/ios/GattServerPlugin.h" />
     <source-file src="src/ios/GattServerPlugin.m" />
     <framework src="CoreBluetooth.framework" />
-  </platform> -->
+  </platform>
   <info>This plugin only adds Bluetooth LE GATT server with Immediate Alerts service added to your cordova app. To use your cordova app also as a GATT client, you need to use a 3rd party plugin for that</info>
 </plugin>
