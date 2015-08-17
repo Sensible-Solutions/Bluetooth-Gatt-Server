@@ -128,7 +128,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 {
     CBATTRequest *attributeRequest = [requests objectAtIndex:0];
     //if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:@"2A06"]]) {
-	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]) {
+	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]) {
 		const uint8_t *data = [attributeRequest.value bytes];
 		int alertLevel = data[0];
 		NSMutableString *alertLevelParsed = [NSMutableString stringWithString:@""];
