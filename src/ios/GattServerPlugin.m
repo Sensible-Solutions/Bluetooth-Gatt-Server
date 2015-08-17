@@ -69,36 +69,27 @@ NSString *const logConnectionState = @"Connection state changed with error";
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
-    switch ([peripheral state]) {
-        case CBPeripheralManagerStatePoweredOff:
-            //NSLog(@"State is Off");
-            break;
-            
-        case CBPeripheralManagerStatePoweredOn:
-            //NSLog(@"State is on");
-            //[self addServices];
-			// Add Immediate Alert service if not already provided by the device
-			//CBMutableService *service = [[CBMutableService alloc]initWithType:[CBUUID UUIDWithString:@"1802"] primary:YES];
-			CBMutableService *service = [[CBMutableService alloc]initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
-			CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
-			CBAttributePermissions permissions = CBAttributePermissionsWriteable;
-			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2A06"] properties:properties value:nil permissions:permissions];
-			CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:properties value:nil permissions:permissions];
-			//service.characteristics = [NSArray arrayWithObject:[self createCharacteristic]];
-			service.characteristics = [NSArray arrayWithObject:[characteristic]];
-			//[self.peripheralManager addService:service];
-			[peripheralManager addService:service];
-			
-			// Notify user and save callback
-			/*NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyStatus, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];*/
-            break;
-            
-        default:
-            break;
-    }
+    switch (alertLevel) {
+            case 0:	{
+				[alertLevelParsed setString:@"No Alert"];
+                //[self stopSound];
+                break;
+			}
+            case 1: {
+				[alertLevelParsed setString:@"Mild Alert"];
+                //[self playSoundInLoop];
+                break;
+			}
+            case 2: {
+				[alertLevelParsed setString:@"High Alert"];
+                //[self playSoundInLoop];  
+                break;
+			}  
+            default: {
+				[alertLevelParsed setString:@"Parse Error"];
+                break;
+			}
+        }
 }
 
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
