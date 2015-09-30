@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.sensiblesolutions.gattserver" version="0.1.36">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.sensiblesolutions.gattserver" version="0.1.37">
   <engines>
     <engine name="cordova" version=">=3.0.0" />
   </engines>
@@ -18,13 +18,13 @@
         <param name="android-package" value="com.sensiblesolutions.gattserver.GattServerPlugin" />
       </feature>
     </config-file>
+    <lib-file src="libs/android/android-support-v4.jar" />
     <source-file src="src/android/GattServerPlugin.java" target-dir="src/com/sensiblesolutions/gattserver" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.BLUETOOTH"/>
       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
       <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     </config-file>
-    <lib-file src="libs/android/android-support-v4.jar" />
   </platform>
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
