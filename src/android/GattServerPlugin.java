@@ -36,6 +36,7 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
+import android.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -290,8 +291,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarmAction(CallbackContext callbackContext)
 	{
 		// Function is just so can test notifications from outside the plugin
-		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Context.NOTIFICATION_SERVICE)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Context.NOTIFICATION_SERVICE)
 	        .setSmallIcon(R.drawable.notification_icon)
 	        .setContentTitle("My notification")
 	        .setContentText("Hello World!");
