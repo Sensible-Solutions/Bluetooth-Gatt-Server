@@ -292,12 +292,12 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Function is just so can test notifications from outside the plugin
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Context.NOTIFICATION_SERVICE)
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 	        .setSmallIcon(R.drawable.notification_icon)
 	        .setContentTitle("My notification")
 	        .setContentText("Hello World!");
 		
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(1665, mBuilder.build());
 	}
