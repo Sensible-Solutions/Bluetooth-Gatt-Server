@@ -297,7 +297,7 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setContentTitle("My notification")
 	        .setContentText("Hello World!");
 		
-		NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(cordova.getActivity().getApplicationContext());
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(1665, mBuilder.build());
 	}
