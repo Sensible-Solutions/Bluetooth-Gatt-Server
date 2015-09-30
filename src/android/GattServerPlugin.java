@@ -291,7 +291,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarmAction(CallbackContext callbackContext)
 	{
 		// Function is just so can test notifications from outside the plugin
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Context.NOTIFICATION_SERVICE)
 	        .setSmallIcon(R.drawable.notification_icon)
 	        .setContentTitle("My notification")
