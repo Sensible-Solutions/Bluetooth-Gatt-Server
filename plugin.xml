@@ -12,7 +12,7 @@
     <clobbers target="window.gattserver" />
   </js-module>
   <platform name="android">
-    <dependency id="com.sensiblesolutions.androidsupportv4" />
+    <!--<dependency id="com.sensiblesolutions.androidsupportv4" />-->
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="GattServerPlugin">
         <param name="android-package" value="com.sensiblesolutions.gattserver.GattServerPlugin" />
@@ -24,6 +24,7 @@
       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
       <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     </config-file>
+    <lib-file src="libs/android/android-support-v4.jar" />
   </platform>
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
