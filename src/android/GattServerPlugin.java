@@ -33,7 +33,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat.Builder;
+//import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
 
 import java.util.ArrayList;
