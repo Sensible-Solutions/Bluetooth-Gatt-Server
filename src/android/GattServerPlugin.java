@@ -33,6 +33,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat.Builder;
+import android.app.NotificationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,6 +207,10 @@ public class GattServerPlugin extends CordovaPlugin
 				startServerAction(callbackContext);
 				return true;
 			}
+			else if (action.equals("alarm")){
+				alarmAction(callbackContext);
+				return true;
+			}
 			callbackContext.error("Invalid action");
 			return false;
 		} 
@@ -278,6 +284,21 @@ public class GattServerPlugin extends CordovaPlugin
 		//bluetoothAdapter = bluetoothManager.getAdapter();
 		//BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
 		//gattServer.connect(device, false);
+	}
+	
+	private void alarmAction(CallbackContext callbackContext)
+	{
+		// Function is just so can test notifications from outside the plugin
+		NotificationCompat.Builder mBuilder =
+	        //new NotificationCompat.Builder(this)
+		new NotificationCompat.Builder(Context.NOTIFICATION_SERVICE)
+	        .setSmallIcon(R.drawable.notification_icon)
+	        .setContentTitle("My notification")
+	        .setContentText("Hello World!");
+		
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(1665, mBuilder.build());
 	}
   
 	  private void addProperty(JSONObject obj, String key, Object value)
