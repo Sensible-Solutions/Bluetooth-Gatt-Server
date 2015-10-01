@@ -293,10 +293,17 @@ public class GattServerPlugin extends CordovaPlugin
 		// Function is just so can test notifications from outside the plugin
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
-	        .setContentTitle("My notification")
-	        .setContentText("Hello World!")
-	        .setSmallIcon(R.drawable.screen_background_dark);
-	        //.setSmallIcon(R.drawable.notification_icon)
+	        .setContentTitle("SenseSoft Notifications")
+	        .setContentText("Incoming SenseSoft Mini alarm!")
+	        .setSmallIcon(R.drawable.screen_background_dark)
+	        .setPriority(PRIORITY_MAX)
+	        .setAutoCancel(true)
+	        .setCategory(CATEGORY_ALARM)
+	        .setGroup("SENSESOFT_MINI")
+	        .setTicker("SenseSoft Mini")
+	        .setVibrate({ 0, 200, 500 });
+	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
+	        //.setSound(Uri sound, STREAM_ALARM);
 		
 		//NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
 		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
