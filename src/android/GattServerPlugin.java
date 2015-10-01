@@ -36,6 +36,7 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
+import android.app.Notification;
 import android.R;
 
 import java.util.ArrayList;
@@ -291,6 +292,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarmAction(CallbackContext callbackContext)
 	{
 		// Function is just so can test notifications from outside the plugin
+		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 	        .setContentTitle("SenseSoft Notifications")
@@ -301,7 +303,8 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setCategory(CATEGORY_ALARM)
 	        .setGroup("SENSESOFT_MINI")
 	        .setTicker("SenseSoft Mini")
-	        .setVibrate({ 0, 200, 500 });
+	        .setDefaults(DEFAULT_SOUND | DEFAULT_LIGHTS)
+	        .setVibrate(pattern);
 	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
 	        //.setSound(Uri sound, STREAM_ALARM);
 		
