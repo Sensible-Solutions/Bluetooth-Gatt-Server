@@ -36,7 +36,7 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
-import android.app.Notification;
+//import android.app.Notification;
 import android.R;
 
 import java.util.ArrayList;
@@ -298,12 +298,12 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setContentTitle("SenseSoft Notifications")
 	        .setContentText("Incoming SenseSoft Mini alarm!")
 	        .setSmallIcon(R.drawable.screen_background_dark)
-	        .setPriority(PRIORITY_MAX)
+	        .setPriority(NotificationCompat.PRIORITY_MAX)
 	        .setAutoCancel(true)
-	        .setCategory(CATEGORY_ALARM)
+	        .setCategory(NotificationCompat.CATEGORY_ALARM)
 	        .setGroup("SENSESOFT_MINI")
 	        .setTicker("SenseSoft Mini")
-	        .setDefaults(DEFAULT_SOUND | DEFAULT_LIGHTS)
+	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
 	        .setVibrate(pattern);
 	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
 	        //.setSound(Uri sound, STREAM_ALARM);
