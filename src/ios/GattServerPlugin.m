@@ -103,6 +103,16 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
 }
 
+- (void)application: (UIApplication*) application didReceiveLocalNotification: (UILocalNotification*) notification
+{ 
+	UIApplicationState currentState = [application applicationState]; 
+	if (currentState == UIApplicationStateActive) { 
+		UIAlertView *notificationAlert = [[UIAlertViewalloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:selfcancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+		[notificationAlert show];
+	} 
+	application.applicationIconBadgeNumber = 0; 
+}
+
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
