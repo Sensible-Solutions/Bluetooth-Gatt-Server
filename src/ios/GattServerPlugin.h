@@ -21,5 +21,6 @@
 }
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
+- (void)alarm:(CDVInvokedUrlCommand *)command;
 
 @end
