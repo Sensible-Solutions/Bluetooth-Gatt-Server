@@ -5,6 +5,9 @@ var gattserver = {
 	},
 	alarm: function(successCallback, errorCallback, params) {
 		cordova.exec(successCallback, errorCallback, gattServerName, "alarm", [params]); 
+	},
+	registerNotifications: function(successCallback, errorCallback, params) {
+		cordova.exec(successCallback, errorCallback, gattServerName, "registerNotifications", [params]); 
 	}
 }
 module.exports = gattserver;
