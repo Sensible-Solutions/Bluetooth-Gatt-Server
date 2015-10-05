@@ -69,26 +69,42 @@ NSString *const logConnectionState = @"Connection state changed with error";
 // Action function just to test local notifications
 - (void)alarm:(CDVInvokedUrlCommand *)command
 {
-	UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-	// Specify after how many second the notification will be delivered
-	//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
-	// Specify notification message text
-	localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
-	// A short description of the reason for the alert (for apple watch) 
-	localNotification.alertTitle = @"SenseSoft Mini alarm";
-	// Hide the alert button or slider
-	localNotification.hasAction = false;
-	// Specify timeZone for notification delivery
-	localNotification.timeZone = [NSTimeZone defaultTimeZone];
-	// Set the soundName property for the notification
-	localNotification.soundName = UILocalNotificationDefaultSoundName;
-	// Increase app icon count by 1 when notification is sent
-	//localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
-	localNotification.applicationIconBadgeNumber = 1;
-	// Show the local notification
-	[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-	// Schedule the local notification
-	//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+	if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){ // Check it's iOS 8 and above
+		UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+
+    		if (grantedSettings.types == UIUserNotificationTypeNone) {
+        		//NSLog(@"No permiossion granted");
+        		return;
+		}
+    		/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
+        		//NSLog(@"Sound, alert and badge permissions ");
+    		}*/
+    		else if (grantedSettings.types  & UIUserNotificationTypeAlert){
+        		//NSLog(@"Alert Permission Granted");
+        		UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+			// Specify after how many second the notification will be delivered
+			//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+			// Specify notification message text
+			localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
+			// A short description of the reason for the alert (for apple watch) 
+			localNotification.alertTitle = @"SenseSoft Mini alarm";
+			// Hide the alert button or slider
+			localNotification.hasAction = false;
+			// Specify timeZone for notification delivery
+			localNotification.timeZone = [NSTimeZone defaultTimeZone];
+			// Set the soundName property for the notification if notification sound is enabled
+			if (grantedSettings.types & UIUserNotificationTypeSound)
+				localNotification.soundName = UILocalNotificationDefaultSoundName;
+			// Increase app icon count by 1 when notification is sent if notification badge is enabled
+			if (grantedSettings.types & UIUserNotificationTypeBage)
+				localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
+			//localNotification.applicationIconBadgeNumber = 1;
+			// Show the local notification
+			[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+			// Schedule the local notification
+			//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+		}
+	}
 }
 
 // Action function just to test local notifications
@@ -103,8 +119,11 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
 }
 
+// Application delegate
 - (void)application: (UIApplication*) application didReceiveLocalNotification: (UILocalNotification*) notification
 { 
+	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
+	// Manually display alert message and play sound.
 	UIApplicationState currentState = [application applicationState]; 
 	if (currentState == UIApplicationStateActive) { 
 		UIAlertView *notificationAlert = [[UIAlertViewalloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:selfcancelButtonTitle:@"OK" otherButtonTitles:nil]; 
