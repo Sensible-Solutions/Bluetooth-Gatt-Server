@@ -97,7 +97,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 				localNotification.soundName = UILocalNotificationDefaultSoundName;
 			// Increase app icon count by 1 when notification is sent if notification badge is enabled
 			if (grantedSettings.types & UIUserNotificationTypeBage)
-				localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
+				localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 			//localNotification.applicationIconBadgeNumber = 1;
 			// Show the local notification
 			[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
@@ -126,7 +126,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	// Manually display alert message and play sound.
 	UIApplicationState currentState = [application applicationState]; 
 	if (currentState == UIApplicationStateActive) { 
-		UIAlertView *notificationAlert = [[UIAlertViewalloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:selfcancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:selfcancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 		[notificationAlert show];
 	} 
 	application.applicationIconBadgeNumber = 0; 
