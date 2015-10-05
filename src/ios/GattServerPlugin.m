@@ -86,7 +86,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	//localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
 	localNotification.applicationIconBadgeNumber = 1;
 	// Show the local notification
-	[[UIApplication sharedApplication] presentLocalNotificationNow:localnotification];
+	[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
 	// Schedule the local notification
 	//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
