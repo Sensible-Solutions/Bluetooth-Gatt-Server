@@ -120,7 +120,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 }
 
 // Application delegate
-- (void)application: (UIApplication*) application didReceiveLocalNotification: (UILocalNotification*) notification
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
 	// Manually display alert message and play sound.
