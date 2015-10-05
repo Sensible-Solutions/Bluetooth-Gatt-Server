@@ -92,13 +92,15 @@ NSString *const logConnectionState = @"Connection state changed with error";
 }
 
 // Action function just to test local notifications
-- (void)register:(CDVInvokedUrlCommand *)command
+- (void)registerNotifications:(CDVInvokedUrlCommand *)command
 {
 	// Register for local notifications
 	// In iOS 8 and later, apps that use either local (or remote notifications) must register the types
 	// of notifications they intend to deliver. The system then gives the user the ability to limit the
 	// types of notifications your app displays.
-
+	UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
 }
 
 // CBPeripheralManager Delegate Methods
