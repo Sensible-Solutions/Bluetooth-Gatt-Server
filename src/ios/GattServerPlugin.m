@@ -66,6 +66,16 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	
 }
 
+// Action function just to test local notifications
+- (void)alarm:(CDVInvokedUrlCommand *)command
+{
+	UILocalNotification* localNotification = [[UILocalNotificationalloc] init];
+	localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+	localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
+	localNotification.timeZone = [NSTimeZone defaultTimeZone];
+	[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
