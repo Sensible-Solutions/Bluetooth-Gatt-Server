@@ -70,9 +70,18 @@ NSString *const logConnectionState = @"Connection state changed with error";
 - (void)alarm:(CDVInvokedUrlCommand *)command
 {
 	UILocalNotification* localNotification = [[UILocalNotificationalloc] init];
+	// Specify after how many second the notification will be delivered
 	localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+	// Specify notification message text
 	localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
+	// Specify timeZone for notification delivery
 	localNotification.timeZone = [NSTimeZone defaultTimeZone];
+	// Set the soundName property for the notification
+	localNotification.soundName = UILocalNotificationDefaultSoundName;
+	// Increase app icon count by 1 when notification is sent
+	//localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
+	localNotification.applicationIconBadgeNumber = 1;
+	// Schedule local notification
 	[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
