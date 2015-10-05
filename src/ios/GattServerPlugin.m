@@ -69,11 +69,15 @@ NSString *const logConnectionState = @"Connection state changed with error";
 // Action function just to test local notifications
 - (void)alarm:(CDVInvokedUrlCommand *)command
 {
-	UILocalNotification* localNotification = [[UILocalNotificationalloc] init];
+	UILocalNotification* localNotification = [[UILocalNotification alloc] init];
 	// Specify after how many second the notification will be delivered
-	localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+	//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
 	// Specify notification message text
 	localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
+	// A short description of the reason for the alert (for apple watch) 
+	localNotification.alertTitle = @"SenseSoft Mini alarm";
+	// Hide the alert button or slider
+	localNotification.hasAction = false;
 	// Specify timeZone for notification delivery
 	localNotification.timeZone = [NSTimeZone defaultTimeZone];
 	// Set the soundName property for the notification
@@ -81,8 +85,20 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	// Increase app icon count by 1 when notification is sent
 	//localNotification.applicationIconBadgeNumber = [[UIApplicationsharedApplication] applicationIconBadgeNumber]+1; 
 	localNotification.applicationIconBadgeNumber = 1;
-	// Schedule local notification
-	[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+	// Show the local notification
+	[[UIApplication sharedApplication] presentLocalNotificationNow:localnotification];
+	// Schedule the local notification
+	//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
+// Action function just to test local notifications
+- (void)register:(CDVInvokedUrlCommand *)command
+{
+	// Register for local notifications
+	// In iOS 8 and later, apps that use either local (or remote notifications) must register the types
+	// of notifications they intend to deliver. The system then gives the user the ability to limit the
+	// types of notifications your app displays.
+
 }
 
 // CBPeripheralManager Delegate Methods
