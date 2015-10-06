@@ -142,7 +142,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 		[notificationAlert show];
 	} 
 	//application.applicationIconBadgeNumber = 0; 
-	 [[UIApplication sharedApplication] applicationIconBadgeNumber:0];
+	 [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 // CBPeripheralManager Delegate Methods
