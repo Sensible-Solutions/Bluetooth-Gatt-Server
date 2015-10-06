@@ -130,16 +130,19 @@ NSString *const logConnectionState = @"Connection state changed with error";
     return YES;
 }
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+- (void) didReceiveLocalNotification:(UILocalNotification*)notification
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
 	// Manually display alert message and play sound.
-	UIApplicationState currentState = [application applicationState]; 
+	//UIApplicationState currentState = [application applicationState];
+	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
 	if (currentState == UIApplicationStateActive) { 
-		/*UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-		[notificationAlert show];*/
+		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+		[notificationAlert show];
 	} 
-	application.applicationIconBadgeNumber = 0; 
+	//application.applicationIconBadgeNumber = 0; 
+	 [[UIApplication sharedApplication] applicationIconBadgeNumber:0];
 }
 
 // CBPeripheralManager Delegate Methods
