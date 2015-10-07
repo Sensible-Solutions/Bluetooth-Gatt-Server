@@ -231,12 +231,17 @@ NSString *const logConnectionState = @"Connection state changed with error";
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void) didFinishLaunchingWithOptions:(NSNotification*) notification
 {
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotification) {
-       [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    }
-    
-    //return YES;
+	/*NSDictionary* launchOptions = [notification userInfo];
+    	UILocalNotification* localNotification;
+    	localNotification = [launchOptions objectForKey:
+                         UIApplicationLaunchOptionsLocalNotificationKey];
+    	if (localNotification) {
+    	 	[self didReceiveLocalNotification:
+         	[NSNotification notificationWithName:CDVLocalNotification
+                                       object:localNotification]];
+    	}*/
+    	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    	//return YES;
 }
 
 // Called after a local notification was received
