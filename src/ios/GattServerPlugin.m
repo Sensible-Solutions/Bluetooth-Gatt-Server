@@ -227,7 +227,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 
 // Application delegates
 
-// Called when app has started (also by clicking on a local notification)
+// Called when app has started (by clicking on a local notification)
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void) didFinishLaunchingWithOptions:(NSNotification*) notification
 {
@@ -240,11 +240,11 @@ NSString *const logConnectionState = @"Connection state changed with error";
          	[NSNotification notificationWithName:CDVLocalNotification
                                        object:localNotification]];
     	}*/
-    	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
     	//return YES;
 }
 
-// Called after a local notification was received
+// Called after a local notification was received (if the app is the foreground)
 //- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 - (void) didReceiveLocalNotification:(UILocalNotification*) notification
 { 
@@ -257,7 +257,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 		[notificationAlert show];
 	} 
 	//application.applicationIconBadgeNumber = 0; 
-	 [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 // Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
