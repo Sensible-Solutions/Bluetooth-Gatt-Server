@@ -227,7 +227,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 
 // Application delegates
 
-// Called when app has started by clicking on a local notification
+// Called when app has started (also by clicking on a local notification)
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void) didFinishLaunchingWithOptions:(NSNotification*) notification
 {
