@@ -43,7 +43,10 @@ NSString *const logConnectionState = @"Connection state changed with error";
 
 @implementation GattServerPlugin
 
-// Actions
+#pragma mark -
+#pragma mark Interface
+
+// Plugin actions
 - (void)startServer:(CDVInvokedUrlCommand *)command
 {
 	//If the GATT server is already running, don't start it again
@@ -119,31 +122,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
 }
 
-// Application delegates
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotification) {
-        application.applicationIconBadgeNumber = 0;
-    }
-    
-    return YES;
-}
-
-//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-- (void) didReceiveLocalNotification:(UILocalNotification*)notification
-{ 
-	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
-	// Manually display alert message and play sound.
-	//UIApplicationState currentState = [application applicationState];
-	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
-	if (currentState == UIApplicationStateActive) { 
-		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-		[notificationAlert show];
-	} 
-	//application.applicationIconBadgeNumber = 0; 
-	 [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-}
+#pragma mark -
+#pragma mark Delegates
 
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
@@ -243,6 +223,81 @@ NSString *const logConnectionState = @"Connection state changed with error";
 		[pluginResult setKeepCallbackAsBool:true];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
     }
+}
+
+// Application delegates
+
+// Called when app has started by clicking on a local notification
+//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (void) didFinishLaunchingWithOptions:(NSNotification*) notification
+{
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        application.applicationIconBadgeNumber = 0;
+    }
+    
+    return YES;
+}
+
+// Called after a local notification was received
+//- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+- (void) didReceiveLocalNotification:(UILocalNotification*) notification
+{ 
+	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
+	// Manually display alert message and play sound.
+	//UIApplicationState currentState = [application applicationState];
+	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
+	if (currentState == UIApplicationStateActive) { 
+		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+		[notificationAlert show];
+	} 
+	//application.applicationIconBadgeNumber = 0; 
+	 [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+// Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
+- (void) didRegisterUserNotificationSettings:(UIUserNotificationSettings*) settings
+{
+   
+}
+
+#pragma mark -
+#pragma mark CDVPlugin delegates
+
+// Called after plugin is initialized
+- (void) pluginInitialize
+{
+	// Registers obervers
+    	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+
+    	//eventQueue = [[NSMutableArray alloc] init];
+
+    	[center addObserver:self
+        	selector:@selector(didReceiveLocalNotification:)
+              	name:CDVLocalNotification
+               	object:nil];
+
+    	[center addObserver:self
+               	selector:@selector(didFinishLaunchingWithOptions:)
+              	name:UIApplicationDidFinishLaunchingNotification
+               	object:nil];
+
+    	/*[center addObserver:self
+               	selector:@selector(didRegisterUserNotificationSettings:)
+              	name:UIApplicationRegisterUserNotificationSettings
+               	object:nil];*/
+}
+
+// Called before app terminates
+- (void) onAppTerminate
+{
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+// Called when plugin resets (navigates to a new page or refreshes)
+- (void) onReset
+{
+   
 }
 
 @end
