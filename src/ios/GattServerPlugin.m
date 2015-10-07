@@ -257,7 +257,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 		[notificationAlert show];
 	} 
 	//application.applicationIconBadgeNumber = 0; 
-	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
 }
 
 // Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
@@ -296,7 +296,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 // Called before app terminates
 - (void) onAppTerminate
 {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
