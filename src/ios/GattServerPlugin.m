@@ -233,10 +233,10 @@ NSString *const logConnectionState = @"Connection state changed with error";
 {
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
-        application.applicationIconBadgeNumber = 0;
+       [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     }
     
-    return YES;
+    //return YES;
 }
 
 // Called after a local notification was received
