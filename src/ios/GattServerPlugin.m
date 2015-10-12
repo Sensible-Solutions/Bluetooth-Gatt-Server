@@ -100,8 +100,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 			if (grantedSettings.types & UIUserNotificationTypeSound){
 				//localNotification.soundName = UILocalNotificationDefaultSoundName;
 				//NSBundle* mainBundle = [NSBundle mainBundle];
-				//localNotification.soundName = @"Resources/alarm.mp3";
-				localNotification.soundName = [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"];
+				localNotification.soundName = @"Resources/alarm.mp3";
+				//localNotification.soundName = [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"];
 				
 			}
 			// Increase app icon count by 1 when notification is sent if notification badge is enabled
