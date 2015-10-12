@@ -77,7 +77,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 
     		if (grantedSettings.types == UIUserNotificationTypeNone) {
         		//NSLog(@"No permiossion granted");
-        		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"SenseSoft Notifications" message:@"Notifications is not allowed. Please turn on notifications in the app's settings."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"SenseSoft Notifications" message:@"Notifications is not allowed. Please turn on notifications in the app settings."delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         		return;
 		}
     		/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
