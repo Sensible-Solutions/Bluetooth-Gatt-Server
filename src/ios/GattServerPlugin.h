@@ -12,6 +12,7 @@
 
 #import <Cordova/CDV.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import <AudioToolbox/AudioServices.h>
 
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
 {
