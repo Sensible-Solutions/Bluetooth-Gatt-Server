@@ -18,6 +18,8 @@
 	CBPeripheralManager *peripheralManager;
 	
 	NSString* serverRunningCallback;
+	
+	SystemSoundID alarmSound;
 }
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
