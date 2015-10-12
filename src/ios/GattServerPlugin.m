@@ -101,7 +101,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 				//localNotification.soundName = UILocalNotificationDefaultSoundName;
 				//NSBundle* mainBundle = [NSBundle mainBundle];
 				//localNotification.soundName = @"Resources/alarm.mp3";
-				localNotification.soundName = @"alarm.mp3";
+				localNotification.soundName = @"alarm.mp3";	// Works
 				//localNotification.soundName = [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"];
 				
 			}
@@ -260,6 +260,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	//UIApplicationState currentState = [application applicationState];
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
 	if (currentState == UIApplicationStateActive) { 
+		// Play sound from the main bundle (because sound for local notifications are not played if the app is in the foreground)
+		AudioServicesPlaySystemSound(alarmSound);
 		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 		[notificationAlert show];
 	} 
@@ -298,12 +300,19 @@ NSString *const logConnectionState = @"Connection state changed with error";
                	selector:@selector(didRegisterUserNotificationSettings:)
               	name:UIApplicationRegisterUserNotificationSettings
                	object:nil];*/
+               	
+        // Set up sound from main bundle to be played during alarms when the app is in the foreground
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
 }
 
 // Called before app terminates
 - (void) onAppTerminate
 {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
+    
+    	// Call the following function when the sound is no longer used
+	// (must be done AFTER the sound is done playing)
+	AudioServicesDisposeSystemSoundID(alarmSound);
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
