@@ -261,7 +261,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
 	if (currentState == UIApplicationStateActive) { 
 		// Play sound from the main bundle (because sound for local notifications are not played if the app is in the foreground)
-		AudioServicesPlaySystemSound(alarmSound);
+		//AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
+		AudioServicesPlayAlertSound(alarmSound);	//If the user has configured the Settings application for vibration on ring, also invokes vibration
 		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Local Notifications" message:@"You have a notification.please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 		[notificationAlert show];
 	} 
