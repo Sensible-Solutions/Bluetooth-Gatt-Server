@@ -97,8 +97,11 @@ NSString *const logConnectionState = @"Connection state changed with error";
 			// Specify timeZone for notification delivery
 			localNotification.timeZone = [NSTimeZone defaultTimeZone];
 			// Set the soundName property for the notification if notification sound is enabled
-			if (grantedSettings.types & UIUserNotificationTypeSound)
-				localNotification.soundName = UILocalNotificationDefaultSoundName;
+			if (grantedSettings.types & UIUserNotificationTypeSound){
+				//localNotification.soundName = UILocalNotificationDefaultSoundName;
+				localNotification.soundName = @"resources/alarm.mp3"
+				
+			}
 			// Increase app icon count by 1 when notification is sent if notification badge is enabled
 			if (grantedSettings.types & UIUserNotificationTypeBadge)
 				localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
