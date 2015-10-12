@@ -100,7 +100,8 @@ NSString *const logConnectionState = @"Connection state changed with error";
 			if (grantedSettings.types & UIUserNotificationTypeSound){
 				//localNotification.soundName = UILocalNotificationDefaultSoundName;
 				//NSBundle* mainBundle = [NSBundle mainBundle];
-				localNotification.soundName = @"Resources/alarm.mp3";
+				//localNotification.soundName = @"Resources/alarm.mp3";
+				localNotification.soundName = @"alarm.mp3";
 				//localNotification.soundName = [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"];
 				
 			}
