@@ -91,7 +91,7 @@ NSString *const logConnectionState = @"Connection state changed with error";
 			// Specify notification message text
 			localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
 			// A short description of the reason for the alert (for apple watch) 
-			localNotification.alertTitle = @"SenseSoft Mini alarm";
+			localNotification.alertTitle = @"SenseSoft Notifications Mini";
 			// Hide the alert button or slider
 			localNotification.hasAction = false;
 			// Specify timeZone for notification delivery
