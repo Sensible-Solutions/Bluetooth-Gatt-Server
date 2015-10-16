@@ -133,6 +133,18 @@ NSString *const logConnectionState = @"Connection state changed with error";
 #pragma mark Delegates
 
 // CBPeripheralManager Delegate Methods
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
+{
+	UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didSubscribeToCharacteristic delegate called"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[notificationAlert show];
+}
+
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
+{
+	UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didUnsubscribeFromCharacteristic delegate called"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[notificationAlert show];
+}
+
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
     switch ([peripheral state]) {
