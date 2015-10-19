@@ -103,8 +103,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Action function just to test local notifications
-//- (void)alarm
-- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row abovem
+- (void)alarm: (NSString *) alertLevel
+//- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row abovem
 {
 	// Show local notification
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Check it's iOS 8 and above
@@ -336,7 +336,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		
 		// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
 		// So interpret every write to this characteristic as an alarm
-		[self alarm:nil];
+		[self alarm:alertLevelParsed];
 		//[self alarm];
     }
 }
