@@ -104,7 +104,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 
 // Action function just to test local notifications
 - (void)alarm: (NSString *) alertLevel
-//- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row abovem
+//- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
 	// Show local notification
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Check it's iOS 8 and above
@@ -160,7 +160,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	// Notify user and save callback
-	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevelParsed, @"value", nil];
+	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 	[pluginResult setKeepCallbackAsBool:true];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
