@@ -18,13 +18,23 @@
 {
 	CBPeripheralManager *peripheralManager;
 	
-	NSString* serverRunningCallback;
+	NSString *serverRunningCallback;
 	
 	SystemSoundID alarmSound;
+	
+	BOOL iasInitialized;			// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
+	
+	// App settings
+	NSString *appSettingsAlert = nil;
+	NSString *appSettingsSound = nil;
+	NSString *appSettingsVibration = nil;
+	NSString *appSettingsLog = nil;
 }
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
 - (void)alarm:(CDVInvokedUrlCommand *)command;
 - (void)registerNotifications:(CDVInvokedUrlCommand *)command;
+- (void)setAlarmSettings:(CDVInvokedUrlCommand *)command;
+- (void)getAlarmSettings:(CDVInvokedUrlCommand *)command;
 
 @end
