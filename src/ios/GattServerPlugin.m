@@ -67,7 +67,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	//If the GATT server is already running, don't start it again
 	 if (serverRunningCallback != nil)
     {
-		//NSLog(@"GATT server is already running");
+	//NSLog(@"GATT server is already running");
         NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logServerAlreadyRunning, keyMessage, nil];
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
         //[pluginResult setKeepCallbackAsBool:false];
@@ -75,6 +75,12 @@ NSString *const KEY_LOG_SETTING = @"log";
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         return;
     }
+    
+    appSettingsAlert = nil;
+    appSettingsSound = nil;
+    appSettingsVibration = nil;
+    appSettingsLog = nil;
+    
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
         //NSLog(@"No notification permission granted");
         NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil];
