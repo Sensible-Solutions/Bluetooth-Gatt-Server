@@ -169,7 +169,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Set granted local notifications for app
 - (void)setAlarmSettings:(CDVInvokedUrlCommand *)command
 {
-	NSDictionary* obj = [self gettArgsObject:command.arguments];
+	NSDictionary* obj = [self getArgsObject:command.arguments];
 	if ([self isNotArgsObject:obj :command])
         return;
 
