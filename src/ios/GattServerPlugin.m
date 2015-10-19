@@ -36,7 +36,7 @@ NSString *const statusAppSettings = @"appSettings";
 NSString *const errorStartServer = @"startServer";
 NSString *const errorConnectionState = @"serverConnectionState";
 NSString *const errorServiceAdded = @"serviceAdded";
-NSString *const errorArguments @"arguments";
+NSString *const errorArguments = @"arguments";
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
@@ -80,6 +80,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     appSettingsSound = nil;
     appSettingsVibration = nil;
     appSettingsLog = nil;
+    UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
         //NSLog(@"No notification permission granted");
