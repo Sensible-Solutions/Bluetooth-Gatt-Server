@@ -25,10 +25,10 @@
 	BOOL iasInitialized;			// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	
 	// App settings
-	NSString *appSettingsAlert = nil;
-	NSString *appSettingsSound = nil;
-	NSString *appSettingsVibration = nil;
-	NSString *appSettingsLog = nil;
+	NSString *appSettingsAlert;
+	NSString *appSettingsSound;
+	NSString *appSettingsVibration;
+	NSString *appSettingsLog;
 }
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
