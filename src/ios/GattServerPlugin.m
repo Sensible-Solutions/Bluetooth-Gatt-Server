@@ -337,7 +337,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		if (!iasInitialized){
 			// Ignore first value received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 			iasInitialized = true;
-			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized false in write request delegate" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 1" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[debugAlert show];
 			return;
 		}
@@ -345,7 +345,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
 		// So interpret every write to this characteristic as an alarm
 		[self alarm:alertLevelParsed];
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized true in write request delegate" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 2" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		 [debugAlert show];
 		//[self alarm];
     }
@@ -487,13 +487,13 @@ NSString *const KEY_LOG_SETTING = @"log";
     
     	// Call the following function when the sound is no longer used
 	// (must be done AFTER the sound is done playing)
-	AudioServicesDisposeSystemSoundID(alarmSound);
+	//AudioServicesDisposeSystemSoundID(alarmSound);
 	
 	//CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
 	//[peripheralManager removeService:service];
 	// Remove all, by the app, published services from the local GATT database.
 	// Removes only the instance of the service that your app added to the database (using the addService: method).
-	[peripheralManager removeAllServices];
+	//[peripheralManager removeAllServices];
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
