@@ -73,6 +73,8 @@ NSString *const KEY_LOG_SETTING = @"log";
         //[pluginResult setKeepCallbackAsBool:false];
 		[pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"GATT server already running" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [debugAlert show];
         return;
     }
     
@@ -92,6 +94,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	iasInitialized = false;
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [debugAlert show];
 	
 	 //Set the callback
     serverRunningCallback = command.callbackId;
