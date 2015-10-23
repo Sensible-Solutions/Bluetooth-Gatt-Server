@@ -201,12 +201,11 @@ NSString *const KEY_LOG_SETTING = @"log";
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-// Action function just to test local notifications
+// Register for local notifications.
+// In iOS 8 and later, apps that use either local (or remote notifications) must register the types of notifications they intend to deliver.
+// The system then gives the user the ability to limit the types of notifications your app displays.
 - (void)registerNotifications:(CDVInvokedUrlCommand *)command
 {
-	// Register for local notifications
-	// In iOS 8 and later, apps that use either local (or remote notifications) must register the types of notifications they intend to deliver.
-	// The system then gives the user the ability to limit the types of notifications your app displays.
 	UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
@@ -296,6 +295,9 @@ NSString *const KEY_LOG_SETTING = @"log";
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
 {
     // Not implemented
+    
+    	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Received read request." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[debugMessage show];
 }
 
 // Remote client characteristic write request
@@ -341,8 +343,11 @@ NSString *const KEY_LOG_SETTING = @"log";
     }
 }
 
+// Not working, that is is not called when a remote central has disconnected (since there is subscription for a characteristic
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
 {
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Remote central unsubsribed to a characteristic." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugMessage show];
 	// If this works, this CBPeripheralManagerDelegate is called when a remote central has disconnected ( - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic when connected)
 	if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]){
 		iasInitialized = false;
