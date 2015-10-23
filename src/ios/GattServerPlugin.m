@@ -286,6 +286,9 @@ NSString *const KEY_LOG_SETTING = @"log";
 		[pluginResult setKeepCallbackAsBool:false];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 		serverRunningCallback = nil;
+		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didAddService error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        	[debugAlert show];
+		
     }
     else {
         // Notify user and save callback
@@ -485,6 +488,12 @@ NSString *const KEY_LOG_SETTING = @"log";
     	// Call the following function when the sound is no longer used
 	// (must be done AFTER the sound is done playing)
 	AudioServicesDisposeSystemSoundID(alarmSound);
+	
+	//CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
+	//[peripheralManager removeService:service];
+	// Remove all, by the app, published services from the local GATT database.
+	// Removes only the instance of the service that your app added to the database (using the addService: method).
+	[peripheralManager removeAllServices];
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
