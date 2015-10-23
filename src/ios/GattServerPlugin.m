@@ -487,7 +487,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     
     	// Call the following function when the sound is no longer used
 	// (must be done AFTER the sound is done playing)
-	//AudioServicesDisposeSystemSoundID(alarmSound);
+	AudioServicesDisposeSystemSoundID(alarmSound);
 	
 	//CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
 	//[peripheralManager removeService:service];
