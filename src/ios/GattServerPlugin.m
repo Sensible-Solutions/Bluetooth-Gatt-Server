@@ -34,7 +34,7 @@ NSString *const statusAppSettings = @"appSettings";
 
 // Error Types
 NSString *const errorStartServer = @"startServer";
-NSString *const errorConnectionState = @"serverConnectionState";
+//NSString *const errorConnectionState = @"serverConnectionState";
 NSString *const errorServiceAdded = @"serviceAdded";
 NSString *const errorArguments = @"arguments";
 
@@ -295,9 +295,6 @@ NSString *const KEY_LOG_SETTING = @"log";
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
 {
     // Not implemented
-    
-    	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Received read request." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[debugMessage show];
 }
 
 // Remote client characteristic write request
@@ -344,7 +341,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Not working, that is is not called when a remote central has disconnected (since there is subscription for a characteristic
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
+/*- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
 {
 	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Remote central unsubsribed to a characteristic." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugMessage show];
@@ -354,7 +351,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Remote central unsubsribed to alert level characteristic." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[debugMessage show];
 	}
-}
+}*/
 
 
 // Application delegates
