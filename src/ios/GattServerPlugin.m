@@ -322,7 +322,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
 {
     // Not implemented
-    UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Read request!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    NSString *test = request.characteristic.UUID.UUIDString;
+    UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 }
 
