@@ -240,13 +240,17 @@ NSString *const KEY_LOG_SETTING = @"log";
 			//CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
 			//CBAttributePermissions permissions = CBAttributePermissionsWriteable;
 			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2A06"] properties:properties value:nil permissions:permissions];
-			CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteEncryptionRequired];
-			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
+			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteEncryptionRequired];
+			CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
 			//service.characteristics = [NSArray arrayWithObject:[self createCharacteristic]];
 			//service.characteristics = [NSArray arrayWithObject:[characteristic]];
 			service.characteristics = @[characteristic];
 			[peripheralManager addService:service];
 			
+			CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
+			CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@""2a46] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
+			service2.characteristics = @[characteristic2];
+			[peripheralManager addService:service2];
             break;
         }
 		case CBPeripheralManagerStateUnsupported: {
@@ -275,6 +279,13 @@ NSString *const KEY_LOG_SETTING = @"log";
             break;
 		}
     }
+}
+
+// Test if clip subscribes to the alert notification service
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
+{
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Unsubscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
