@@ -288,6 +288,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 	[debugAlert show];
 }
 
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
+{
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Subscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+}
+
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
 {
     if (error) {
@@ -314,6 +320,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
 {
     // Not implemented
+    UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Read request!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 
 // Remote client characteristic write request
