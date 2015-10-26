@@ -248,7 +248,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 			[peripheralManager addService:service];
 			
 			CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
-			CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@""2a46] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
+			CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
 			service2.characteristics = @[characteristic2];
 			[peripheralManager addService:service2];
             break;
