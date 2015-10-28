@@ -247,9 +247,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 			service.characteristics = @[characteristic];
 			[peripheralManager addService:service];
 			
+			// Test
 			CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
 			CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
-			CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
+			unsigned char bytes[] = { 0xff};
+    			NSData *data = [NSData dataWithBytes:bytes length:1];
+			CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:data permissions:CBAttributePermissionsReadable];
 			CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
 			service2.characteristics = @[characteristic2,characteristic3,characteristic4];
 			[peripheralManager addService:service2];
