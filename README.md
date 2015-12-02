@@ -1,1 +1,1 @@
-# Bluetooth Gatt Server Plugin
+# Bluetooth Gatt Server Plug-in
