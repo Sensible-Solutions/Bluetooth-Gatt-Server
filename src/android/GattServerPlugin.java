@@ -84,11 +84,13 @@ public class GattServerPlugin extends CordovaPlugin
 	//private final String errorInitialize = "initialize";
 	private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
+	private final static String errorGattServer = "gattServer";	// Added 2016-01-14
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
+	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
 	
 	private BluetoothGattServer gattServer;
 	//private BluetoothGattService immediateAlertService;
@@ -246,6 +248,17 @@ public class GattServerPlugin extends CordovaPlugin
 		serverRunningCallbackContext = callbackContext;
 		
 		gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
+		if(gattServer == null){		// If statement added 2016-01-14
+			//Notify user of unsupported Bluetooth Smart
+			addProperty(returnObj, keyError, errorGattServer);
+			addProperty(returnObj, keyMessage, logStateUnsupported);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);					// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext = null;
+			return;
+		}
 		// Create an Immediate Alert service if not already provided by the device
 		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
