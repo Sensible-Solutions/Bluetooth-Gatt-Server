@@ -234,18 +234,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			//[pluginResult setKeepCallbackAsBool:true];
-			[pluginResult setKeepCallbackAsBool:false];
+			[pluginResult setKeepCallbackAsBool:true];
+			//[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			serverRunningCallback = nil;
+			//serverRunningCallback = nil;
             break;
 		}
         case CBPeripheralManagerStatePoweredOn: {
-        		// Notify user and save callback
-			/*NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];*/
             //NSLog(@"BLE is on");
             		if(!iasAdded){
 				// Publish Immediate Alert service to the local peripheral’s GATT database
@@ -269,6 +264,15 @@ NSString *const KEY_LOG_SETTING = @"log";
 				CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
 				service2.characteristics = @[characteristic2,characteristic3,characteristic4];
 				[peripheralManager addService:service2];*/
+			}
+			else {
+				// Notify user and save callback
+				//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
+				//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
+        			CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];[pluginResult setKeepCallbackAsBool:true];
+				[pluginResult setKeepCallbackAsBool:true];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 			}
             break;
         }
