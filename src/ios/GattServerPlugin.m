@@ -37,6 +37,7 @@ NSString *const errorStartServer = @"startServer";
 //NSString *const errorConnectionState = @"serverConnectionState";
 NSString *const errorServiceAdded = @"serviceAdded";
 NSString *const errorArguments = @"arguments";
+NSString *const errorsPeripheralManager = @"serverState";
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
@@ -232,9 +233,10 @@ NSString *const KEY_LOG_SETTING = @"log";
         case CBPeripheralManagerStatePoweredOff: {
             //NSLog(@"BLE is turned off for device");
 			// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
+			//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];
+			[pluginResult setKeepCallbackAsBool:true];	// Keep callback so that if turned off and then turned on again is working
 			//[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 			//serverRunningCallback = nil;
@@ -279,7 +281,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		case CBPeripheralManagerStateUnsupported: {
             //NSLog(@"BLE is not supported by device");
 			// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStateUnsupported, keyMessage, nil];
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorPeripheralManager, keyError, logStateUnsupported, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			//[pluginResult setKeepCallbackAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
@@ -290,7 +292,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		case CBPeripheralManagerStateUnauthorized: {
             //NSLog(@"BLE is not on for app");
 			// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStateUnauthorized, keyMessage, nil];
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorPeripheralManager, keyError, logStateUnauthorized, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			//[pluginResult setKeepCallbackAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
