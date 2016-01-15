@@ -87,11 +87,11 @@ NSString *const KEY_LOG_SETTING = @"log";
     UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
-        //NSLog(@"No notification permission granted");
-        NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil];
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+        	//NSLog(@"No notification permission granted");
+        	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil];
+        	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		return;
 	}
 	
@@ -105,6 +105,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 	// Init GATT server, that is create a peripheral manager. This will call peripheralManagerDidUpdateState
 	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+	if(peripheralManager == nil){
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, @"Hej", keyMessage, nil];
+        	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		return;	
+	}
 	
 }
 
@@ -228,7 +235,7 @@ NSString *const KEY_LOG_SETTING = @"log";
             //NSLog(@"BLE is turned off for device");
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			//[pluginResult setKeepCallbackAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
