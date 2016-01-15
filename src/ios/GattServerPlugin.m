@@ -44,6 +44,7 @@ NSString *const logService = @"Immediate Alert service could not be added";
 NSString *const logConnectionState = @"Connection state changed with error";
 NSString *const logNoPermission = @"No permission granted for local notifications";
 NSString *const logStatePoweredOff = @"BLE is turned off for device";
+NSString *const logStatePoweredOn = @"BLE is turned on for device";
 NSString *const logStateUnsupported = @"BLE is not supported by device";
 NSString *const logStateUnauthorized = @"BLE is turned off for app";
 NSString *const logNoArgObj = @"Argument object can not be found";
@@ -236,13 +237,20 @@ NSString *const KEY_LOG_SETTING = @"log";
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			//[pluginResult setKeepCallbackAsBool:true];
-			[pluginResult setKeepCallbackAsBool:false];
+			[pluginResult setKeepCallbackAsBool:true];
+			//[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			serverRunningCallback = nil;
+			//serverRunningCallback = nil;
             break;
 		}
         case CBPeripheralManagerStatePoweredOn: {
+        		// Notify user and save callback
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			[pluginResult setKeepCallbackAsBool:true];
+			//[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+			//serverRunningCallback = nil;
             //NSLog(@"BLE is on");
 			// Add Immediate Alert service if not already provided by the device
 			CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
@@ -271,7 +279,7 @@ NSString *const KEY_LOG_SETTING = @"log";
             //NSLog(@"BLE is not supported by device");
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStateUnsupported, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			//[pluginResult setKeepCallbackAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
@@ -282,7 +290,7 @@ NSString *const KEY_LOG_SETTING = @"log";
             //NSLog(@"BLE is not on for app");
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStateUnauthorized, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			//[pluginResult setKeepCallbackAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
