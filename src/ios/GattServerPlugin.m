@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin implementation for the Bluetooth GATT Profile server role.
@@ -65,8 +65,9 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Plugin actions
 - (void)startServer:(CDVInvokedUrlCommand *)command
 {
-	//If the GATT server is already running, don't start it again
-	 if (serverRunningCallback != nil)
+	//If GATT server has been initialized or the GATT server is already running, don't start it again
+	 //if (serverRunningCallback != nil)
+	 if((peripheralManager != nil) && (serverRunningCallback != nil))
     {
 	//NSLog(@"GATT server is already running");
 	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
@@ -241,13 +242,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 		}
         case CBPeripheralManagerStatePoweredOn: {
         		// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
+			/*NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 			[pluginResult setKeepCallbackAsBool:true];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];*/
             //NSLog(@"BLE is on");
             		if(!iasAdded){
-				// Add Immediate Alert service if not already added or provided by the device
+				// Publish Immediate Alert service to the local peripheral’s GATT database
 				CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
 				//CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
 				//CBAttributePermissions permissions = CBAttributePermissionsWriteable;
@@ -317,7 +318,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     if (error) {
 		 // Notify user and save callback
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyError, logService, keyMessage, nil];
-		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		//[pluginResult setKeepCallbackAsBool:true];
 		[pluginResult setKeepCallbackAsBool:false];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
@@ -328,7 +329,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     }
     else {
     		iasAdded = true;
-        // Notify user and save callback
+        	// Notify user and save callback
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyStatus, nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
