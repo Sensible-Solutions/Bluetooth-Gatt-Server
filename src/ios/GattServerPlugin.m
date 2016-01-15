@@ -37,7 +37,7 @@ NSString *const errorStartServer = @"startServer";
 //NSString *const errorConnectionState = @"serverConnectionState";
 NSString *const errorServiceAdded = @"serviceAdded";
 NSString *const errorArguments = @"arguments";
-NSString *const errorsPeripheralManager = @"serverState";
+NSString *const errorPeripheralManager = @"serverState";
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
