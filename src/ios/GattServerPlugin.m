@@ -98,20 +98,16 @@ NSString *const KEY_LOG_SETTING = @"log";
 	
 	iasInitialized = false;
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [debugAlert show];
+	[debugAlert show];
 	
 	 //Set the callback
-    serverRunningCallback = command.callbackId;
+    	serverRunningCallback = command.callbackId;
 	
-	// Init GATT server, that is create a peripheral manager. This will call peripheralManagerDidUpdateState
+	// Initialize GATT server (if not has been initialized already), that is create a peripheral manager. This will call peripheralManagerDidUpdateState
 	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
-	peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	if(peripheralManager == nil){
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, @"Hej", keyMessage, nil];
-        	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-		[pluginResult setKeepCallbackAsBool:true];
-	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-		return;	
+		iasAdded = false;
+		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
 	
 }
@@ -237,10 +233,10 @@ NSString *const KEY_LOG_SETTING = @"log";
 			// Notify user and save callback
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];
-			//[pluginResult setKeepCallbackAsBool:false];
+			//[pluginResult setKeepCallbackAsBool:true];
+			[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			//serverRunningCallback = nil;
+			serverRunningCallback = nil;
             break;
 		}
         case CBPeripheralManagerStatePoweredOn: {
@@ -248,31 +244,31 @@ NSString *const KEY_LOG_SETTING = @"log";
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 			[pluginResult setKeepCallbackAsBool:true];
-			//[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			//serverRunningCallback = nil;
             //NSLog(@"BLE is on");
-			// Add Immediate Alert service if not already provided by the device
-			CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
-			//CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
-			//CBAttributePermissions permissions = CBAttributePermissionsWriteable;
-			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2A06"] properties:properties value:nil permissions:permissions];
-			//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteEncryptionRequired];
-			CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
-			//service.characteristics = [NSArray arrayWithObject:[self createCharacteristic]];
-			//service.characteristics = [NSArray arrayWithObject:[characteristic]];
-			service.characteristics = @[characteristic];
-			[peripheralManager addService:service];
-			
-			// Add Alert Notification Service if not already provided by the device (service not used by SenseSoft Mini)
-			/*CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
-			CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
-			unsigned char bytes[] = { 0xff};
-    			NSData *data = [NSData dataWithBytes:bytes length:1];
-			CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:data permissions:CBAttributePermissionsReadable];
-			CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
-			service2.characteristics = @[characteristic2,characteristic3,characteristic4];
-			[peripheralManager addService:service2];*/
+            		if(!iasAdded){
+				// Add Immediate Alert service if not already added or provided by the device
+				CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
+				//CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
+				//CBAttributePermissions permissions = CBAttributePermissionsWriteable;
+				//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2A06"] properties:properties value:nil permissions:permissions];
+				//CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteEncryptionRequired];
+				CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
+				//service.characteristics = [NSArray arrayWithObject:[self createCharacteristic]];
+				//service.characteristics = [NSArray arrayWithObject:[characteristic]];
+				service.characteristics = @[characteristic];
+				[peripheralManager addService:service];
+				
+				// Add Alert Notification Service if not already provided by the device (service not used by SenseSoft Mini)
+				/*CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
+				CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
+				unsigned char bytes[] = { 0xff};
+	    			NSData *data = [NSData dataWithBytes:bytes length:1];
+				CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:data permissions:CBAttributePermissionsReadable];
+				CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
+				service2.characteristics = @[characteristic2,characteristic3,characteristic4];
+				[peripheralManager addService:service2];*/
+			}
             break;
         }
 		case CBPeripheralManagerStateUnsupported: {
@@ -331,6 +327,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		
     }
     else {
+    		iasAdded = true;
         // Notify user and save callback
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyStatus, nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
