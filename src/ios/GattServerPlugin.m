@@ -267,15 +267,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 				service2.characteristics = @[characteristic2,characteristic3,characteristic4];
 				[peripheralManager addService:service2];*/
 			}
-			else {
+			//else {
 				// Notify user and save callback
-				//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyStatus, logStatePoweredOn, keyMessage, nil];
-				//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
+				/*NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
         			CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];[pluginResult setKeepCallbackAsBool:true];
 				[pluginResult setKeepCallbackAsBool:true];
 				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			}
+			}*/
             break;
         }
 		case CBPeripheralManagerStateUnsupported: {
