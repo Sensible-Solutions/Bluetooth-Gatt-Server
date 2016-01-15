@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin header for the Bluetooth GATT Profile server role.
@@ -23,6 +23,7 @@
 	SystemSoundID alarmSound;
 	
 	BOOL iasInitialized;			// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
+	BOOL iasAdded;				// Flag to indicate if Immediate Alert Service already has been added or not
 	
 	// App settings
 	NSString *appSettingsAlert;
