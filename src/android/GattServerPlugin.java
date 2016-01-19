@@ -94,7 +94,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logConnectionState = "Connection state changed with error";
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
 	
-	private BluetoothGattServer gattServer;
+	//private BluetoothGattServer gattServer;
+	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
 	//private BluetoothGattService immediateAlertService;
 	
 	// Bluetooth GATT interface callbacks
@@ -239,8 +240,8 @@ public class GattServerPlugin extends CordovaPlugin
 		JSONObject returnObj = new JSONObject();
 		
 		//If the GATT server is already running, don't start it again. Invoke the success callback and return
-		//if((bluetoothManager != null) && (serverRunningCallbackContext != null))
-		if (serverRunningCallbackContext != null)
+		//if (serverRunningCallbackContext != null)
+		if((gattServer != null) && (serverRunningCallbackContext != null))
 		{
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
@@ -256,7 +257,8 @@ public class GattServerPlugin extends CordovaPlugin
 		//Save the callback context for setting up GATT server
 		serverRunningCallbackContext = callbackContext;
 		
-		gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
+		if(gattServer == null)
+			gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		if(gattServer == null){		// If statement added 2016-01-14
 			//Notify user of unsupported Bluetooth Smart
 			addProperty(returnObj, keyError, errorServerState);
