@@ -162,21 +162,24 @@ public class GattServerPlugin extends CordovaPlugin
 
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
-			// Not implemented
-			/*try {
-	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
-	    			r.play();
-			} catch (Exception e) {
-	    			
+			// If statement below added 2016-01-19 for testing
+			if(status != GATT_SUCCESS){
+				// Notify user of error
+				addProperty(returnObj, keyError, errorServiceAdded);
+				addProperty(returnObj, keyMessage, logService);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				PluginResult.setKeepCallback(false);
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
+				serverRunningCallbackContext = null;
+				//return;
 			}
-			try {
-				 super.onServiceAdded(status, service);
-            } catch (Exception ex) {
-				System.err.println("Exception: " + ex.getMessage());
-				serverRunningCallbackContext.error(ex.getMessage());
-				return;
-			}*/
+			else {
+				// Notify user and save callback
+				addProperty(returnObj, keyStatus, statusServiceAdded);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+				serverRunningCallbackContext.sendPluginResult(pluginResult);	
+			}
 			
 		}
 
@@ -233,6 +236,7 @@ public class GattServerPlugin extends CordovaPlugin
 		JSONObject returnObj = new JSONObject();
 		
 		//If the GATT server is already running, don't start it again. Invoke the success callback and return
+		//if((bluetoothManager != null) && (serverRunningCallbackContext != null))
 		if (serverRunningCallbackContext != null)
 		{
 			addProperty(returnObj, keyStatus, statusServiceExists);
@@ -280,24 +284,22 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Add Immediate Alert service, notify user and save callback
-		if(gattServer.addService(immediateAlertService)) {
+		gattServer.addService(immediateAlertService);	// Added 2016-01-19 instead of if statement below // Will call onServiceAdded callback 
+		/*if(gattServer.addService(immediateAlertService)) {
 			addProperty(returnObj, keyStatus, statusServiceAdded);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
 		}
 		else {
-			//Notify user of error adding service and save callback
 			addProperty(returnObj, keyError, errorServiceAdded);
 			addProperty(returnObj, keyMessage, logService);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			//pluginResult.setKeepCallback(true);
 			PluginResult.setKeepCallback(false);
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			serverRunningCallbackContext = null;
 			return;
-		}
+		}*/
 		
 		// Test
 		//BluetoothAdapter bluetoothAdapter;
