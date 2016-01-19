@@ -322,7 +322,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 {
     if (error) {
 		 // Notify user and save callback
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyError, logService, keyMessage, nil];
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServiceAdded, keyError, logService, keyMessage, nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		//[pluginResult setKeepCallbackAsBool:true];
 		[pluginResult setKeepCallbackAsBool:false];
