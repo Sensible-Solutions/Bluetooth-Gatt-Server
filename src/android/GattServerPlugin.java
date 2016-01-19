@@ -289,11 +289,13 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		else {
 			//Notify user of error adding service and save callback
-			addProperty(returnObj, keyError, errorStartServer);
+			addProperty(returnObj, keyError, errorServiceAdded);
 			addProperty(returnObj, keyMessage, logService);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(true);	
+			//pluginResult.setKeepCallback(true);
+			PluginResult.setKeepCallback(false);
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext = null;
 			return;
 		}
 		
