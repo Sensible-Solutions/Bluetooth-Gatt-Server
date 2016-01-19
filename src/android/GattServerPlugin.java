@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin for the Bluetooth GATT Profile server role.
@@ -84,7 +84,8 @@ public class GattServerPlugin extends CordovaPlugin
 	//private final String errorInitialize = "initialize";
 	private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
-	private final static String errorGattServer = "gattServer";	// Added 2016-01-14
+	//private final static String errorGattServer = "gattServer";	// Added 2016-01-14
+	private final static String errorServerState = "serverState";	// Added 2016-01-19
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
