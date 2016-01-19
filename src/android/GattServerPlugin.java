@@ -82,7 +82,7 @@ public class GattServerPlugin extends CordovaPlugin
   
 	// Error Types
 	//private final String errorInitialize = "initialize";
-	private final static String errorStartServer = "startServer";
+	//private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
 	//private final static String errorGattServer = "gattServer";	// Added 2016-01-14
 	private final static String errorServerState = "serverState";	// Added 2016-01-19
