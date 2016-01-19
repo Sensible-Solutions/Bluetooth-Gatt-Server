@@ -251,7 +251,7 @@ public class GattServerPlugin extends CordovaPlugin
 		gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		if(gattServer == null){		// If statement added 2016-01-14
 			//Notify user of unsupported Bluetooth Smart
-			addProperty(returnObj, keyError, errorGattServer);
+			addProperty(returnObj, keyError, errorServerState);
 			addProperty(returnObj, keyMessage, logStateUnsupported);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
 			pluginResult.setKeepCallback(false);					// Save the callback so it can be invoked several times
