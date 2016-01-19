@@ -93,6 +93,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
+	private final static String logStatePoweredOff = "BLE is turned off for device";	// Added 2016-01-14
 	
 	//private BluetoothGattServer gattServer;
 	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
@@ -252,10 +253,41 @@ public class GattServerPlugin extends CordovaPlugin
 			return;
 		}
 		
-		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		
 		//Save the callback context for setting up GATT server
 		serverRunningCallbackContext = callbackContext;
+		
+		// If statement below added 2016-01-19
+		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		//if (mBluetoothAdapter == null) {
+		if(BluetoothAdapter.getDefaultAdapter() == null)
+		    	// Device does not support Bluetooth
+		    	//Notify user of unsupported Bluetooth
+			addProperty(returnObj, keyError, errorServerState);
+			addProperty(returnObj, keyMessage, logStateUnsupported);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext = null;
+			return;
+		} 
+		else {
+		    //if (!mBluetoothAdapter.isEnabled()) {
+		    if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+		        // Bluetooth is not enabled
+		        //Notify user that Bluetooth is not enabled
+			addProperty(returnObj, keyError, errorServerState);
+			addProperty(returnObj, keyMessage, logStatePoweredOff);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext = null;
+			return;
+		    }
+		}
+		
+		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 		
 		if(gattServer == null)
 			gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
