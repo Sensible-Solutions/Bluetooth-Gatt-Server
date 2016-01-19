@@ -167,8 +167,10 @@ public class GattServerPlugin extends CordovaPlugin
 
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
+			
+			JSONObject returnObj = new JSONObject();
 			// If statement below added 2016-01-19 for testing
-			if(status != GATT_SUCCESS){
+			if(status != BluetoothGatt.GATT_SUCCESS){
 				// Notify user of error
 				addProperty(returnObj, keyError, errorServiceAdded);
 				addProperty(returnObj, keyMessage, logService);
