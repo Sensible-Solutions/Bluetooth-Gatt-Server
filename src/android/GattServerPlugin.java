@@ -132,6 +132,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		@Override
 		public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
+			//Callback indicating when GATT client has connected/disconnected to/from a remote GATT server
 			
 			JSONObject returnObj = new JSONObject();
 			// Notify user of connection status change
@@ -155,8 +156,10 @@ public class GattServerPlugin extends CordovaPlugin
 				addProperty(returnObj, keyError, errorConnectionState);
 				addProperty(returnObj, keyMessage, logConnectionState + " " + status);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-				pluginResult.setKeepCallback(true);	
+				//pluginResult.setKeepCallback(true);
+				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
+				serverRunningCallbackContext = null;
 			}
 		}
 
