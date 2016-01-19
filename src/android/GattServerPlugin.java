@@ -175,7 +175,7 @@ public class GattServerPlugin extends CordovaPlugin
 				addProperty(returnObj, keyError, errorServiceAdded);
 				addProperty(returnObj, keyMessage, logService);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-				PluginResult.setKeepCallback(false);
+				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
 				//return;
