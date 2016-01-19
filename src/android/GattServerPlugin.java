@@ -259,7 +259,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// If statement below added 2016-01-19
 		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		//if (mBluetoothAdapter == null) {
-		if(BluetoothAdapter.getDefaultAdapter() == null)
+		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth
 		    	//Notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
