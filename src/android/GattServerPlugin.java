@@ -337,26 +337,37 @@ public class GattServerPlugin extends CordovaPlugin
 			return;
 		}
 		
-		//Save the callback context for setting up GATT server
-		serverRunningCallbackContext = callbackContext;
-		
 		// Create an Immediate Alert service if not already provided by the device
 		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
 			final BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
 			characteristic.setValue(ALERT_LEVEL_HIGH);
-			immediateAlertService.addCharacteristic(characteristic);
+			//immediateAlertService.addCharacteristic(characteristic);
+			if(!immediateAlertService.addCharacteristic(characteristic)){
+				// Notify user of error
+				addProperty(returnObj, keyError, errorServiceAdded);
+				addProperty(returnObj, keyMessage, logService);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+				return;	
+			}
 		}
 		else {
 			//Notify user of added service(s) and save callback
+			//Save the callback context
+			serverRunningCallbackContext = callbackContext;
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			callbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+			//callbackContext.sendPluginResult(pluginResult);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
 			return;
 		}
+		
+		//Save the callback context for setting up GATT server
+		serverRunningCallbackContext = callbackContext;
 		
 		// Add Immediate Alert service, notify user and save callback
 		gattServer.addService(immediateAlertService);	// Added 2016-01-19 instead of if statement below // Will call onServiceAdded callback 
