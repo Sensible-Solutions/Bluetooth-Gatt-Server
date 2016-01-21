@@ -242,6 +242,38 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		JSONObject returnObj = new JSONObject();
 		
+		// If statement below added 2016-01-19 (moved up here 2016-01-21)
+		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		//if (mBluetoothAdapter == null) {
+		if(BluetoothAdapter.getDefaultAdapter() == null){
+		    	// Device does not support Bluetooth
+		    	//Notify user of unsupported Bluetooth
+			addProperty(returnObj, keyError, errorServerState);
+			addProperty(returnObj, keyMessage, logStateUnsupported);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+			callbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext = null;
+			return;
+		} 
+		else {
+		    //if (!mBluetoothAdapter.isEnabled()) {
+		    if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+		        // Bluetooth is not enabled
+		        //Notify user that Bluetooth is not enabled
+			addProperty(returnObj, keyError, errorServerState);
+			addProperty(returnObj, keyMessage, logStatePoweredOff);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+			callbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext = null;
+			return;
+		    }
+		}
+		
+		
 		//If the GATT server is already running, don't start it again. Invoke the success callback and return
 		//if (serverRunningCallbackContext != null)
 		if((gattServer != null) && (serverRunningCallbackContext != null))
@@ -256,12 +288,12 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		//Save the callback context for setting up GATT server
-		serverRunningCallbackContext = callbackContext;
+		//serverRunningCallbackContext = callbackContext;
 		
 		// If statement below added 2016-01-19
 		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		//if (mBluetoothAdapter == null) {
-		if(BluetoothAdapter.getDefaultAdapter() == null){
+		/*if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth
 		    	//Notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
@@ -287,7 +319,7 @@ public class GattServerPlugin extends CordovaPlugin
 			serverRunningCallbackContext = null;
 			return;
 		    }
-		}
+		}*/
 		
 		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 		
@@ -299,11 +331,15 @@ public class GattServerPlugin extends CordovaPlugin
 			addProperty(returnObj, keyMessage, logStateUnsupported);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
 			pluginResult.setKeepCallback(false);					// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext = null;
+			callbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext = null;
 			return;
 		}
+		
+		//Save the callback context for setting up GATT server
+		serverRunningCallbackContext = callbackContext;
+		
 		// Create an Immediate Alert service if not already provided by the device
 		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
@@ -317,8 +353,8 @@ public class GattServerPlugin extends CordovaPlugin
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+			callbackContext.sendPluginResult(pluginResult);
+			//serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
 			return;
 		}
 		
