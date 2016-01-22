@@ -39,6 +39,7 @@ import android.app.NotificationManager;
 //import android.app.Notification;
 import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
+import android.content.DialogInterface;		// For showing debug messaages
 
 import java.util.ArrayList;
 import java.util.List;
