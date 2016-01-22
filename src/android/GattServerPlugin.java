@@ -252,7 +252,7 @@ public class GattServerPlugin extends CordovaPlugin
 		          	dialog.cancel();  
 		        }
 		});
-		debugAlert.create().show();
+		//debugAlert.create().show();
 
 		JSONObject returnObj = new JSONObject();
 		
