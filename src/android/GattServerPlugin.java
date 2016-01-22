@@ -241,7 +241,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+		AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
 		dlgAlert.setMessage("This is an alert with no consequence");
 		dlgAlert.setTitle("GattServerPlugin Debug");
 		dlgAlert.setPositiveButton("OK", null);
