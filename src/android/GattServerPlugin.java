@@ -243,9 +243,9 @@ public class GattServerPlugin extends CordovaPlugin
 	private void startServerAction(CallbackContext callbackContext)
 	{
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		if(gattServer == null)
-			debugAlert.setMessage("gattServer is null!");
-		//if(serverRunningCallbackContext == null)
+		//if(gattServer == null)
+		//	debugAlert.setMessage("gattServer is null!");
+		if(serverRunningCallbackContext == null)
 		//	debugAlert.setMessage("serverRunningCallbackContext is null!");
 		else
 			debugAlert.setMessage("not null!");
