@@ -38,6 +38,7 @@ import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
 //import android.app.Notification;
 import android.R;
+import android.app.AlertDialog;			// For showing debug messaages
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,6 +241,13 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
+		AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+		dlgAlert.setMessage("This is an alert with no consequence");
+		dlgAlert.setTitle("GattServerPlugin Debug");
+		dlgAlert.setPositiveButton("OK", null);
+		dlgAlert.setCancelable(true);
+		dlgAlert.create().show();
+
 		JSONObject returnObj = new JSONObject();
 		
 		// If statement below added 2016-01-19 (moved up here 2016-01-21)
