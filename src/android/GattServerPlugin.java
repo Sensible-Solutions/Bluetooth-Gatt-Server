@@ -242,9 +242,13 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		//AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage("This is an alert with no consequence");
+		if(gattServer == null)
+			debugAlert.setMessage("gattServer is null!");
+		//if(serverRunningCallbackContext == null)
+		//	debugAlert.setMessage("serverRunningCallbackContext is null!");
+		else
+			debugAlert.setMessage("not null!");
 		debugAlert.setTitle("GattServerPlugin Debug");
 		debugAlert.setCancelable(false);
 		//dlgAlert.setPositiveButton("OK", null);
@@ -254,9 +258,8 @@ public class GattServerPlugin extends CordovaPlugin
 		        }
 		});
 		debugAlert.create().show();
-		//AlertDialog debugDialog = debugAlert.create();
-		//debugDialog.show();
-
+		
+		
 		JSONObject returnObj = new JSONObject();
 		
 		// If statement below added 2016-01-19 (moved up here 2016-01-21)
