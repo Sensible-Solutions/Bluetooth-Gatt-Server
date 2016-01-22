@@ -242,7 +242,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
+		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
 		debugAlert.setMessage("This is an alert with no consequence");
 		debugAlert.setTitle("GattServerPlugin Debug");
 		//dlgAlert.setPositiveButton("OK", null);
@@ -252,7 +252,7 @@ public class GattServerPlugin extends CordovaPlugin
 		        }
 		});
 		debugAlert.setCancelable(true);
-		debugAlert.create().show();
+		debugAlert.create().show();*/
 
 		JSONObject returnObj = new JSONObject();
 		
