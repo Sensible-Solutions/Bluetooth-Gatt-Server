@@ -242,17 +242,17 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity().getApplicationContext());
 		debugAlert.setMessage("This is an alert with no consequence");
 		debugAlert.setTitle("GattServerPlugin Debug");
+		debugAlert.setCancelable(true);
 		//dlgAlert.setPositiveButton("OK", null);
 		debugAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) {
-		          //dismiss the dialog  
+		        public void onClick(DialogInterface dialog, int id) {
+		          	dialog.cancel();  
 		        }
 		});
-		debugAlert.setCancelable(true);
-		debugAlert.create().show();*/
+		debugAlert.create().show();
 
 		JSONObject returnObj = new JSONObject();
 		
