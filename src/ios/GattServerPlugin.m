@@ -108,11 +108,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 	
 	// Initialize GATT server (if not has been initialized already), that is create a peripheral manager. This will call peripheralManagerDidUpdateState
 	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
-	if(peripheralManager == nil){
+	if (peripheralManager == nil){
 		iasAdded = false;
 		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
+	else if(!iasAdded) {
 	
+	}
 }
 
 // Action function just to test local notifications
@@ -173,10 +175,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	// Notify user and save callback
-	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
-	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-	[pluginResult setKeepCallbackAsBool:true];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+	if(serverRunningCallback != nil){
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
+		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+	}
 }
 
 // Set granted local notifications for app
@@ -233,19 +237,23 @@ NSString *const KEY_LOG_SETTING = @"log";
     switch ([peripheral state]) {
         case CBPeripheralManagerStatePoweredOff: {
             //NSLog(@"BLE is turned off for device");
-			// Notify user and save callback
-			//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStatePoweredOff, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];	// Keep callback so that if turned off and then turned on again is working
-			//[pluginResult setKeepCallbackAsBool:false];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			//serverRunningCallback = nil;
+            		if(serverRunningCallback != nil){
+				// Notify user that BLE is turned off
+				//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusPeripheralManager, keyError, logStatePoweredOff, keyMessage, nil];
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStatePoweredOff, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				//[pluginResult setKeepCallbackAsBool:true];	// Keep callback so that if turned off and then turned on again is working
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+				serverRunningCallback = nil;			// "Stop" the GATT server
+			}
             break;
 		}
         case CBPeripheralManagerStatePoweredOn: {
             //NSLog(@"BLE is on");
-            		if(!iasAdded){
+            		// BLE is turned on for device
+            		// Add Immediate Alert service if not already added and GATT server is running
+            		if((!iasAdded) && (serverRunningCallback != nil)){
 				// Publish Immediate Alert service to the local peripheral’s GATT database
 				CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
 				//CBCharacteristicProperties properties = CBCharacteristicPropertyWriteWithoutResponse;
@@ -279,24 +287,28 @@ NSString *const KEY_LOG_SETTING = @"log";
         }
 		case CBPeripheralManagerStateUnsupported: {
             //NSLog(@"BLE is not supported by device");
-			// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnsupported, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			//[pluginResult setKeepCallbackAsBool:true];
-			[pluginResult setKeepCallbackAsBool:false];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			serverRunningCallback = nil;
+            		if(serverRunningCallback != nil){
+				// Notify user and save callback
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnsupported, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				//[pluginResult setKeepCallbackAsBool:true];
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+				serverRunningCallback = nil;			// "Stop" the GATT server
+			}
             break;
 		}
 		case CBPeripheralManagerStateUnauthorized: {
             //NSLog(@"BLE is not on for app");
-			// Notify user and save callback
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnauthorized, keyMessage, nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-			//[pluginResult setKeepCallbackAsBool:true];
-			[pluginResult setKeepCallbackAsBool:false];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			serverRunningCallback = nil;
+            		if(serverRunningCallback != nil){
+				// Notify user and save callback
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnauthorized, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				//[pluginResult setKeepCallbackAsBool:true];
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+				serverRunningCallback = nil;			// "Stop" the GATT server
+			}
             break;
 		}		
         default: {
@@ -321,24 +333,29 @@ NSString *const KEY_LOG_SETTING = @"log";
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
 {
     if (error) {
-		 // Notify user and save callback
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServiceAdded, keyError, logService, keyMessage, nil];
-		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
-		//[pluginResult setKeepCallbackAsBool:true];
-		[pluginResult setKeepCallbackAsBool:false];
-		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-		serverRunningCallback = nil;
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didAddService error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        	[debugAlert show];
+    		if(serverRunningCallback != nil){
+			 // Notify user and save callback
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServiceAdded, keyError, logService, keyMessage, nil];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+			//[pluginResult setKeepCallbackAsBool:true];
+			[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+			serverRunningCallback = nil;			// "Stop" the GATT server
+			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didAddService error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	        	[debugAlert show];
+        	}
 		
     }
     else {
-    		iasAdded = true;
-        	// Notify user and save callback
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyStatus, nil];
-		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-		[pluginResult setKeepCallbackAsBool:true];
-		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+    		if(serverRunningCallback =! nil){
+    			// Server is running
+	    		iasAdded = true;
+	        	// Notify user and save callback
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceAdded, keyStatus, nil];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			[pluginResult setKeepCallbackAsBool:true];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+		}
     }
 }
 
