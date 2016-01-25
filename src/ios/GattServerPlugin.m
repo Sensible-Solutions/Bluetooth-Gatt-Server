@@ -113,7 +113,11 @@ NSString *const KEY_LOG_SETTING = @"log";
 		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
 	else if(!iasAdded) {
-	
+		// Try publish Immediate Alert service to the local peripheral’s GATT database if it isn't published already
+		CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
+		CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID] properties:CBCharacteristicPropertyWriteWithoutResponse value:nil permissions:CBAttributePermissionsWriteable];
+		service.characteristics = @[characteristic];
+		[peripheralManager addService:service];
 	}
 }
 
