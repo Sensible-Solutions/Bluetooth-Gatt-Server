@@ -67,6 +67,43 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Plugin actions
 - (void)startServer:(CDVInvokedUrlCommand *)command
 {
+	// Check that BLE is supported and on
+	if(peripheralManager != nil){
+		switch ([peripheralManager state]) {
+        		case CBPeripheralManagerStatePoweredOff: {
+				// Notify user that BLE is off
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStatePoweredOff, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            			//break;
+            			return;
+			}
+			case CBPeripheralManagerStateUnsupported: {
+            			// Notify user that BLE is not supported by device
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnsupported, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            			//break;
+            			return;
+			}
+			case CBPeripheralManagerStateUnauthorized: {
+            			// Notify user that BLE is not on for the app
+				NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorServerState, keyError, logStateUnauthorized, keyMessage, nil];
+				CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+				[pluginResult setKeepCallbackAsBool:false];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            			//break;
+            			return;
+			}		
+        		default: {
+            			break;
+			}
+		}	
+	}
+	
+	
 	//If GATT server has been initialized or the GATT server is already running, don't start it again
 	 //if (serverRunningCallback != nil)
 	 if((peripheralManager != nil) && (serverRunningCallback != nil))
