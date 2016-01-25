@@ -119,6 +119,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 		service.characteristics = @[characteristic];
 		[peripheralManager addService:service];
 	}
+	else {
+	        NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, nil];
+	        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+	        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
 }
 
 // Action function just to test local notifications
