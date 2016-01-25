@@ -394,7 +394,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		
     }
     else {
-    		if(serverRunningCallback =! nil){
+    		if(serverRunningCallback != nil){
     			// Server is running
 	    		iasAdded = true;
 	        	// Notify user and save callback
