@@ -278,19 +278,24 @@ public class GattServerPlugin extends CordovaPlugin
 			return;
 		} 
 		else {
-		    //if (!mBluetoothAdapter.isEnabled()) {
-		    if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
-		        // Bluetooth is not enabled
-		        //Notify user that Bluetooth is not enabled
-			addProperty(returnObj, keyError, errorServerState);
-			addProperty(returnObj, keyMessage, logStatePoweredOff);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
-			callbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext = null;
-			return;
-		    }
+			if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+			        // Bluetooth is not enabled
+			        //Notify user that Bluetooth is not enabled
+				addProperty(returnObj, keyError, errorServerState);
+				addProperty(returnObj, keyMessage, logStatePoweredOff);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+				callbackContext.sendPluginResult(pluginResult);
+				//serverRunningCallbackContext.sendPluginResult(pluginResult);
+				//serverRunningCallbackContext = null;
+				return;
+		    	}
+		    	// Test 2016-01-26
+		    	// See https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/bluetooth
+			//BluetoothLeScanner scanner = getBluetoothLeScanner();
+			//scanner.cleanup();
+			//BluetoothAdapter.getDefaultAdapter().onBluetoothServiceDown();
+			// end test
 		}
 		
 		
