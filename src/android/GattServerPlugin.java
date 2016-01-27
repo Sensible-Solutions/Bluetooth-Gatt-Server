@@ -476,4 +476,11 @@ public class GattServerPlugin extends CordovaPlugin
 		else	
 			return characteristic.getStringValue(0);
 	}
+	
+	// Plugin initialize method for any start-up logic (see https://cordova.apache.org/docs/en/5.0.0/guide/platforms/android/plugin.html)
+	/*@Override
+	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    		super.initialize(cordova, webView);
+    		// your init code here
+	}*/
 }
