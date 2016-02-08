@@ -256,8 +256,8 @@ public class GattServerPlugin extends CordovaPlugin
 		        public void onClick(DialogInterface dialog, int id) {
 		          	dialog.dismiss();  
 		        }
-		});*/
-		debugAlert.create().show();
+		});
+		debugAlert.create().show();*/
 		
 		
 		JSONObject returnObj = new JSONObject();
