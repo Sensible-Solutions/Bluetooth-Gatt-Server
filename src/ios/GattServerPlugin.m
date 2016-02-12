@@ -23,6 +23,7 @@ NSString *const ALERT_LEVEL_CHAR_UUID = @"2A06";				// Characteristic UUID
 NSString *const keyStatus = @"status";
 NSString *const keyError = @"error";
 NSString *const keyMessage = @"message";
+NSString *const keyIsBluetoothSharingAuthorized = @"isBluetoothSharingAuthorized";
 	
 //Status Types
 NSString *const statusServiceAdded = @"serviceAdded";
@@ -275,6 +276,24 @@ NSString *const KEY_LOG_SETTING = @"log";
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
 }
 
+// Check the app’s authorization status for sharing data while in the background state.
+// Apps that specify to use Bluetooth background modes (central and/or peripheral) need
+// bluetooth sharing to be enabled for the app in order to be able to process bluetooth
+// related tasks while in the background.
+- (void)isBluetoothSharingAuthorized:(CDVInvokedUrlCommand *)command
+{
+	NSMutableDictionary* returnObj = [NSMutableDictionary dictionary];
+	if([CBPeripheralManager authorizationStatus] == CBPeripheralManagerAuthorizationStatusAuthorized)
+		[returnObj setValue:[NSNumber numberWithBool:true] forKey:keyIsBluetoothSharingAuthorized];	// The app is authorized to share data using Bluetooth services while in the background state
+	else
+		[returnObj setValue:[NSNumber numberWithBool:false] forKey:keyIsBluetoothSharingAuthorized];	// Not authorized
+		
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+	[pluginResult setKeepCallbackAsBool:false];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
 #pragma mark -
 #pragma mark Delegates
 
@@ -367,13 +386,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Test if clip subscribes to the alert notification service
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Unsubscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Unsubscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"Subscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Subscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 }
 
