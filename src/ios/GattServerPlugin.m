@@ -41,8 +41,8 @@ NSString *const errorArguments = @"arguments";
 //NSString *const errorPeripheralManager = @"serverState";
 NSString *const errorServerState = @"serverState";
 NSString *const errorServerStateOff = @"serverStateOff";
-NSString *const errorServerState = @"serverStateUnsupported";
-NSString *const errorServerState = @"serverStateUnauthorized";
+NSString *const errorServerStateUnsupported = @"serverStateUnsupported";
+NSString *const errorServerStateUnauthorized = @"serverStateUnauthorized";
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
