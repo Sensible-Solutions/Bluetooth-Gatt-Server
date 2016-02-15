@@ -88,6 +88,9 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String errorConnectionState = "serverConnectionState";
 	//private final static String errorGattServer = "gattServer";	// Added 2016-01-14
 	private final static String errorServerState = "serverState";	// Added 2016-01-19
+	private final static String errorServerStateOff = "serverStateOff";
+	private final static String errorServerStateUnsupported = "serverStateUnsupported";
+	private final static String errorServerStateUnauthorized = "serverStateUnauthorized";	// iOS only
 	private final static String errorServiceAdded = "serviceAdded"; // Added 2016-01-19
 	
 	// Error Messages
