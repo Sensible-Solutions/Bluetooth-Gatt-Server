@@ -217,7 +217,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 				//localNotification.soundName = UILocalNotificationDefaultSoundName;
 				//NSBundle* mainBundle = [NSBundle mainBundle];
 				//localNotification.soundName = @"Resources/alarm.mp3";
-				localNotification.soundName = @"alarm.mp3";	// Works
+				//localNotification.soundName = @"alarm.mp3";	// Works
+				localNotification.soundName = @"crash_short.mp3";
 				
 				// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
 				UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
@@ -624,7 +625,8 @@ NSString *const KEY_LOG_SETTING = @"log";
                	object:nil];*/
                	
         // Set up sound from main bundle to be played during alarms when the app is in the foreground
-        AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
+        //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
 }
 
 // Called before app terminates
