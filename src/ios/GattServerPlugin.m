@@ -32,6 +32,7 @@ NSString *const statusWriteRequest = @"characteristicWriteRequest";
 //NSString *const statusConnectionState = @"serverConnectionState";
 NSString *const statusPeripheralManager = @"serverState";
 NSString *const statusAppSettings = @"appSettings";
+NSString *const statusAlarmReseted =  @"alarmReseted";
 
 // Error Types
 NSString *const errorStartServer = @"startServer";
@@ -167,6 +168,18 @@ NSString *const KEY_LOG_SETTING = @"log";
 		[pluginResult setKeepCallbackAsBool:true];
 	        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}
+}
+
+- (void)resetAlarm:(CDVInvokedUrlCommand *)command
+{
+	// Resets the Immediate Alert Service initialized flag.
+	// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
+	// Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
+	iasInitialized = false;
+	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAlarmReseted, keyStatus, nil];
+	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+	[pluginResult setKeepCallbackAsBool:false];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 // Action function just to test local notifications
