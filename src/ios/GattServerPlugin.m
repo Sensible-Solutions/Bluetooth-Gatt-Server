@@ -122,6 +122,7 @@ NSString *const KEY_LOG_SETTING = @"log";
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"GATT server already running" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [debugAlert show];
+        iasInitialized = false;		// Added 2016-06-22
         return;
     }
     
