@@ -121,8 +121,8 @@ NSString *const KEY_LOG_SETTING = @"log";
         //[pluginResult setKeepCallbackAsBool:false];
 	[pluginResult setKeepCallbackAsBool:true];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"GATT server already running" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [debugAlert show];
+        //UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"GATT server already running" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //[debugAlert show];
         iasInitialized = false;		// Added 2016-06-22
         return;
     }
@@ -143,8 +143,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	iasInitialized = false;
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 	
 	 //Set the callback
     	serverRunningCallback = command.callbackId;
@@ -404,14 +404,14 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Test if clip subscribes to the alert notification service
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Unsubscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Unsubscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Subscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"Subscribed!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 }
 
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
@@ -425,8 +425,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 			[pluginResult setKeepCallbackAsBool:false];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 			serverRunningCallback = nil;			// "Stop" the GATT server
-			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didAddService error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	        	[debugAlert show];
+			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"didAddService error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	        	//[debugAlert show];
         	}
 		
     }
@@ -448,8 +448,8 @@ NSString *const KEY_LOG_SETTING = @"log";
     // Not implemented
     [peripheralManager respondToRequest:request  withResult:CBATTErrorSuccess];
     NSString *test = request.characteristic.UUID.UUIDString;
-    UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+    //UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 }
 
 // Remote client characteristic write request
@@ -542,8 +542,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 		// Play sound from the main bundle (because sound for local notifications are not played if the app is in the foreground)
 		//AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
 		//AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
-		UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"You have a notification, please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-		[debugMessage show];
+		//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"You have a notification, please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+		//[debugMessage show];
 	} 
 	//application.applicationIconBadgeNumber = 0; 
 	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
