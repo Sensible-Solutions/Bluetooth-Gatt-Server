@@ -480,22 +480,29 @@ NSString *const KEY_LOG_SETTING = @"log";
 			}
         }
 		// Debug dialog
-		//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:[NSString stringWithFormat: @"Immediate alert received with level: %@", alertLevelParsed] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		//[debugMessage show];
-		if (!iasInitialized){
-			// Ignore first value received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
+		UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:[NSString stringWithFormat: @"Immediate alert received with level: %@", alertLevelParsed] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[debugMessage show];
+		if (!iasInitialized && alertLevel != 0){
+			// The first alarm received after a nRF8002 module has connected for the first time to the GATT server or the alarm has been reseted by calling resetAlarm().
 			iasInitialized = true;
+			[self alarm:alertLevelParsed];
 			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 1" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[debugAlert show];
 			return;
 		}
-		
-		// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
-		// So interpret every write to this characteristic as an alarm
-		[self alarm:alertLevelParsed];
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 2" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		 [debugAlert show];
-		//[self alarm];
+		else if (iasInitialized){
+			// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
+			// So interpret every write to this characteristic as an alarm.
+			[self alarm:alertLevelParsed];
+			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 2" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[debugAlert show];
+			//[self alarm];
+		}
+		else {
+			// Ignore first value(s) received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level (sometimes twice). This must not be interpreted as an alert.
+			UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[debugAlert show];
+		}
     }
 }
 
