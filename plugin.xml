@@ -44,6 +44,9 @@
         <string>bluetooth-peripheral</string>
       </array>
     </config-file>
+    <config-file target="*-Info.plist" parent="UIFileSharingEnabled">
+  	<true/>
+    </config-file>
     <header-file src="src/ios/GattServerPlugin.h" />
     <source-file src="src/ios/GattServerPlugin.m" />
     <!-- <resource-file src="www/res/sounds/alarm.mp3" target="Resources/alarm.mp3" /> -->
