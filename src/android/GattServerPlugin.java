@@ -36,6 +36,7 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
+import android.app.ActivityManager;
 //import android.app.Notification;
 import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
@@ -514,11 +515,10 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Checks if the app is in the background
 
-		ActivityManager activityManager = (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningTaskInfo> services = activityManager.getRunningTasks(Integer.MAX_VALUE);
-		//boolean isActivityFound = false;
+		ActivityManager activityManager = (ActivityManager) cordova.getActivity().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+		List tasks = activityManager.getRunningTasks(1);
 
-		if (services.get(0).topActivity.getPackageName().toString().equalsIgnoreCase(appContext.getPackageName().toString()))
+		if (tasks.get(0).topActivity.getPackageName().equalsIgnoreCase(cordova.getActivity().getApplicationContext().getPackageName()))
 			return false;
 		else
 			return true;
