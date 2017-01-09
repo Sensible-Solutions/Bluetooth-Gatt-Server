@@ -122,7 +122,8 @@ public class GattServerPlugin extends CordovaPlugin
 
 				}
 				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-
+				
+				alarmAction();
 				//Notify user of started server and save callback
 				JSONObject returnObj = new JSONObject();
 				addProperty(returnObj, keyStatus, statusWriteRequest);
@@ -426,7 +427,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarmAction()
 	//private void alarmAction(CallbackContext callbackContext)	// Used for manually calling and debuging instead of row above
 	{
-		// Function is just so can test notifications from outside the plugin
+		// Show local notification
 		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
