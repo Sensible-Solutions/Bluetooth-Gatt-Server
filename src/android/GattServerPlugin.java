@@ -36,8 +36,8 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
-import android.app.ActivityManager;				// Added 2017-01-09
-import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
+//import android.app.ActivityManager;				// Added 2017-01-09
+//import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
 //import android.app.Notification;
 import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
@@ -428,7 +428,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void alarm(){
 		
-		if (isInBackround()) {
+		//if (isInBackround()) {
 			// Show local notification only if the app is in the background
 			long[] pattern = { 0, 200, 500 };
 			//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
@@ -451,7 +451,7 @@ public class GattServerPlugin extends CordovaPlugin
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			// mId allows you to update the notification later on.
 			mNotificationManager.notify(1665, mBuilder.build());
-		}
+		//}
 	}
 	private void alarmAction(CallbackContext callbackContext)
 	{
@@ -512,7 +512,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private boolean isInBackground() {	// Added 2017-01-09
+	/*private boolean isInBackground() {	// Added 2017-01-09
 		
 		// Checks if the app is in the background
 		
@@ -539,7 +539,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		return inBackground;
-	}
+	}*/
 	
 	// Plugin initialize method for any start-up logic (see https://cordova.apache.org/docs/en/5.0.0/guide/platforms/android/plugin.html)
 	/*@Override
