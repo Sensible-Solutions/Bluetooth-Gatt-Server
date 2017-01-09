@@ -547,4 +547,83 @@ public class GattServerPlugin extends CordovaPlugin
     		super.initialize(cordova, webView);
     		// your init code here
 	}*/
+	
+	/*****************************************************************************************************
+	* Cordova Plugin (see CordovaPlugin.java)
+	*****************************************************************************************************/
+	
+	@override
+	 protected void pluginInitialize() {
+	 	// Called after plugin construction and fields have been initialized
+	 	super.pluginInitialize();
+		
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		debugAlert.setMessage("pluginInitialize() called!");
+		debugAlert.setTitle("Debug SSNM");
+		debugAlert.setCancelable(false);
+		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		debugAlert.create().show();
+	 }
+	
+	/*@Override
+	public void onDestroy() {
+		 // The final call you receive before your activity is destroyed
+		super.onDestroy();
+	}*/
+	
+	/*@override
+	 public void onStart() {
+		 // Called when the activity is becoming visible to the user
+		 super.onStart();
+    	}*/
+	/*@override
+	 public void onStop() {
+		 // Called when the activity is no longer visible to the user
+		 super.onStop();
+   	 }*/
+	
+	@Override
+	public void onPause(boolean multitasking) {
+		// Called when the system is about to start resuming a previous activity
+		super.onPause(multitasking);
+		
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		debugAlert.setMessage("onPause(...) called!");
+		debugAlert.setTitle("Debug SSNM");
+		debugAlert.setCancelable(false);
+		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		debugAlert.create().show();
+    	}
+	
+	@Override
+	public void onResume(boolean multitasking) {
+		// Called when the activity will start interacting with the user
+		super.onResume(multitasking);
+		
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		debugAlert.setMessage("onResume(...) called!");
+		debugAlert.setTitle("Debug SSNM");
+		debugAlert.setCancelable(false);
+		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		debugAlert.create().show();
+    	}
+	
+	/*@Override
+    	public void onReset() {
+		// Called when the WebView does a top-level navigation or refreshes
+		// Plugins should stop any long-running processes and clean up internal state
+		super.onReset();
+	}*/
 }
