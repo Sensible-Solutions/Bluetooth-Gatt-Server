@@ -123,7 +123,7 @@ public class GattServerPlugin extends CordovaPlugin
 				}
 				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
-				alarmAction();
+				alarm();
 				//Notify user of started server and save callback
 				JSONObject returnObj = new JSONObject();
 				addProperty(returnObj, keyStatus, statusWriteRequest);
@@ -424,9 +424,33 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
-	private void alarmAction()
-	//private void alarmAction(CallbackContext callbackContext)	// Used for manually calling and debuging instead of row above
+	private void alarmAction(){
+		// Show local notification
+		long[] pattern = { 0, 200, 500 };
+		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
+	        .setContentTitle("SenseSoft Notifications Mini")
+	        .setContentText("Incoming SenseSoft Mini alarm!")
+	        //.setSmallIcon(R.drawable.screen_background_dark)
+	        .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+	        .setPriority(NotificationCompat.PRIORITY_MAX)
+	        //.setAutoCancel(true)
+	        .setCategory(NotificationCompat.CATEGORY_ALARM)
+	        .setGroup("SENSESOFT_MINI")
+	        .setTicker("SenseSoft Mini")
+	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
+	        .setVibrate(pattern);
+	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
+	        //.setSound(Uri sound, STREAM_ALARM);
+		
+		//NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(1665, mBuilder.build());
+	}
+	private void alarmAction(CallbackContext callbackContext)
 	{
+		// Action function just to test local notifications from outside the plugin
 		// Show local notification
 		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
