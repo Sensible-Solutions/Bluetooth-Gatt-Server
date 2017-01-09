@@ -36,7 +36,8 @@ import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
-import android.app.ActivityManager;
+import android.app.ActivityManager;				// Added 2017-01-09
+import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
 //import android.app.Notification;
 import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
@@ -511,17 +512,33 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private boolean isInBackground() {
+	private boolean isInBackground() {	// Added 2017-01-09
 		
 		// Checks if the app is in the background
-
+		
+		boolean inBackground = true;
+		
 		ActivityManager activityManager = (ActivityManager) cordova.getActivity().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-		List tasks = activityManager.getRunningTasks(1);
-
-		if (tasks.get(0).topActivity.getPackageName().equalsIgnoreCase(cordova.getActivity().getApplicationContext().getPackageName()))
-			return false;
-		else
-			return true;
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            		List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
+            		for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                		if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    			for (String activeProcess : processInfo.pkgList) {
+                        			if (activeProcess.equals(cordova.getActivity().getApplicationContext().getPackageName())) {
+                            				inBackground = false;
+                       				 }
+                    			}
+               			 }
+           		 }
+       		}
+		else {
+			List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+			if (tasks.get(0).topActivity.getPackageName().equalsIgnoreCase(cordova.getActivity().getApplicationContext().getPackageName()))
+				inBackground = false;
+		}
+		
+		return inBackground;
 	}
 	
 	// Plugin initialize method for any start-up logic (see https://cordova.apache.org/docs/en/5.0.0/guide/platforms/android/plugin.html)
