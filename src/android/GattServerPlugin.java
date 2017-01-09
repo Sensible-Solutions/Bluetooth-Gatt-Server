@@ -423,7 +423,8 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
-	private void alarmAction(CallbackContext callbackContext)
+	private void alarmAction(String alertLevel)
+	//private void alarmAction(CallbackContext callbackContext)	// Used for manually calling and debuging instead of row above
 	{
 		// Function is just so can test notifications from outside the plugin
 		long[] pattern = { 0, 200, 500 };
