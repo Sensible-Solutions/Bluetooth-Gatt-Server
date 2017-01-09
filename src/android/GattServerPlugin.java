@@ -423,14 +423,14 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
-	private void alarmAction(String alertLevel)
+	private void alarmAction()
 	//private void alarmAction(CallbackContext callbackContext)	// Used for manually calling and debuging instead of row above
 	{
 		// Function is just so can test notifications from outside the plugin
 		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
-	        .setContentTitle("SenseSoft Notifications")
+	        .setContentTitle("SenseSoft Notifications Mini")
 	        .setContentText("Incoming SenseSoft Mini alarm!")
 	        //.setSmallIcon(R.drawable.screen_background_dark)
 	        .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
