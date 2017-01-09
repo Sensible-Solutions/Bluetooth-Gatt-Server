@@ -113,26 +113,27 @@ public class GattServerPlugin extends CordovaPlugin
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			characteristic.setValue(value);
 			
-			try {
-	    			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-	    			Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
-	    			r.play();
-			} catch (Exception e) {
-	    			
-			}
-			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-				
-			//Notify user of started server and save callback
-			JSONObject returnObj = new JSONObject();
-			addProperty(returnObj, keyStatus, statusWriteRequest);
-			addProperty(returnObj, "device", device.getAddress());
-			addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
-			addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
+				try {
+					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+					Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+					r.play();
+				} catch (Exception e) {
 
+				}
+				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+
+				//Notify user of started server and save callback
+				JSONObject returnObj = new JSONObject();
+				addProperty(returnObj, keyStatus, statusWriteRequest);
+				addProperty(returnObj, "device", device.getAddress());
+				addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
+				addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+				//callbackContext.sendPluginResult(pluginResult);
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
+			}
 			if (responseNeeded)
 				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
 		}
