@@ -552,7 +552,7 @@ public class GattServerPlugin extends CordovaPlugin
 	* Cordova Plugin (see CordovaPlugin.java)
 	*****************************************************************************************************/
 	
-	@override
+	@Override
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 	 	super.pluginInitialize();
