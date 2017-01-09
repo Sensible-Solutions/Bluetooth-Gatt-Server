@@ -425,28 +425,31 @@ public class GattServerPlugin extends CordovaPlugin
 	}
 	
 	private void alarm(){
-		// Show local notification
-		long[] pattern = { 0, 200, 500 };
-		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
-	        .setContentTitle("SenseSoft Notifications Mini")
-	        .setContentText("Incoming SenseSoft Mini alarm!")
-	        //.setSmallIcon(R.drawable.screen_background_dark)
-	        .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-	        .setPriority(NotificationCompat.PRIORITY_MAX)
-	        //.setAutoCancel(true)
-	        .setCategory(NotificationCompat.CATEGORY_ALARM)
-	        .setGroup("SENSESOFT_MINI")
-	        .setTicker("SenseSoft Mini")
-	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
-	        .setVibrate(pattern);
-	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
-	        //.setSound(Uri sound, STREAM_ALARM);
 		
-		//NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
-		mNotificationManager.notify(1665, mBuilder.build());
+		if (isInBackround()) {
+			// Show local notification only if the app is in the background
+			long[] pattern = { 0, 200, 500 };
+			//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
+			.setContentTitle("SenseSoft Notifications Mini")
+			.setContentText("Incoming SenseSoft Mini alarm!")
+			//.setSmallIcon(R.drawable.screen_background_dark)
+			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+			.setPriority(NotificationCompat.PRIORITY_MAX)
+			//.setAutoCancel(true)
+			.setCategory(NotificationCompat.CATEGORY_ALARM)
+			.setGroup("SENSESOFT_MINI")
+			.setTicker("SenseSoft Mini")
+			.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
+			.setVibrate(pattern);
+			//.setFullScreenIntent(PendingIntent intent, boolean highPriority)
+			//.setSound(Uri sound, STREAM_ALARM);
+
+			//NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+			// mId allows you to update the notification later on.
+			mNotificationManager.notify(1665, mBuilder.build());
+		}
 	}
 	private void alarmAction(CallbackContext callbackContext)
 	{
@@ -505,6 +508,20 @@ public class GattServerPlugin extends CordovaPlugin
 		}	
 		else	
 			return characteristic.getStringValue(0);
+	}
+	
+	private boolean isInBackground() {
+		
+		// Checks if the app is in the background
+
+		ActivityManager activityManager = (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> services = activityManager.getRunningTasks(Integer.MAX_VALUE);
+		//boolean isActivityFound = false;
+
+		if (services.get(0).topActivity.getPackageName().toString().equalsIgnoreCase(appContext.getPackageName().toString()))
+			return false;
+		else
+			return true;
 	}
 	
 	// Plugin initialize method for any start-up logic (see https://cordova.apache.org/docs/en/5.0.0/guide/platforms/android/plugin.html)
