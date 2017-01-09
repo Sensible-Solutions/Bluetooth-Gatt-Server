@@ -424,7 +424,7 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
-	private void alarmAction(){
+	private void alarm(){
 		// Show local notification
 		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
