@@ -94,6 +94,9 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String errorServerStateUnsupported = "serverStateUnsupported";
 	private final static String errorServerStateUnauthorized = "serverStateUnauthorized";	// iOS only
 	private final static String errorServiceAdded = "serviceAdded"; // Added 2016-01-19
+	private final static String errorWriteRequest = "writeRequest";		// Added 2017-01-10
+	private final static String errorReadRequest = "readRequest";		// Added 2017-01-10
+
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
@@ -101,6 +104,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logConnectionState = "Connection state changed with error";
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
 	private final static String logStatePoweredOff = "BLE is turned off for device";	// Added 2016-01-14
+	private final static String logRequestNotSupported = "Request is not supported"; 	// Added 2017-01-10
 	
 	private boolean isInBackground = false;			// Added 2017-01-10
 	//private BluetoothGattServer gattServer;
@@ -114,9 +118,10 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-			characteristic.setValue(value);
+			//characteristic.setValue(value);		// Removed 2017-01-10
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
+				characteristic.setValue(value);		// Added 2017-01-10
 				/*try {		// Moved to alarm() 2017-01-10
 					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 					Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
@@ -137,9 +142,22 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 				//callbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
+				
+				if (responseNeeded)	// If and it's code block added 2017-01-10
+					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
 			}
-			if (responseNeeded)
-				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
+			else {		// else and it's code block added 2017-01-10
+				if (responseNeeded)
+					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
+				
+				addProperty(returnObj, keyError, errorWriteRequest);
+				addProperty(returnObj, keyMessage, logRequestNotSupported);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(true);
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
+			}
+			/*if (responseNeeded)		// Removed 2017-01-10
+				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);*/
 		}
 		
 		@Override
@@ -202,7 +220,15 @@ public class GattServerPlugin extends CordovaPlugin
 
 		@Override
 		public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
-			// Not implemented
+			// Not supported/implemented
+			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);	// Added 2017-01-10
+			
+			addProperty(returnObj, keyError, errorReadRequest);	// Added 2017-01-10
+			addProperty(returnObj, keyMessage, logRequestNotSupported);	// Added 2017-01-10
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);	// Added 2017-01-10
+			pluginResult.setKeepCallback(true);	// Added 2017-01-10
+			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 2017-01-10
+		
 		}
 			
 
