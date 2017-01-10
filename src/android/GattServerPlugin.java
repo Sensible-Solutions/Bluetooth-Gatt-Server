@@ -102,7 +102,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
 	private final static String logStatePoweredOff = "BLE is turned off for device";	// Added 2016-01-14
 	
-	private boolean isInBackground = false;
+	private boolean isInBackground = false;			// Added 2017-01-10
 	//private BluetoothGattServer gattServer;
 	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
 	//private BluetoothGattService immediateAlertService;
