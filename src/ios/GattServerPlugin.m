@@ -44,6 +44,8 @@ NSString *const errorServerState = @"serverState";
 NSString *const errorServerStateOff = @"serverStateOff";
 NSString *const errorServerStateUnsupported = @"serverStateUnsupported";
 NSString *const errorServerStateUnauthorized = @"serverStateUnauthorized";
+NSString *const errorWriteRequest = @"writeRequest";	// Added 2017-01-10
+NSString *const errorReadRequest = @"readRequest";	// Added 2017-01-10
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
@@ -55,6 +57,7 @@ NSString *const logStateOn = @"BLE is turned on for device";
 NSString *const logStateUnsupported = @"BLE is not supported by device";
 NSString *const logStateUnauthorized = @"BLE is turned off for app";
 NSString *const logNoArgObj = @"Argument object can not be found";
+NSString *const logRequestNotSupported = @"Request is not supported";	// Added 2017-01-10
 
 // Settings keys
 NSString *const KEY_ALERTS_SETTING = @"alerts";
@@ -452,6 +455,14 @@ NSString *const KEY_LOG_SETTING = @"log";
     	//NSString *test = request.characteristic.UUID.UUIDString;
     	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
+	
+	// Notify user and save callback
+	if(serverRunningCallback != nil){	// if statement and it's code block added 2017-01-10
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorReadRequest, keyError, logRequestNotSupported, keyMessage, nil];
+        	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
 }
 
 // Remote client characteristic write request
@@ -460,10 +471,10 @@ NSString *const KEY_LOG_SETTING = @"log";
     	CBATTRequest *attributeRequest = [requests objectAtIndex:0];
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.characteristic.UUID.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.uuidString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test if can get the UUID of central (might have to be UUIDString ?). If so, return it instead of @"NA" at the end of the function
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.uuidString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test if can get the UUID of central (might have to be UUIDString ?). If so, return it instead of @"NA"
 	[debugAlert show];
 	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]) {
-		//NSLog(@"Alert Level is: %d",alertLevel);
+		// The central has send a write request of the alert level characteristic
 		const uint8_t *data = [attributeRequest.value bytes];
 		int alertLevel = data[0];
 		NSMutableString *alertLevelParsed = [NSMutableString stringWithString:@""];
@@ -507,15 +518,28 @@ NSString *const KEY_LOG_SETTING = @"log";
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
+		
+		// Notify user and save callback
+		if(serverRunningCallback != nil){	// If statement with code block added 2017-01-10
+			//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, message:attributeRequest.central.identifier.uuidString, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevelParsed, @"value", nil];
+			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+			[pluginResult setKeepCallbackAsBool:true];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+		}
+		
+		// No need to respond to the write request since the it's of the type "request with no response"
 	}
-	// Notify user and save callback
-	if(serverRunningCallback != nil){
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", attributeRequest.characteristic.UUID.UUIDString, @"characteristic", alertLevel, @"value", nil];
-		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-		[pluginResult setKeepCallbackAsBool:true];
-		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+	else {		// else and it's code block added 2017-01-10
+		[peripheralManager respondToRequest:attributeRequest withResult:CBATTErrorRequestNotSupported];
+		// Notify user and save callback
+		if(serverRunningCallback != nil){
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorWriteRequest, keyError, logRequestNotSupported, keyMessage, nil];
+        		CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+			[pluginResult setKeepCallbackAsBool:true];
+	 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
 	}
-	
 }
 
 // Not working, that is is not called when a remote central has disconnected (since there is subscription for a characteristic
