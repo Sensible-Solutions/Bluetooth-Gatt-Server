@@ -241,12 +241,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	// Notify user and save callback
-	if(serverRunningCallback != nil){
+	/*if(serverRunningCallback != nil){
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-	}
+	}*/
 }
 
 // Set granted local notifications for app
@@ -445,42 +445,46 @@ NSString *const KEY_LOG_SETTING = @"log";
 
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
 {
-    // Not implemented
-    [peripheralManager respondToRequest:request  withResult:CBATTErrorSuccess];
-    //NSString *test = request.characteristic.UUID.UUIDString;
-    //UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+   	// Read requests not supported/implemented
+    	//[peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];	// Removed 2017-01-10
+	[peripheralManager respondToRequest:request withResult:CBATTErrorRequestNotSupported];	// Added 2017-01-10
+	
+    	//NSString *test = request.characteristic.UUID.UUIDString;
+    	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Read Req" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
 }
 
 // Remote client characteristic write request
 -(void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests
 {
-    CBATTRequest *attributeRequest = [requests objectAtIndex:0];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.characteristic.UUID.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    	CBATTRequest *attributeRequest = [requests objectAtIndex:0];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.characteristic.UUID.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.uuidString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test if can get the UUID of central (might have to be UUIDString ?). If so, return it instead of @"NA" at the end of the function
 	[debugAlert show];
 	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]) {
 		//NSLog(@"Alert Level is: %d",alertLevel);
 		const uint8_t *data = [attributeRequest.value bytes];
 		int alertLevel = data[0];
 		NSMutableString *alertLevelParsed = [NSMutableString stringWithString:@""];
-        switch (alertLevel) {
-            case 0:	{
-				[alertLevelParsed setString:@"No Alert"];
-                break;
-			}
-            case 1: {
-				[alertLevelParsed setString:@"Mild Alert"];
-                break;
-			}
-            case 2: {
-				[alertLevelParsed setString:@"High Alert"]; 
-                break;
-			}  
-            default: {
-				[alertLevelParsed setString:@"Parse Error"];
-                break;
-			}
-        }
+        	switch (alertLevel) {
+		    case 0:	{
+					[alertLevelParsed setString:@"No Alert"];
+			break;
+				}
+		    case 1: {
+					[alertLevelParsed setString:@"Mild Alert"];
+			break;
+				}
+		    case 2: {
+					[alertLevelParsed setString:@"High Alert"]; 
+			break;
+				}  
+		    default: {
+					[alertLevelParsed setString:@"Parse Error"];
+			break;
+				}
+        	}
 		// Debug dialog
 		//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:[NSString stringWithFormat: @"Immediate alert received with level: %@", alertLevelParsed] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		//[debugMessage show];
@@ -503,7 +507,15 @@ NSString *const KEY_LOG_SETTING = @"log";
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
-    }
+	}
+	// Notify user and save callback
+	if(serverRunningCallback != nil){
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", attributeRequest.characteristic.UUID.UUIDString, @"characteristic", alertLevel, @"value", nil];
+		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+	}
+	
 }
 
 // Not working, that is is not called when a remote central has disconnected (since there is subscription for a characteristic
