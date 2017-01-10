@@ -117,13 +117,13 @@ public class GattServerPlugin extends CordovaPlugin
 			characteristic.setValue(value);
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
-				try {
+				/*try {		// Moved to alarm() 2017-01-10
 					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 					Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
 					r.play();
 				} catch (Exception e) {
 
-				}
+				}*/
 				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
 				alarm();
@@ -429,7 +429,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void alarm(){
 		
-		//if (isInBackround()) {
+		if (isInBackround) {
 			// Show local notification only if the app is in the background
 			long[] pattern = { 0, 200, 500 };
 			//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
@@ -452,7 +452,17 @@ public class GattServerPlugin extends CordovaPlugin
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			// mId allows you to update the notification later on.
 			mNotificationManager.notify(1665, mBuilder.build());
-		//}
+		}
+		else {		// else statement and its code block added 2017-01-10
+			// Manually play sound if app is in the foreground
+			try {
+				Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+				Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
+				r.play();
+			} catch (Exception e) {
+				// Do nothing
+			}
+		}
 	}
 	private void alarmAction(CallbackContext callbackContext)
 	{
