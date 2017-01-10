@@ -186,7 +186,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Action function just to test local notifications
-- (void)alarm: (NSString *) alertLevel
+//- (void)alarm: (NSString *) alertLevel			// Removed 2017-01-10
+- (void) alarm						// Added 2017-01-10
 //- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
 	// Show local notification
@@ -502,14 +503,16 @@ NSString *const KEY_LOG_SETTING = @"log";
 		if (!iasInitialized && alertLevel != 0){
 			// The first alarm received after a nRF8002 module has connected for the first time to the GATT server or the alarm has been reseted by calling resetAlarm().
 			iasInitialized = true;
-			[self alarm:alertLevelParsed];
+			//[self alarm:alertLevelParsed];	// Removed 2017-01-10
+			[self alarm];				// Added 2017-01-10
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 1" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
 		else if (iasInitialized){
 			// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
 			// So interpret every write to this characteristic as an alarm.
-			[self alarm:alertLevelParsed];
+			//[self alarm:alertLevelParsed];		// Removed 2017-01-10
+			[self alarm];					// Added 2017-01-10
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 2" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
