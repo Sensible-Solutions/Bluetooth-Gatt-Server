@@ -102,6 +102,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
 	private final static String logStatePoweredOff = "BLE is turned off for device";	// Added 2016-01-14
 	
+	private boolean isInBackground = false;
 	//private BluetoothGattServer gattServer;
 	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
 	//private BluetoothGattService immediateAlertService;
@@ -512,6 +513,20 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
+	private void showDebugMsgBox(String message)	// Added 2017-01-10
+	{
+		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		debugAlert.setMessage(message);
+		debugAlert.setTitle("Debug SSNM");
+		debugAlert.setCancelable(false);
+		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
+		debugAlert.create().show();
+	}
+	
 	/*private boolean isInBackground() {	// Added 2017-01-09
 		
 		// Checks if the app is in the background
@@ -556,8 +571,9 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 	 	super.pluginInitialize();
-		
-		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		isInBackground = false;		// App is in foreground (added 2017-01-10)
+		showDebugMsgBox("pluginInitialize() called!");	// Added 2017-01-10
+		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage("pluginInitialize() called!");
 		debugAlert.setTitle("Debug SSNM");
 		debugAlert.setCancelable(false);
@@ -566,7 +582,7 @@ public class GattServerPlugin extends CordovaPlugin
 				dialog.dismiss();
 			}
 		});
-		debugAlert.create().show();
+		debugAlert.create().show();*/
 	 }
 	
 	/*@Override
@@ -589,9 +605,10 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	public void onPause(boolean multitasking) {
 		// Called when the system is about to start resuming a previous activity
+		isInBackground = true;		// App is put in background (added 2017-01-10)
 		super.onPause(multitasking);
-		
-		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		showDebugMsgBox("onPause() called!");	// Added 2017-01-10
+		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage("onPause(...) called!");
 		debugAlert.setTitle("Debug SSNM");
 		debugAlert.setCancelable(false);
@@ -600,15 +617,16 @@ public class GattServerPlugin extends CordovaPlugin
 				dialog.dismiss();
 			}
 		});
-		debugAlert.create().show();
+		debugAlert.create().show();*/
     	}
 	
 	@Override
 	public void onResume(boolean multitasking) {
 		// Called when the activity will start interacting with the user
+		isInBackground = false;		// App is put in foreground (added 2017-01-10)
 		super.onResume(multitasking);
-		
-		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+		showDebugMsgBox("onResume() called!");	// Added 2017-01-10
+		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage("onResume(...) called!");
 		debugAlert.setTitle("Debug SSNM");
 		debugAlert.setCancelable(false);
@@ -617,7 +635,7 @@ public class GattServerPlugin extends CordovaPlugin
 				dialog.dismiss();
 			}
 		});
-		debugAlert.create().show();
+		debugAlert.create().show();*/
     	}
 	
 	/*@Override
