@@ -186,8 +186,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Action function just to test local notifications
-//- (void)alarm: (NSString *) alertLevel			// Removed 2017-01-10
-- (void) alarm						// Added 2017-01-10
+- (void) alarm:(NSString *)alertLevel deviceUUID:(NSString *)deviceUUID
 //- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
 	// Show local notification
@@ -245,12 +244,12 @@ NSString *const KEY_LOG_SETTING = @"log";
 	}
 	
 	// Notify user and save callback
-	/*if(serverRunningCallback != nil){
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
+	if(serverRunningCallback != nil){
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, deviceUUID, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-	}*/
+	}
 }
 
 // Set granted local notifications for app
@@ -520,15 +519,6 @@ NSString *const KEY_LOG_SETTING = @"log";
 			// Ignore first value(s) received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level (sometimes twice). This must not be interpreted as an alert.
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
-		}
-		
-		// Notify user and save callback
-		if(serverRunningCallback != nil){	// If statement with code block added 2017-01-10
-			//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, attributeRequest.central.identifier.UUIDString, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevelParsed, @"value", nil];
-			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-			[pluginResult setKeepCallbackAsBool:true];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 		}
 		
 		// No need to respond to the write request since the it's of the type "request with no response"
