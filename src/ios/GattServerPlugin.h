@@ -34,7 +34,7 @@
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
 //- (void)alarm:(CDVInvokedUrlCommand *)command;		// Removed 2017-01-10
-- (void)alarm;							// Added 2017-01-10
+- (void)alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid;	// Added 2017-01-10
 - (void)registerNotifications:(CDVInvokedUrlCommand *)command;
 - (void)setAlarmSettings:(CDVInvokedUrlCommand *)command;
 - (void)getAlarmSettings:(CDVInvokedUrlCommand *)command;
