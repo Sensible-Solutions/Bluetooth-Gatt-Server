@@ -471,8 +471,8 @@ NSString *const KEY_LOG_SETTING = @"log";
     	CBATTRequest *attributeRequest = [requests objectAtIndex:0];
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.characteristic.UUID.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test 2017-01-10
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test 2017-01-10
+	//[debugAlert show];
 	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]) {
 		// The central has send a write request of the alert level characteristic
 		const uint8_t *data = [attributeRequest.value bytes];
@@ -502,16 +502,14 @@ NSString *const KEY_LOG_SETTING = @"log";
 		if (!iasInitialized && alertLevel != 0){
 			// The first alarm received after a nRF8002 module has connected for the first time to the GATT server or the alarm has been reseted by calling resetAlarm().
 			iasInitialized = true;
-			//[self alarm:alertLevelParsed];	// Removed 2017-01-10
-			[self alarm];				// Added 2017-01-10
+			[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString];
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 1" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
 		else if (iasInitialized){
 			// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends "toggled" levels. That is, it sends "No Alert" on every second positive flank and the configured alert level on every other.
 			// So interpret every write to this characteristic as an alarm.
-			//[self alarm:alertLevelParsed];		// Removed 2017-01-10
-			[self alarm];					// Added 2017-01-10
+			[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString];
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 2" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
 		}
