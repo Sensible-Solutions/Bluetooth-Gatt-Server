@@ -462,7 +462,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorReadRequest, keyError, logRequestNotSupported, keyMessage, nil];
         	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
-	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 	}
 }
 
@@ -472,7 +472,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     	CBATTRequest *attributeRequest = [requests objectAtIndex:0];
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.characteristic.UUID.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.uuidString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test if can get the UUID of central (might have to be UUIDString ?). If so, return it instead of @"NA"
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:attributeRequest.central.identifier.UUIDString delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; // Test if can get the UUID of central (might have to be UUIDString ?). If so, return it instead of @"NA"
 	[debugAlert show];
 	if ([attributeRequest.characteristic.UUID isEqual:[CBUUID UUIDWithString:ALERT_LEVEL_CHAR_UUID]]) {
 		// The central has send a write request of the alert level characteristic
@@ -525,7 +525,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		// Notify user and save callback
 		if(serverRunningCallback != nil){	// If statement with code block added 2017-01-10
 			//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, @"NA", @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
-			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, message:attributeRequest.central.identifier.uuidString, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevelParsed, @"value", nil];
+			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, attributeRequest.central.identifier.uuidString, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevelParsed, @"value", nil];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 			[pluginResult setKeepCallbackAsBool:true];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
@@ -540,7 +540,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 			NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorWriteRequest, keyError, logRequestNotSupported, keyMessage, nil];
         		CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 			[pluginResult setKeepCallbackAsBool:true];
-	 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
 		}
 	}
 }
