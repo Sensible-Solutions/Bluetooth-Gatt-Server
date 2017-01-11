@@ -119,6 +119,7 @@ public class GattServerPlugin extends CordovaPlugin
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			//characteristic.setValue(value);		// Removed 2017-01-10
+			JSONObject returnObj = new JSONObject();	// Added 2017-01-10
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				characteristic.setValue(value);		// Added 2017-01-10
@@ -133,7 +134,7 @@ public class GattServerPlugin extends CordovaPlugin
 				
 				alarm();
 				//Notify user of started server and save callback
-				JSONObject returnObj = new JSONObject();
+				//JSONObject returnObj = new JSONObject();		// Removed 2017-01-10
 				addProperty(returnObj, keyStatus, statusWriteRequest);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
@@ -221,6 +222,8 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
 			// Not supported/implemented
+			
+			JSONObject returnObj = new JSONObject();		// Added 2017-01-10
 			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);	// Added 2017-01-10
 			
 			addProperty(returnObj, keyError, errorReadRequest);	// Added 2017-01-10
@@ -455,7 +458,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void alarm(){
 		
-		if (isInBackround) {
+		if (isInBackground) {
 			// Show local notification only if the app is in the background
 			long[] pattern = { 0, 200, 500 };
 			//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
