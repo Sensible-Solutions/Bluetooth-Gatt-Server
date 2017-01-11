@@ -186,7 +186,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Action function just to test local notifications
-- (void) alarm:(NSString *)alertLevel deviceUUID:(NSString *)deviceUUID
+- (void) alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid
 //- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
 	// Show local notification
@@ -245,7 +245,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	
 	// Notify user and save callback
 	if(serverRunningCallback != nil){
-		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, deviceUUID, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusWriteRequest, keyStatus, uuid, @"device", ALERT_LEVEL_CHAR_UUID, @"characteristic", alertLevel, @"value", nil];
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
