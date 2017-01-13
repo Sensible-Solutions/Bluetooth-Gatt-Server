@@ -122,6 +122,8 @@ public class GattServerPlugin extends CordovaPlugin
 			//characteristic.setValue(value);		// Removed 2017-01-10
 			//JSONObject returnObj = new JSONObject();	// Added 2017-01-10 (removed 2017-01-13)
 			
+			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));	// Added 2017-01-13
+			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
 			
@@ -140,7 +142,7 @@ public class GattServerPlugin extends CordovaPlugin
 					// There is an alarm
 					// After connecting to the clip, the clip first sends "No Alert" (sometimes twice). This must not be interpreted as an alarm.
 					// After that, the clip sends toggled alert levels when there are alarms (that is, alternating high and no alert level). 
-					characteristic.setValue(value);		// Set the value of the characteristic to the new value
+					characteristic.setValue(value);		// Set the value of the characteristic to the new alert level
 					alarm(parseCharacteristicValue(characteristic), device.getAddress());
 				}
 				
