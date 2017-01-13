@@ -83,6 +83,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String statusServiceExists = "serviceAlreadyProvided";
 	private final static String statusWriteRequest = "characteristicWriteRequest";
 	private final static String statusConnectionState = "serverConnectionState";
+	private final static String statusAlarmReseted = "alarmReseted";	// Added 2017-01-13
 	//private final String statusServerStopped = "scanStopped";
   
 	// Error Types
