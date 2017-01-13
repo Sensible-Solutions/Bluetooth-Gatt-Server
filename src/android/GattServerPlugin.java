@@ -119,10 +119,13 @@ public class GattServerPlugin extends CordovaPlugin
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			//characteristic.setValue(value);		// Removed 2017-01-10
-			JSONObject returnObj = new JSONObject();	// Added 2017-01-10
+			//JSONObject returnObj = new JSONObject();	// Added 2017-01-10 (removed 2017-01-13)
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
-				characteristic.setValue(value);		// Added 2017-01-10
+				
+			
+			
+				//characteristic.setValue(value);		// Added 2017-01-10 (removed 2017-01-13)
 				/*try {		// Moved to alarm() 2017-01-10
 					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 					Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
@@ -132,17 +135,22 @@ public class GattServerPlugin extends CordovaPlugin
 				}*/
 				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
-				alarm();
+				if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value){	// If statement and it's code block added 2017-01-13
+					// There is an alarm
+					characteristic.setValue(value);		// Set the value of the characteristic to the new value
+					alarm();
+				}
+				
+				
+				/*alarm();		// Code block removed 2017-01-13
 				//Notify user of started server and save callback
-				//JSONObject returnObj = new JSONObject();		// Removed 2017-01-10
 				addProperty(returnObj, keyStatus, statusWriteRequest);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
 				addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-				//callbackContext.sendPluginResult(pluginResult);
-				serverRunningCallbackContext.sendPluginResult(pluginResult);
+				serverRunningCallbackContext.sendPluginResult(pluginResult);*/
 				
 				if (responseNeeded)	// If and it's code block added 2017-01-10
 					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
@@ -151,6 +159,7 @@ public class GattServerPlugin extends CordovaPlugin
 				if (responseNeeded)
 					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
 				
+				JSONObject returnObj = new JSONObject();	// Added 2017-01-13
 				addProperty(returnObj, keyError, errorWriteRequest);
 				addProperty(returnObj, keyMessage, logRequestNotSupported);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
@@ -404,7 +413,8 @@ public class GattServerPlugin extends CordovaPlugin
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
 			final BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
-			characteristic.setValue(ALERT_LEVEL_HIGH);
+			//characteristic.setValue(ALERT_LEVEL_HIGH);	// Removed 2017-01-13
+			characteristic.setValue(ALERT_LEVEL_LOW);	// Added 2017-01-13
 			//immediateAlertService.addCharacteristic(characteristic);
 			if(!immediateAlertService.addCharacteristic(characteristic)){
 				// Notify user of error
@@ -492,6 +502,16 @@ public class GattServerPlugin extends CordovaPlugin
 				// Do nothing
 			}
 		}
+		
+		//Notify user of started server and save callback
+		JSONObject returnObj = new JSONObject();
+		addProperty(returnObj, keyStatus, statusWriteRequest);
+		addProperty(returnObj, "device", device.getAddress());
+		//addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
+		//addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
+		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+		pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+		serverRunningCallbackContext.sendPluginResult(pluginResult);
 	}
 	private void alarmAction(CallbackContext callbackContext)
 	{
