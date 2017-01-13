@@ -72,6 +72,7 @@ public class GattServerPlugin extends CordovaPlugin
 	// Action Name Strings
 	//private final String initializeActionName = "initialize";
 	private final static String START_GATT_SERVER = "startServer";
+	private final static String RESET_ALARM = "resetAlarm";		// Added 2017-01-13
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -276,6 +277,10 @@ public class GattServerPlugin extends CordovaPlugin
 		try {
 			if (START_GATT_SERVER.equals(action)) { 
 				startServerAction(callbackContext);
+				return true;
+			}
+			else if (RESET_ALARM.equals(action)){
+				resetAlarmAction(callbackContext);
 				return true;
 			}
 			else if (action.equals("alarm")){
