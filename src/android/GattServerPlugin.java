@@ -51,8 +51,9 @@ import java.util.UUID;
 public class GattServerPlugin extends CordovaPlugin
 {
 	// Immediate alert service
-	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");		// Service UUID
-	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");				// Characteristic UUID
+	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");	// Service UUID
+	//private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (removed 2017-01-13)
+	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (added 2017-01-13)
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_VALUE = 2;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE = 17;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_OFFSET = 0;
@@ -138,7 +139,7 @@ public class GattServerPlugin extends CordovaPlugin
 				if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value){	// If statement and it's code block added 2017-01-13
 					// There is an alarm
 					characteristic.setValue(value);		// Set the value of the characteristic to the new value
-					alarm();
+					alarm(parseCharacteristicValue(characteristic), device.getAddress());
 				}
 				
 				
@@ -466,7 +467,8 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
-	private void alarm(){
+	//private void alarm(){		// Removed 2017-01-13
+	private void alarm(String alertLevel, String deviceUUID){		// Added 2017-01-13
 		
 		if (isInBackground) {
 			// Show local notification only if the app is in the background
@@ -503,15 +505,20 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 		}
 		
+		// Section added 2017-01-13
 		//Notify user of started server and save callback
 		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
-		addProperty(returnObj, "device", device.getAddress());
+		//addProperty(returnObj, "device", device.getAddress());
+		addProperty(returnObj, "device", deviceUUID);
 		//addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
+		addProperty(returnObj, "characteristic", UUID ALERT_LEVEL_CHAR_UUID.toString());
 		//addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
+		addProperty(returnObj, "value", alertLevel);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 		serverRunningCallbackContext.sendPluginResult(pluginResult);
+		// End section added 2017-01-13
 	}
 	private void alarmAction(CallbackContext callbackContext)
 	{
