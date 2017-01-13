@@ -189,58 +189,70 @@ NSString *const KEY_LOG_SETTING = @"log";
 - (void) alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid
 //- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
-	// Show local notification
-	if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Check it's iOS 8 and above
-		UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+	// Show local notification if the app is in the background
+	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-13
+	if (currentState == UIApplicationStateBackground){		// If but not its code block added 2017-01-13
+		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Check it's iOS 8 and above
+			UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 
-    		if (grantedSettings.types == UIUserNotificationTypeNone) {
-        		//NSLog(@"No notification permission granted");
-        		UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle: @"SenseSoft Notifications" message:@"Notifications is currently not allowed. Please turn on notifications in settings app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        		[notificationAlert show];
-				return;
+			if (grantedSettings.types == UIUserNotificationTypeNone) {
+				// Notifications are turned off completely for the app (removed 2017-01-13)
+				//NSLog(@"No notification permission granted");
+				//UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle:@"SenseSoft Notifications" message:@"Notifications are currently not allowed. Please turn on notifications in settings app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				//[notificationAlert show];
+				//return;
 			}
-    		/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
-        		//NSLog(@"Sound, alert and badge permissions ");
-    		}*/
-    		else if (grantedSettings.types & UIUserNotificationTypeAlert){
-        		//NSLog(@"Alert Permission Granted");
-        		UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-			// Specify after how many second the notification will be delivered
-			//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
-			// Specify notification message text
-			localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
-			// A short description of the reason for the alert (for apple watch) 
-			localNotification.alertTitle = @"SenseSoft Notifications Mini";
-			// Hide the alert button or slider
-			localNotification.hasAction = false;
-			// Specify timeZone for notification delivery
-			localNotification.timeZone = [NSTimeZone defaultTimeZone];
-			// Set the soundName property for the notification if notification sound is enabled
-			if (grantedSettings.types & UIUserNotificationTypeSound){
-				//localNotification.soundName = UILocalNotificationDefaultSoundName;
-				//NSBundle* mainBundle = [NSBundle mainBundle];
-				//localNotification.soundName = @"Resources/alarm.mp3";
-				//localNotification.soundName = @"alarm.mp3";	// Works
-				localNotification.soundName = @"crash_short.mp3";
-				
-				// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
-				UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
-				if (currentState == UIApplicationStateActive) {
-					if ([appSettingsVibration isEqualToString:@"on"])
-						AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
-					else
-						AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
-				} 
+			/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
+				//NSLog(@"Sound, alert and badge permissions ");
+			}*/
+			else if (grantedSettings.types & UIUserNotificationTypeAlert){
+				//NSLog(@"Alert Permission Granted");
+				UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+				// Specify after how many second the notification will be delivered
+				//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
+				// Specify notification message text
+				localNotification.alertBody = @"Incoming SenseSoft Mini alarm";
+				// A short description of the reason for the alert (for apple watch) 
+				localNotification.alertTitle = @"SenseSoft Notifications Mini";
+				// Hide the alert button or slider
+				localNotification.hasAction = false;
+				// Specify timeZone for notification delivery
+				localNotification.timeZone = [NSTimeZone defaultTimeZone];
+				// Set the soundName property for the notification if notification sound is enabled
+				if (grantedSettings.types & UIUserNotificationTypeSound){
+					//localNotification.soundName = UILocalNotificationDefaultSoundName;
+					//NSBundle* mainBundle = [NSBundle mainBundle];
+					//localNotification.soundName = @"Resources/alarm.mp3";
+					//localNotification.soundName = @"alarm.mp3";	// Works
+					localNotification.soundName = @"crash_short.mp3";
+
+					// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
+					/*UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];	// Section removed 2017-01-13
+					if (currentState == UIApplicationStateActive) {
+						if ([appSettingsVibration isEqualToString:@"on"])
+							AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
+						else
+							AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
+					}*/
+				}
+				// Increase app icon count by 1 when notification is sent if notification badge is enabled
+				if (grantedSettings.types & UIUserNotificationTypeBadge)
+					localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
+				//localNotification.applicationIconBadgeNumber = 1;
+				// Show the local notification
+				[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+				// Schedule the local notification
+				//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 			}
-			// Increase app icon count by 1 when notification is sent if notification badge is enabled
-			if (grantedSettings.types & UIUserNotificationTypeBadge)
-				localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
-			//localNotification.applicationIconBadgeNumber = 1;
-			// Show the local notification
-			[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
-			// Schedule the local notification
-			//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 		}
+	}
+	else {			// else and its code block added 2017-01-13
+		// The app is in the foreground
+		// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
+		if ([appSettingsVibration isEqualToString:@"on"])
+			AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
+		else
+			AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
 	}
 	
 	// Notify user and save callback
