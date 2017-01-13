@@ -471,6 +471,27 @@ public class GattServerPlugin extends CordovaPlugin
 		//gattServer.connect(device, false);
 	}
 	
+	private void resetAlarmAction(CallbackContext callbackContext)		// Function added 2017-01-17
+	{
+		// Resets the Immediate Alert Service initialized flag.
+		// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
+		// Immediate Alert Service, it writes it's current alert level (always "No Alert", that is alert level 0). This must not be interpreted as an alert.
+		
+		final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
+		if (isService != null){
+			final BluetoothGattCharacteristic alertLevelChar = iaService.getCharacteristic(ALERT_LEVEL_CHAR_UUID);
+			if (alertLevelChar != null)
+				alertLevelChar.setValue(ALERT_LEVEL_LOW);
+		}
+			
+		//Notify user of reseted alarm
+		JSONObject returnObj = new JSONObject();
+		addProperty(returnObj, keyStatus, statusAlarmReseted);
+		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+		pluginResult.setKeepCallback(false);
+		callbackContext.sendPluginResult(pluginResult);
+	}
+
 	//private void alarm(){		// Removed 2017-01-13
 	private void alarm(String alertLevel, String deviceUUID){		// Added 2017-01-13
 		
