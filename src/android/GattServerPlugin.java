@@ -137,6 +137,7 @@ public class GattServerPlugin extends CordovaPlugin
 				}
 			});
 			debugAlert.create().show();
+			return;
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
