@@ -526,7 +526,7 @@ public class GattServerPlugin extends CordovaPlugin
 	}
 
 	//private void alarm(){		// Removed 2017-01-13
-	private void alarm(String alertLevel, String deviceUUID){		// Added 2017-01-13
+	private void alarm(final String alertLevel, final String deviceUUID){		// Added 2017-01-13
 		
 		if (isInBackground) {
 			// Show local notification only if the app is in the background
@@ -637,7 +637,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private void showDebugMsgBox(String message)	// Added 2017-01-10
+	private void showDebugMsgBox(final String message)	// Added 2017-01-10
 	{
 		Runnable runnable = new Runnable() {
             		public void run() {
