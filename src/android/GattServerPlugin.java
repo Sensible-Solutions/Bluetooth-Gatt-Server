@@ -124,7 +124,8 @@ public class GattServerPlugin extends CordovaPlugin
 			//characteristic.setValue(value);		// Removed 2017-01-10
 			//JSONObject returnObj = new JSONObject();	// Added 2017-01-10 (removed 2017-01-13)
 			
-			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));	// Added 2017-01-13
+			//showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));	// Added 2017-01-13
+			showDebugMsgBox("Write request");
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
