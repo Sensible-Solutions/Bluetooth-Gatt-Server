@@ -637,7 +637,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private void showDebugMsgBox(final String message)	// Added 2017-01-10
+	private synchronized void showDebugMsgBox(final String message)	// Added 2017-01-10
 	{
 		Runnable runnable = new Runnable() {
             		public void run() {
