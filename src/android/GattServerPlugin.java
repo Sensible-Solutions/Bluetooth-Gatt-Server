@@ -126,7 +126,17 @@ public class GattServerPlugin extends CordovaPlugin
 			
 			//String sValue = "Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset);
 			//showDebugMsgBox(sValue);	// Added 2017-01-13
-			showDebugMsgBox("Write request");
+			//showDebugMsgBox("Write request");
+			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+			debugAlert.setMessage(message);
+			debugAlert.setTitle("Debug SSNM");
+			debugAlert.setCancelable(false);
+			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.dismiss();
+				}
+			});
+			debugAlert.create().show();
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
