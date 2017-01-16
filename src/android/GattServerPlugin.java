@@ -228,7 +228,18 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			
-			showDebugMsgBox("onServiceAdded called!");
+			//showDebugMsgBox("onServiceAdded called!");
+			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
+			debugAlert.setMessage("onServiceAdded called!");
+			debugAlert.setTitle("Debug SSNM");
+			debugAlert.setCancelable(false);
+			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.dismiss();
+				}
+			});
+			debugAlert.create().show();
+			
 			JSONObject returnObj = new JSONObject();
 			// If statement below added 2016-01-19 for testing
 			if(status != BluetoothGatt.GATT_SUCCESS){
