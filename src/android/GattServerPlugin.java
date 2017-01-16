@@ -230,15 +230,15 @@ public class GattServerPlugin extends CordovaPlugin
 			
 			//showDebugMsgBox("onServiceAdded called!");
 			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-			debugAlert.setMessage("onServiceAdded called!");
-			debugAlert.setTitle("Debug SSNM");
-			debugAlert.setCancelable(false);
-			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			//debugAlert.setMessage("onServiceAdded called!");
+			//debugAlert.setTitle("Debug SSNM");
+			//debugAlert.setCancelable(false);
+			/*debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					dialog.dismiss();
 				}
-			});
-			debugAlert.create().show();
+			});*/
+			//debugAlert.create().show();
 			
 			JSONObject returnObj = new JSONObject();
 			// If statement below added 2016-01-19 for testing
