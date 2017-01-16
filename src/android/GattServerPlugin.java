@@ -128,7 +128,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//showDebugMsgBox(sValue);	// Added 2017-01-13
 			//showDebugMsgBox("Write request");
 			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-			debugAlert.setMessage(message);
+			debugAlert.setMessage("Write request");
 			debugAlert.setTitle("Debug SSNM");
 			debugAlert.setCancelable(false);
 			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
