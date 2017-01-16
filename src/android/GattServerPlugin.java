@@ -484,7 +484,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// Immediate Alert Service, it writes it's current alert level (always "No Alert", that is alert level 0). This must not be interpreted as an alert.
 		
 		final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
-		if (isService != null){
+		if (iaService != null){
 			final BluetoothGattCharacteristic alertLevelChar = iaService.getCharacteristic(ALERT_LEVEL_CHAR_UUID);
 			if (alertLevelChar != null)
 				alertLevelChar.setValue(ALERT_LEVEL_LOW);
