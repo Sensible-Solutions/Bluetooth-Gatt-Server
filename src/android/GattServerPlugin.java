@@ -140,7 +140,7 @@ public class GattServerPlugin extends CordovaPlugin
 				}*/
 				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 				
-				if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value){	// If statement and it's code block added 2017-01-13
+				if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value[0]){	// If statement and it's code block added 2017-01-13
 					// There is an alarm
 					// After connecting to the clip, the clip first sends "No Alert" (sometimes twice). This must not be interpreted as an alarm.
 					// After that, the clip sends toggled alert levels when there are alarms (that is, alternating high and no alert level). 
