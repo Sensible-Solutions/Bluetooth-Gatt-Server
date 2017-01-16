@@ -543,7 +543,7 @@ public class GattServerPlugin extends CordovaPlugin
 		//addProperty(returnObj, "device", device.getAddress());
 		addProperty(returnObj, "device", deviceUUID);
 		//addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
-		addProperty(returnObj, "characteristic", UUID ALERT_LEVEL_CHAR_UUID.toString());
+		addProperty(returnObj, "characteristic", ALERT_LEVEL_CHAR_UUID.toString());
 		//addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
 		addProperty(returnObj, "value", alertLevel);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
