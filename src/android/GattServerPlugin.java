@@ -127,6 +127,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//String sValue = "Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset);
 			//showDebugMsgBox(sValue);	// Added 2017-01-13
 			//showDebugMsgBox("Write request");
+			boolean always = true;
 			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 			debugAlert.setMessage("Write request");
 			debugAlert.setTitle("Debug SSNM");
@@ -137,7 +138,8 @@ public class GattServerPlugin extends CordovaPlugin
 				}
 			});
 			debugAlert.create().show();
-			return;
+			if(always)
+				return;
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
