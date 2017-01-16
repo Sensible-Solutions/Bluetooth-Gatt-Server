@@ -637,7 +637,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private void showDebugMsgBox(String message)	// Added 2017-01-10
+	public void showDebugMsgBox(String message)	// Added 2017-01-10
 	{
 		AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
 		debugAlert.setMessage(message);
