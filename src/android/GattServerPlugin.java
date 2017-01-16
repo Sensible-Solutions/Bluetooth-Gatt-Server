@@ -52,8 +52,8 @@ public class GattServerPlugin extends CordovaPlugin
 {
 	// Immediate alert service
 	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");	// Service UUID
-	//private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (removed 2017-01-13)
-	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (added 2017-01-13)
+	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (removed 2017-01-13)
+	//private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (added 2017-01-13)
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_VALUE = 2;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE = 17;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_OFFSET = 0;
@@ -439,8 +439,8 @@ public class GattServerPlugin extends CordovaPlugin
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
 			final BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
-			//characteristic.setValue(ALERT_LEVEL_HIGH);	// Removed 2017-01-13
-			characteristic.setValue(ALERT_LEVEL_LOW);	// Added 2017-01-13
+			characteristic.setValue(ALERT_LEVEL_HIGH);	// Removed 2017-01-13
+			//characteristic.setValue(ALERT_LEVEL_LOW);	// Added 2017-01-13
 			//immediateAlertService.addCharacteristic(characteristic);
 			if(!immediateAlertService.addCharacteristic(characteristic)){
 				// Notify user of error
