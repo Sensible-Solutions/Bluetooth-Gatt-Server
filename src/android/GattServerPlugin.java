@@ -126,20 +126,8 @@ public class GattServerPlugin extends CordovaPlugin
 			
 			//String sValue = "Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset);
 			//showDebugMsgBox(sValue);	// Added 2017-01-13
-			showDebugMsgBox("Write request");
-			/*boolean always = true;
-			AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-			debugAlert.setMessage("Write request");
-			debugAlert.setTitle("Debug SSNM");
-			debugAlert.setCancelable(false);
-			debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.dismiss();
-				}
-			});
-			debugAlert.create().show();
-			if(always)
-				return;*/
+			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
+			//showDebugMsgBox("Write request");
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
@@ -229,16 +217,6 @@ public class GattServerPlugin extends CordovaPlugin
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			
 			showDebugMsgBox("onServiceAdded called!");
-			//AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-			//debugAlert.setMessage("onServiceAdded called!");
-			//debugAlert.setTitle("Debug SSNM");
-			//debugAlert.setCancelable(false);
-			/*debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.dismiss();
-				}
-			});*/
-			//debugAlert.create().show();
 			
 			JSONObject returnObj = new JSONObject();
 			// If statement below added 2016-01-19 for testing
@@ -637,7 +615,7 @@ public class GattServerPlugin extends CordovaPlugin
 			return characteristic.getStringValue(0);
 	}
 	
-	private synchronized void showDebugMsgBox(final String message)	// Added 2017-01-10
+	private synchronized void showDebugMsgBox(final String message)		// Added 2017-01-13
 	{
 		Runnable runnable = new Runnable() {
             		public void run() {
@@ -654,16 +632,6 @@ public class GattServerPlugin extends CordovaPlugin
            		 };
 		};
 		cordova.getActivity().runOnUiThread(runnable);
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage(message);
-		debugAlert.setTitle("Debug SSNM");
-		debugAlert.setCancelable(false);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		debugAlert.create().show();*/
 	}
 	
 	/*private boolean isInBackground() {	// Added 2017-01-09
