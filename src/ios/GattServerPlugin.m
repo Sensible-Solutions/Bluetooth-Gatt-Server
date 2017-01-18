@@ -36,6 +36,7 @@ NSString *const statusAlarmReseted =  @"alarmReseted";
 
 // Error Types
 NSString *const errorStartServer = @"startServer";
+NSString *const errorNoPermission = @"noPermission";	// Added 2017-01-18
 //NSString *const errorConnectionState = @"serverConnectionState";
 NSString *const errorServiceAdded = @"serviceAdded";
 NSString *const errorArguments = @"arguments";
@@ -136,14 +137,15 @@ NSString *const KEY_LOG_SETTING = @"log";
     appSettingsLog = nil;
     UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
-	/*if (grantedSettings.types == UIUserNotificationTypeNone) {	// Removed 2017-01-18
+	if (grantedSettings.types == UIUserNotificationTypeNone) {
         	//NSLog(@"No notification permission granted");
-        	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil];
+        	//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil]; // Removed 2017-01-18
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorNoPermission, keyError, logNoPermission, keyMessage, nil]; // Added 2018-01-18
         	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-		return;
-	}*/
+		//return;	// Removed 2017-01-18
+	}
 	
 	iasInitialized = false;
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
