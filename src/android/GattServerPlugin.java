@@ -110,6 +110,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logRequestNotSupported = "Request is not supported"; 	// Added 2017-01-10
 	
 	private boolean isInBackground = false;			// Added 2017-01-10
+	private boolean iasInitialized = false; 		// Added 2017-01-18
 	//private BluetoothGattServer gattServer;
 	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
 	//private BluetoothGattService immediateAlertService;
@@ -361,7 +362,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		
-		//If the GATT server is already running, don't start it again. Invoke the success callback and return
+		// If GATT server has been initialized or the GATT server is already running, don't start it again
 		//if (serverRunningCallbackContext != null)
 		if((gattServer != null) && (serverRunningCallbackContext != null))
 		{
@@ -369,6 +370,7 @@ public class GattServerPlugin extends CordovaPlugin
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
+			iasInitialized = false; 				// Added 2017-01-18
 			//callbackContext.error(returnObj);
 			//serverRunningCallbackContext.error(returnObj);	// Added 7/8 instead of line above
 			return;
