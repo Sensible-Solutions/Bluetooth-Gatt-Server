@@ -65,7 +65,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static byte[] ALERT_LEVEL_HIGH = {0x02};
 	
 	// Linkloss service
-	private final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
+	//private final static UUID LINKLOSS_SERVICE_UUID = UUID.fromString("00001803-0000-1000-8000-00805f9b34fb");				// Service UUID
 	
 	// General callback variables
 	private CallbackContext serverRunningCallbackContext = null;
@@ -92,6 +92,7 @@ public class GattServerPlugin extends CordovaPlugin
 	//private final String errorInitialize = "initialize";
 	//private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
+	private final static String errorNoPermission = "noPermission"; // Added 2017-01-18
 	//private final static String errorGattServer = "gattServer";	// Added 2016-01-14
 	private final static String errorServerState = "serverState";	// Added 2016-01-19
 	private final static String errorServerStateOff = "serverStateOff";
@@ -104,6 +105,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
+	private final static StringlogNoPermission = "No permission granted for local notifications";	// Added 2017-01-18
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
