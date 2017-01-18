@@ -35,6 +35,7 @@ import android.media.Ringtone;
 import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
+//import android.support.v4.app.NotificationManagerCompat;
 import android.app.NotificationManager;
 //import android.app.ActivityManager;				// Added 2017-01-09
 //import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
