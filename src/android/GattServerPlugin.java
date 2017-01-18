@@ -35,7 +35,7 @@ import android.media.Ringtone;
 import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
-//import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.NotificationManagerCompat;	// Added 2017-01-18
 import android.app.NotificationManager;
 //import android.app.ActivityManager;				// Added 2017-01-09
 //import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
@@ -364,7 +364,18 @@ public class GattServerPlugin extends CordovaPlugin
 			// end test
 		}
 		
-		
+		if(!NotificationManagerCompat.areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
+			// NotificationManagerCompat.areNotificationsEnabled() from the support library returns true
+			// if notifications are enabled for the app and if API >= 19. If Api < 19 it will always return true (even if
+			// notifications actually are disabled for the app).
+			JSONObject returnJsonObj = new JSONObject();
+			addProperty(returnJsonObj, keyError, errorNoPermission);
+			addProperty(returnJsonObj, keyMessage, logNoPermission);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnJsonObj);
+			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			callbackContext.sendPluginResult(pluginResult);
+			// return;
+		}
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
 		//if (serverRunningCallbackContext != null)
 		if((gattServer != null) && (serverRunningCallbackContext != null))
