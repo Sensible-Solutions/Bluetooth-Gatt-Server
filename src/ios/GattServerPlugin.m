@@ -611,6 +611,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	
 	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	[debugMessage show];
+	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-18
 	if (currentState == UIApplicationStateInactive) { 	// If statement and its code added 2017-01-18
 		// User clicked on notification while the app was in the background
 		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications from notification center
