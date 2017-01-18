@@ -227,7 +227,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 				// A short description of the reason for the alert (for apple watch) 
 				localNotification.alertTitle = @"SenseSoft Notifications Mini";
 				// Hide the alert button or slider
-				localNotification.hasAction = false;
+				localNotification.hasAction = true;
 				// Specify timeZone for notification delivery
 				localNotification.timeZone = [NSTimeZone defaultTimeZone];
 				// Set the soundName property for the notification if notification sound is enabled
@@ -593,7 +593,8 @@ NSString *const KEY_LOG_SETTING = @"log";
     	//return YES;
 }
 
-// Called after a local notification was received (if the app is the foreground or after the user has clicked on the notification when app was in the background)
+// Called after a local notification was received (if the app is the foreground
+// or after the user has clicked on the notification, with an alert/action button or slider, when app was in the background)
 - (void) didReceiveLocalNotification:(UILocalNotification*) notification
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
