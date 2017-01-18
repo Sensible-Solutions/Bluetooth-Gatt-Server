@@ -112,6 +112,15 @@ NSString *const KEY_LOG_SETTING = @"log";
 		}	
 	}
 	
+	if (grantedSettings.types == UIUserNotificationTypeNone) {
+        	//NSLog(@"No notification permission granted");
+        	//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil]; // Removed 2017-01-18
+		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorNoPermission, keyError, logNoPermission, keyMessage, nil]; // Added 2018-01-18
+        	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+		[pluginResult setKeepCallbackAsBool:true];
+	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		//return;	// Removed 2017-01-18
+	}
 	
 	//If GATT server has been initialized or the GATT server is already running, don't start it again
 	 //if (serverRunningCallback != nil)
@@ -137,7 +146,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     appSettingsLog = nil;
     UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
-	if (grantedSettings.types == UIUserNotificationTypeNone) {
+	/*if (grantedSettings.types == UIUserNotificationTypeNone) {
         	//NSLog(@"No notification permission granted");
         	//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil]; // Removed 2017-01-18
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorNoPermission, keyError, logNoPermission, keyMessage, nil]; // Added 2018-01-18
@@ -145,7 +154,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		[pluginResult setKeepCallbackAsBool:true];
 	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		//return;	// Removed 2017-01-18
-	}
+	}*/
 	
 	iasInitialized = false;
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -217,7 +226,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 				// A short description of the reason for the alert (for apple watch) 
 				localNotification.alertTitle = @"SenseSoft Notifications Mini";
 				// Hide the alert button or slider
-				localNotification.hasAction = false;
+				localNotification.hasAction = true;
 				// Specify timeZone for notification delivery
 				localNotification.timeZone = [NSTimeZone defaultTimeZone];
 				// Set the soundName property for the notification if notification sound is enabled
