@@ -227,7 +227,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 				// A short description of the reason for the alert (for apple watch) 
 				localNotification.alertTitle = @"SenseSoft Notifications Mini";
 				// Hide the alert button or slider
-				localNotification.hasAction = true;
+				localNotification.hasAction = false;
 				// Specify timeZone for notification delivery
 				localNotification.timeZone = [NSTimeZone defaultTimeZone];
 				// Set the soundName property for the notification if notification sound is enabled
@@ -589,7 +589,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didFinishLaunchingWithOptions called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	[debugMessage show];
 	
-    	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
+    	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notification center
     	//return YES;
 }
 
@@ -610,13 +610,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 	//application.applicationIconBadgeNumber = 0; 
 	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
 	
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	/*UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	[debugMessage show];
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-18
 	if (currentState == UIApplicationStateInactive) { 	// If statement and its code added 2017-01-18
 		// User clicked on notification while the app was in the background
 		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications from notification center
-	} 
+	}*/
 }
 
 // Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
@@ -702,6 +702,24 @@ NSString *const KEY_LOG_SETTING = @"log";
         AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
 }
 
+// Called when the system is about to start resuming a previous activity (application is put in the background)
+- (void) onPause
+{
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onPause called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+	
+	[super onPause];
+}
+// Called when the activity will start interacting with the user (application is retrieved from the background)
+- (void) onResume
+{
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onResume called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notifications center
+	
+	[super onResume];
+}
+
 // Called before app terminates
 - (void) onAppTerminate
 {
@@ -716,12 +734,15 @@ NSString *const KEY_LOG_SETTING = @"log";
 	// Remove all, by the app, published services from the local GATT database.
 	// Removes only the instance of the service that your app added to the database (using the addService: method).
 	//[peripheralManager removeAllServices];
+	 [super onAppTerminate];
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
 - (void) onReset
 {
 	// Not implemented
+	
+	 [super onReset];
 }
 
 @end
