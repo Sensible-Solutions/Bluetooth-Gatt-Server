@@ -112,6 +112,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 		}	
 	}
 	
+	UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
         	//NSLog(@"No notification permission granted");
         	//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil]; // Removed 2017-01-18
@@ -144,9 +145,9 @@ NSString *const KEY_LOG_SETTING = @"log";
     appSettingsSound = nil;
     appSettingsVibration = nil;
     appSettingsLog = nil;
-    UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
-	/*if (grantedSettings.types == UIUserNotificationTypeNone) {
+	/*UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+	if (grantedSettings.types == UIUserNotificationTypeNone) {
         	//NSLog(@"No notification permission granted");
         	//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil]; // Removed 2017-01-18
 		NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorNoPermission, keyError, logNoPermission, keyMessage, nil]; // Added 2018-01-18
