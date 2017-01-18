@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin implementation for the Bluetooth GATT Profile server role.
@@ -136,14 +136,14 @@ NSString *const KEY_LOG_SETTING = @"log";
     appSettingsLog = nil;
     UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     
-	if (grantedSettings.types == UIUserNotificationTypeNone) {
+	/*if (grantedSettings.types == UIUserNotificationTypeNone) {	// Removed 2017-01-18
         	//NSLog(@"No notification permission granted");
         	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorStartServer, keyError, logNoPermission, keyMessage, nil];
         	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		return;
-	}
+	}*/
 	
 	iasInitialized = false;
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -574,6 +574,9 @@ NSString *const KEY_LOG_SETTING = @"log";
          	[NSNotification notificationWithName:CDVLocalNotification
                                        object:localNotification]];
     	}*/
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didFinishLaunchingWithOptions called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+	
     	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
     	//return YES;
 }
@@ -583,14 +586,14 @@ NSString *const KEY_LOG_SETTING = @"log";
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
 	// Manually display alert message and play sound.
-	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
-	if (currentState == UIApplicationStateActive) { 
+	//UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];
+	//if (currentState == UIApplicationStateActive) { 
 		// Play sound from the main bundle (because sound for local notifications are not played if the app is in the foreground)
 		//AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
 		//AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
 		//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"You have a notification, please check"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 		//[debugMessage show];
-	} 
+	//} 
 	//application.applicationIconBadgeNumber = 0; 
 	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
 }
@@ -599,6 +602,9 @@ NSString *const KEY_LOG_SETTING = @"log";
 - (void) didRegisterUserNotificationSettings:(UIUserNotificationSettings*) settings
 {
 	// Not implemented
+	
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
 }
 
 #pragma mark -
