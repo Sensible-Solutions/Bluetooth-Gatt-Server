@@ -227,7 +227,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 				// A short description of the reason for the alert (for apple watch) 
 				localNotification.alertTitle = @"SenseSoft Notifications Mini";
 				// Hide the alert button or slider
-				localNotification.hasAction = true;
+				localNotification.hasAction = false;
 				// Specify timeZone for notification delivery
 				localNotification.timeZone = [NSTimeZone defaultTimeZone];
 				// Set the soundName property for the notification if notification sound is enabled
@@ -573,7 +573,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 
 // Application delegates
 
-// Called when app has started (by clicking on a local notification)
+// Called when app has started (also when "cold starting" the app by clicking on a local notification)
 //- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 - (void) didFinishLaunchingWithOptions:(NSNotification*) notification
 {
@@ -593,7 +593,7 @@ NSString *const KEY_LOG_SETTING = @"log";
     	//return YES;
 }
 
-// Called after a local notification was received (if the app is the foreground)
+// Called after a local notification was received (if the app is the foreground or after the user has clicked on the notification when app was in the background)
 - (void) didReceiveLocalNotification:(UILocalNotification*) notification
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
@@ -608,6 +608,13 @@ NSString *const KEY_LOG_SETTING = @"log";
 	//} 
 	//application.applicationIconBadgeNumber = 0; 
 	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
+	
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+	if (currentState == UIApplicationStateInactive) { 	// If statement and its code added 2017-01-18
+		// User clicked on notification while the app was in the background
+		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications from notification center
+	} 
 }
 
 // Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
@@ -615,8 +622,8 @@ NSString *const KEY_LOG_SETTING = @"log";
 {
 	// Not implemented
 	
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
+	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	//[debugMessage show];
 }
 
 #pragma mark -
