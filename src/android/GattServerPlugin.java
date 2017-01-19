@@ -105,7 +105,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
-	private final static StringlogNoPermission = "No permission granted for local notifications";	// Added 2017-01-18
+	private final static String logNoPermission = "No permission granted for local notifications";	// Added 2017-01-18
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
 	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
