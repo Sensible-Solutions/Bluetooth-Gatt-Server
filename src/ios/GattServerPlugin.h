@@ -38,5 +38,6 @@
 - (void)registerNotifications:(CDVInvokedUrlCommand *)command;
 - (void)setAlarmSettings:(CDVInvokedUrlCommand *)command;
 - (void)getAlarmSettings:(CDVInvokedUrlCommand *)command;
+- (void)setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command;	// Added 2017-01-19
 
 @end
