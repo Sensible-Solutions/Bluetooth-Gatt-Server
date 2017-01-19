@@ -364,7 +364,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// end test
 		}
 		
-		if(!NotificationManagerCompat.areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
+		if(!NotificationManagerCompat.from(cordova.getApplication()).areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
 			// NotificationManagerCompat.areNotificationsEnabled() from the support library returns true
 			// if notifications are enabled for the app and if API >= 19. If Api < 19 it will always return true (even if
 			// notifications actually are disabled for the app).
