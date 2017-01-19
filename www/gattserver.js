@@ -25,6 +25,9 @@ var gattserver = {
 			"vibration": vibration,
 			"log":log
 		}]); 
-	}
+	},
+	setApplicationBadgeNumber: function(successCallback, badgeNumber) {
+		cordova.exec(successCallback, successCallback, gattServerName, "setApplicationBadgeNumber", [badgeNumber]);
+	},	
 }
 module.exports = gattserver;
