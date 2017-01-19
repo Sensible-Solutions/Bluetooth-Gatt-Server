@@ -261,6 +261,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	else {			// else and its code block added 2017-01-13
 		// The app is in the foreground
 		// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
+		// Audio is played asynchronously so no need to play it in a background thread.
 		if ([appSettingsVibration isEqualToString:@"on"])
 			AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
 		else
