@@ -703,22 +703,15 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
-- (void) onPause
+/*- (void) onPause
 {
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onPause called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
-	
-	[super onPause];
+	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
 }
 // Called when the activity will start interacting with the user (application is retrieved from the background)
 - (void) onResume
 {
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onResume called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notifications center
-	
-	[super onResume];
-}
+	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
+}*/
 
 // Called before app terminates
 - (void) onAppTerminate
@@ -741,8 +734,11 @@ NSString *const KEY_LOG_SETTING = @"log";
 - (void) onReset
 {
 	// Not implemented
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onReset called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notifications center
 	
-	 [super onReset];
+	[super onReset];
 }
 
 @end
