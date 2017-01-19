@@ -6,11 +6,11 @@ var gattserver = {
 	resetAlarm: function(successCallback) {
 		cordova.exec(successCallback, successCallback, gattServerName, "resetAlarm", []);
 	},
-	alarm: function(successCallback, errorCallback, params) {
+	alarm: function(successCallback, errorCallback) {
 		cordova.exec(successCallback, errorCallback, gattServerName, "alarm", []); 
 	},
-	registerNotifications: function(successCallback, errorCallback, params) {
-		cordova.exec(successCallback, errorCallback, gattServerName, "registerNotifications", [params]); 
+	registerNotifications: function(successCallback) {
+		cordova.exec(successCallback, successCallback, gattServerName, "registerNotifications", []); 
 	},
 	isBluetoothSharingAuthorized: function(successCallback) {
 		cordova.exec(successCallback, successCallback, gattServerName, "isBluetoothSharingAuthorized", []); 
