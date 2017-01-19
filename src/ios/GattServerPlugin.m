@@ -731,14 +731,10 @@ NSString *const KEY_LOG_SETTING = @"log";
 }
 
 // Called when plugin resets (navigates to a new page or refreshes)
-- (void) onReset
+/*- (void) onReset
 {
 	// Not implemented
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"onReset called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notifications center
-	
-	[super onReset];
-}
+	//[super onReset];
+}*/
 
 @end
