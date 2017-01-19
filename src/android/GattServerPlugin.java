@@ -647,7 +647,7 @@ public class GattServerPlugin extends CordovaPlugin
 				debugAlert.create().show();
            		 };
 		};
-		cordova.getActivity().runOnUiThread(runnable);
+		cordova.getActivity().runOnUiThread(runnable);	// Run it on the ui thread as cordova plugins runs on the WebCore thread (also the plugin's JavaScript runs on the WebCore thread).
 	}
 	
 	/*private boolean isInBackground() {	// Added 2017-01-09
