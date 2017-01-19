@@ -350,11 +350,11 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Sets the application badge number
 - (void)setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command	// Function added 2017-01-19
 {
-    	NSInteger myNumber = [command.arguments objectAtIndex:0];
+    	int myNumber = [command.arguments objectAtIndex:0];
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:myNumber];	// Also clears the notifications
 	
 	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"setApplicationBadgeNumber called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:myNumber delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[@(myInt) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	[debugMessage show];
 	
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
