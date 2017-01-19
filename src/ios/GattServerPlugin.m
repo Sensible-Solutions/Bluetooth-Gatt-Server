@@ -299,15 +299,19 @@ NSString *const KEY_LOG_SETTING = @"log";
 		types |= UIUserNotificationTypeSound;
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+	
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
+	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
 // Get granted local notifications for app
 - (void)getAlarmSettings:(CDVInvokedUrlCommand *)command
 {
-	// Notify user of settings and save callback
+	// Notify user of settings
 	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
-	[pluginResult setKeepCallbackAsBool:true];
+	[pluginResult setKeepCallbackAsBool:false];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -319,6 +323,10 @@ NSString *const KEY_LOG_SETTING = @"log";
 	UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];	// First time called, iOS presents a dialog that asks the user for permission to present the types of notifications the app registered
+	
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
+	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
 // Check the app’s authorization status for sharing data while in the background state.
@@ -336,6 +344,17 @@ NSString *const KEY_LOG_SETTING = @"log";
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 	[pluginResult setKeepCallbackAsBool:false];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+// Sets the application badge number
+- (void)setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command	// Function added 2017-01-19
+{
+    	NSInteger myNumber = [command.arguments objectAtIndex:0];
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:myNumber];	// Also clears the notifications
+	
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
+	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
 
@@ -716,7 +735,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 // Called before app terminates
 - (void) onAppTerminate
 {
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notification center
     
     	// Call the following function when the sound is no longer used
 	// (must be done AFTER the sound is done playing)
