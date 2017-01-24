@@ -479,13 +479,16 @@ public class GattServerPlugin extends CordovaPlugin
 			try {
 				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
 				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification
+				//mediaPlayer.setLooping(true);						// Use when playing default notification
 				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm/ringtone and own sound file
+				//mediaPlayer.setLooping(true);		// Use when playing default alarm/ringtone and own sound file
 				mediaPlayer.prepare();
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mp)
 					{
 						mp.release();
+						//mp.reset();
 					}
 				});
 				mediaPlayer.start();
