@@ -122,47 +122,45 @@ public class GattServerPlugin extends CordovaPlugin
 		// Remote client characteristic write request
 		@Override
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
+			
 			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 			//characteristic.setValue(value);		// Removed 2017-01-10
 			//JSONObject returnObj = new JSONObject();	// Added 2017-01-10 (removed 2017-01-13)
 			
-			//String sValue = "Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset);
-			//showDebugMsgBox(sValue);	// Added 2017-01-13
 			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
-			//showDebugMsgBox("Write request");
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
-			
-			
-				//characteristic.setValue(value);		// Added 2017-01-10 (removed 2017-01-13)
-				/*try {		// Moved to alarm() 2017-01-10
-					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-					Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
-					r.play();
-				} catch (Exception e) {
-
-				}*/
-				//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
+				// Section added 2017-01-24
+				int alertLevel = (int)value[0];
+				characteristic.setValue(value);
+				if(!iasInitialized && alertLevel != 0){
+					// The first alarm received after a nRF8002 module has connected to the GATT server or
+					// the alarm has been reseted by calling resetAlarm()
+					iasInitialized = true;
+					alarm(parseCharacteristicValue(characteristic), device.getAddress());
+				}
+				else if (iasInitialized){
+					// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends
+					// "toggled" levels. That is, it sends "No Alert" on every second positive flank and the
+					// configured alert level on every other. So interpret every write to this characteristic as
+					// an alarm after the first alarm.
+					alarm(parseCharacteristicValue(characteristic), device.getAddress());
+				}
+				else {
+					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
+					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
+					// This must not be interpreted as an alert.
+				}
+				// End section added 2017-01-24
 				
-				if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value[0]){	// If statement and it's code block added 2017-01-13
+				/*if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value[0]){	// If statement and it's code block added 2017-01-13 (removed 2017-01-24)
 					// There is an alarm
 					// After connecting to the clip, the clip first sends "No Alert" (sometimes twice). This must not be interpreted as an alarm.
 					// After that, the clip sends toggled alert levels when there are alarms (that is, alternating high and no alert level). 
 					characteristic.setValue(value);		// Set the value of the characteristic to the new alert level
 					alarm(parseCharacteristicValue(characteristic), device.getAddress());
-				}
-				
-				
-				/*alarm();		// Code block removed 2017-01-13
-				//Notify user of started server and save callback
-				addProperty(returnObj, keyStatus, statusWriteRequest);
-				addProperty(returnObj, "device", device.getAddress());
-				addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
-				addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
-				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-				serverRunningCallbackContext.sendPluginResult(pluginResult);*/
+				}*/
 				
 				if (responseNeeded)	// If and it's code block added 2017-01-10
 					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
@@ -178,8 +176,6 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(true);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
-			/*if (responseNeeded)		// Removed 2017-01-10
-				gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);*/
 		}
 		
 		@Override
@@ -443,7 +439,6 @@ public class GattServerPlugin extends CordovaPlugin
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			//.setSmallIcon(R.drawable.screen_background_dark)
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			.setPriority(NotificationCompat.PRIORITY_MAX)
 			//.setAutoCancel(true)
@@ -472,7 +467,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Section added 2017-01-13
-		//Notify user of started server and save callback
+		// Notify user of started server and save callback
 		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
 		//addProperty(returnObj, "device", device.getAddress());
@@ -489,6 +484,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarmAction(CallbackContext callbackContext)
 	{
 		// Action function just to test local notifications from outside the plugin
+		
 		// Show local notification
 		long[] pattern = { 0, 200, 500 };
 		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
@@ -564,41 +560,7 @@ public class GattServerPlugin extends CordovaPlugin
 		cordova.getActivity().runOnUiThread(runnable);	// Run it on the ui thread as cordova plugins runs on the WebCore thread (also the plugin's JavaScript runs on the WebCore thread).
 	}
 	
-	/*private boolean isInBackground() {	// Added 2017-01-09
-		
-		// Checks if the app is in the background
-		
-		boolean inBackground = true;
-		
-		ActivityManager activityManager = (ActivityManager) cordova.getActivity().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            		List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
-            		for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                		if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    			for (String activeProcess : processInfo.pkgList) {
-                        			if (activeProcess.equals(cordova.getActivity().getApplicationContext().getPackageName())) {
-                            				inBackground = false;
-                       				 }
-                    			}
-               			 }
-           		 }
-       		}
-		else {
-			List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-			if (tasks.get(0).topActivity.getPackageName().equalsIgnoreCase(cordova.getActivity().getApplicationContext().getPackageName()))
-				inBackground = false;
-		}
-		
-		return inBackground;
-	}*/
 	
-	// Plugin initialize method for any start-up logic (see https://cordova.apache.org/docs/en/5.0.0/guide/platforms/android/plugin.html)
-	/*@Override
-	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-    		super.initialize(cordova, webView);
-    		// your init code here
-	}*/
 	
 	/*****************************************************************************************************
 	* Cordova Plugin (see CordovaPlugin.java)
@@ -610,16 +572,6 @@ public class GattServerPlugin extends CordovaPlugin
 	 	super.pluginInitialize();
 		isInBackground = false;		// App is in foreground (added 2017-01-10)
 		showDebugMsgBox("pluginInitialize() called!");	// Added 2017-01-10
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage("pluginInitialize() called!");
-		debugAlert.setTitle("Debug SSNM");
-		debugAlert.setCancelable(false);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		debugAlert.create().show();*/
 	 }
 	
 	/*@Override
@@ -645,16 +597,6 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = true;		// App is put in background (added 2017-01-10)
 		super.onPause(multitasking);
 		showDebugMsgBox("onPause() called!");	// Added 2017-01-10
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage("onPause(...) called!");
-		debugAlert.setTitle("Debug SSNM");
-		debugAlert.setCancelable(false);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		debugAlert.create().show();*/
     	}
 	
 	@Override
@@ -663,16 +605,6 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is put in foreground (added 2017-01-10)
 		super.onResume(multitasking);
 		showDebugMsgBox("onResume() called!");	// Added 2017-01-10
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		debugAlert.setMessage("onResume(...) called!");
-		debugAlert.setTitle("Debug SSNM");
-		debugAlert.setCancelable(false);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				dialog.dismiss();
-			}
-		});
-		debugAlert.create().show();*/
     	}
 	
 	/*@Override
