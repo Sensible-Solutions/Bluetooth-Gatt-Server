@@ -138,14 +138,14 @@ public class GattServerPlugin extends CordovaPlugin
 					// The first alarm received after a nRF8002 module has connected to the GATT server or
 					// the alarm has been reseted by calling resetAlarm()
 					iasInitialized = true;
-					alarm(parseCharacteristicValue(characteristic), device.getAddress());
+					alarm(parseCharacteristicValue(alertLevel), device.getAddress());
 				}
 				else if (iasInitialized){
 					// When an Immediate Alert level is set to trigger on "activated" on the nRF8002, it sends
 					// "toggled" levels. That is, it sends "No Alert" on every second positive flank and the
 					// configured alert level on every other. So interpret every write to this characteristic as
 					// an alarm after the first alarm.
-					alarm(parseCharacteristicValue(characteristic), device.getAddress());
+					alarm(parseCharacteristicValue(alertLevel), device.getAddress());
 				}
 				else {
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
@@ -470,14 +470,11 @@ public class GattServerPlugin extends CordovaPlugin
 		// Notify user of started server and save callback
 		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
-		//addProperty(returnObj, "device", device.getAddress());
 		addProperty(returnObj, "device", deviceUUID);
-		//addProperty(returnObj, "characteristic", characteristic.getUuid().toString());
 		addProperty(returnObj, "characteristic", ALERT_LEVEL_CHAR_UUID.toString());
-		//addProperty(returnObj, "value", parseCharacteristicValue(characteristic));
 		addProperty(returnObj, "value", alertLevel);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-		pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+		pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 		serverRunningCallbackContext.sendPluginResult(pluginResult);
 		// End section added 2017-01-13
 	}
@@ -519,9 +516,21 @@ public class GattServerPlugin extends CordovaPlugin
 			{ /* Ignore */ }
 	  }
   
-	private String parseCharacteristicValue(final BluetoothGattCharacteristic characteristic)
+	//private String parseCharacteristicValue(final BluetoothGattCharacteristic characteristic)	// Removed 2017-01-24
+	private String parseCharacteristicValue(final int value)	// Added 2017-01-24
 	{
-		if (characteristic == null)
+		switch (value) {
+			case 0:
+				return "No Alert";
+			case 1:
+				return "Mild Alert";
+			case 2:
+				return "High Alert";
+			default:
+				return "Parse Error";
+		}
+		
+		/*if (characteristic == null)	// Section removed 2017-01-24
 			return "";
 
 		if (characteristic.getUuid() == ALERT_LEVEL_CHAR_UUID) {
@@ -538,7 +547,7 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 		}	
 		else	
-			return characteristic.getStringValue(0);
+			return characteristic.getStringValue(0);*/
 	}
 	
 	private synchronized void showDebugMsgBox(final String message)		// Added 2017-01-13
