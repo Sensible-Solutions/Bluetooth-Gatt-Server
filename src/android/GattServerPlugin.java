@@ -33,10 +33,12 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
 import android.media.AudioManager;				// Added 2017-01-24
+import android.media.MediaPlayer;				// Added 2017-01-24
 import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;	// Added 2017-01-18
+import android.support.v4.content.ContextCompat;		// Added 2017-01-24
 import android.app.NotificationManager;
 //import android.app.ActivityManager;				// Added 2017-01-09
 //import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
@@ -44,6 +46,7 @@ import android.app.NotificationManager;
 import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
 import android.content.DialogInterface;		// For showing debug messaages
+import android.content.pm.PackageManager;	// Added 2017-01-24
 
 import java.util.ArrayList;
 import java.util.List;
@@ -450,28 +453,60 @@ public class GattServerPlugin extends CordovaPlugin
 			.setGroup("SENSESOFT_MINI")
 			.setTicker("SenseSoft Mini");
 			mBuilder.setVibrate(pattern);
-			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
-				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played
-			}
-			else {
+			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
+				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+			//}
+			/*else {
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
 				mBuilder.setSound(soundPath, AudioAttributes.USAGE_ALARM);	// Use if sound is to be played
-			}	
+			}*/	
 			//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of above to use the default notification sound
 
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
 		}
 		else if(!isInBackground){		// else statement and its code block added 2017-01-10
-			// Manually play sound if app is in the foreground
+			// Manually play alarm sound if app is in the foreground
+			// Section added 2017-01-24
+			Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
+			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
+			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone 
+			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
+			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
+				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
+				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm/ringtone and own sound file
+				mediaPlayer.prepare();
+				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					@Override
+					public void onCompletion(MediaPlayer mp)
+					{
+						mp.release();
+					}
+				});
+				mediaPlayer.start();
+				// Vibrate the device if it has hardware vibrator and permission
+				Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+				if (vib.hasVibrator()){
+					if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+						vib.vibrate(1000);
+					}
+				}
+			} catch (Exception ex) {
+				// Do nothing
+				showDebugMsgBox("Error playing sound!");
+			}
+			// End section added 2017-01-24
+			
+			/*try {		// Removed 2017-01-24
 				Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 				Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
 				r.play();
 			} catch (Exception e) {
 				// Do nothing
-			}
+			}*/
 		}
 		
 		// Section added 2017-01-13
