@@ -47,6 +47,8 @@ import android.R;
 import android.app.AlertDialog;			// For showing debug messaages
 import android.content.DialogInterface;		// For showing debug messaages
 import android.content.pm.PackageManager;	// Added 2017-01-24
+import android.os.Vibrator;			// Added 2017-01-24
+import android.Manifest.permission;		// Added 2017-01-24
 
 import java.util.ArrayList;
 import java.util.List;
