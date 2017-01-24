@@ -113,10 +113,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logRequestNotSupported = "Request is not supported"; 	// Added 2017-01-10
 	
 	private boolean isInBackground = false;			// Added 2017-01-10
-	private boolean iasInitialized = false; 		// Added 2017-01-18
-	//private BluetoothGattServer gattServer;
-	private BluetoothGattServer gattServer = null;		// Added 2016-01-19 instead of the line above
-	//private BluetoothGattService immediateAlertService;
+	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized. Added 2017-01-24
+	private BluetoothGattServer gattServer = null;
 	
 	// Bluetooth GATT interface callbacks
 	private final BluetoothGattServerCallback mBluetoothGattServerCallback = new BluetoothGattServerCallback() {
@@ -308,6 +306,8 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
+		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be reseted
+		// when calling this function.
 		
 		JSONObject returnObj = new JSONObject();
 		
@@ -334,9 +334,9 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		if(!NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
-			// areNotificationsEnabled() from the support library returns true if notifications are enabled for
-			// the app and if API >= 19. If Api < 19 it will always return true (even if notifications actually
-			// are disabled for the app).
+			// The function areNotificationsEnabled() from the support library returns true if notifications are
+			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
+			// actually are disabled for the app).
 			JSONObject returnJsonObj = new JSONObject();
 			addProperty(returnJsonObj, keyError, errorNoPermission);
 			addProperty(returnJsonObj, keyMessage, logNoPermission);
@@ -345,31 +345,33 @@ public class GattServerPlugin extends CordovaPlugin
 			callbackContext.sendPluginResult(pluginResult);
 			// return;
 		}
+		
+		iasInitialized = false; 	// Reset the flag indicating that Immediate Alert Service has been initialized. Added 2017-01-24
+		
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
 		if((gattServer != null) && (serverRunningCallbackContext != null))
 		{
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			iasInitialized = false; 				// Added 2017-01-18
-			//callbackContext.error(returnObj);
-			//serverRunningCallbackContext.error(returnObj);	// Added 7/8 instead of line above
+			//iasInitialized = false; 	// Added 2017-01-24
 			return;
 		}
 		
 		// Open a GATT server if not already opened
 		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		if(gattServer == null)
+		if(gattServer == null){
 			gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
-		if(gattServer == null){		// If statement added 2016-01-14
-			// Notify user of unsupported Bluetooth Smart
-			addProperty(returnObj, keyError, errorServerState);
-			addProperty(returnObj, keyMessage, logStateUnsupported);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);
-			callbackContext.sendPluginResult(pluginResult);
-			return;
+			if(gattServer == null){
+				// Notify user of unsupported Bluetooth Smart
+				addProperty(returnObj, keyError, errorServerState);
+				addProperty(returnObj, keyMessage, logStateUnsupported);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+				return;
+			}
 		}
 		
 		// Create an Immediate Alert service if not already provided by the device
@@ -395,7 +397,6 @@ public class GattServerPlugin extends CordovaPlugin
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			return;
 		}
@@ -411,16 +412,20 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Resets the Immediate Alert Service initialized flag.
 		// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
-		// Immediate Alert Service, it writes it's current alert level (always "No Alert", that is alert level 0). This must not be interpreted as an alert.
+		// Immediate Alert Service, it writes it's current alert level (always "No Alert", that is alert level 0). This must
+		// not be interpreted as an alert.
 		
-		final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
+		iasInitialized = false;		// Added 2017-01-24
+		
+		// Section below removed 2017-01-24
+		/*final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
 		if (iaService != null){
 			final BluetoothGattCharacteristic alertLevelChar = iaService.getCharacteristic(ALERT_LEVEL_CHAR_UUID);
 			if (alertLevelChar != null)
 				alertLevelChar.setValue(ALERT_LEVEL_LOW);
-		}
+		}*/
 			
-		//Notify user of reseted alarm
+		// Notify user of reseted alarm
 		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusAlarmReseted);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
