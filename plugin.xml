@@ -31,6 +31,8 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-feature android:name="android.hardware.location.network" android:required="true"/>
     </config-file>
+    <!-- <resource-file src="www/res/sounds/alarm.mp3" target="res/raw//alarm.mp3" /> -->
+  <resource-file src="www/res/sounds/crash_short.mp3" target="res/raw/crash_short.mp3" />
   </platform>
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
