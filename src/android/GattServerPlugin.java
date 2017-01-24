@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin for the Bluetooth GATT Profile server role.
@@ -308,76 +308,44 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		/*AlertDialog.Builder debugAlert  = new AlertDialog.Builder(cordova.getActivity());
-		//if(gattServer == null)
-		//	debugAlert.setMessage("gattServer is null!");
-		if(serverRunningCallbackContext == null)
-			debugAlert.setMessage("serverRunningCallbackContext is null!");
-		else
-			debugAlert.setMessage("not null!");
-		debugAlert.setTitle("GattServerPlugin Debug");
-		debugAlert.setCancelable(false);
-		//dlgAlert.setPositiveButton("OK", null);
-		debugAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int id) {
-		          	dialog.dismiss();  
-		        }
-		});
-		debugAlert.create().show();*/
-		
 		
 		JSONObject returnObj = new JSONObject();
 		
 		// If statement below added 2016-01-19 (moved up here 2016-01-21)
-		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		//if (mBluetoothAdapter == null) {
 		if(BluetoothAdapter.getDefaultAdapter() == null){
-		    	// Device does not support Bluetooth
-		    	//Notify user of unsupported Bluetooth
+		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
 			addProperty(returnObj, keyMessage, logStateUnsupported);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+			pluginResult.setKeepCallback(false);
 			callbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext = null;
 			return;
 		} 
 		else {
 			if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
-			        // Bluetooth is not enabled
-			        //Notify user that Bluetooth is not enabled
+			        // Bluetooth is not enabled, notify user that Bluetooth is not enabled
 				addProperty(returnObj, keyError, errorServerState);
 				addProperty(returnObj, keyMessage, logStatePoweredOff);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-				pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
+				pluginResult.setKeepCallback(false);
 				callbackContext.sendPluginResult(pluginResult);
-				//serverRunningCallbackContext.sendPluginResult(pluginResult);
-				//serverRunningCallbackContext = null;
 				return;
 		    	}
-		    	// Test 2016-01-26
-		    	// See https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/bluetooth
-			//BluetoothLeScanner scanner = getBluetoothLeScanner();
-			//scanner.cleanup();
-			//BluetoothAdapter.getDefaultAdapter().onBluetoothServiceDown();
-			// end test
 		}
 		
 		if(!NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
-			// areNotificationsEnabled() from the support library returns true
-			// if notifications are enabled for the app and if API >= 19. If Api < 19 it will always return true (even if
-			// notifications actually are disabled for the app).
+			// areNotificationsEnabled() from the support library returns true if notifications are enabled for
+			// the app and if API >= 19. If Api < 19 it will always return true (even if notifications actually
+			// are disabled for the app).
 			JSONObject returnJsonObj = new JSONObject();
 			addProperty(returnJsonObj, keyError, errorNoPermission);
 			addProperty(returnJsonObj, keyMessage, logNoPermission);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnJsonObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 			callbackContext.sendPluginResult(pluginResult);
 			// return;
 		}
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
-		//if (serverRunningCallbackContext != null)
 		if((gattServer != null) && (serverRunningCallbackContext != null))
 		{
 			addProperty(returnObj, keyStatus, statusServiceExists);
@@ -390,53 +358,17 @@ public class GattServerPlugin extends CordovaPlugin
 			return;
 		}
 		
-		//Save the callback context for setting up GATT server
-		//serverRunningCallbackContext = callbackContext;
-		
-		// If statement below added 2016-01-19
-		//BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		//if (mBluetoothAdapter == null) {
-		/*if(BluetoothAdapter.getDefaultAdapter() == null){
-		    	// Device does not support Bluetooth
-		    	//Notify user of unsupported Bluetooth
-			addProperty(returnObj, keyError, errorServerState);
-			addProperty(returnObj, keyMessage, logStateUnsupported);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext = null;
-			return;
-		} 
-		else {
-		    //if (!mBluetoothAdapter.isEnabled()) {
-		    if(!BluetoothAdapter.getDefaultAdapter().isEnabled()){
-		        // Bluetooth is not enabled
-		        //Notify user that Bluetooth is not enabled
-			addProperty(returnObj, keyError, errorServerState);
-			addProperty(returnObj, keyMessage, logStatePoweredOff);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);			// Save the callback so it can be invoked several times
-			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext = null;
-			return;
-		    }
-		}*/
-		
+		// Open a GATT server if not already opened
 		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		
 		if(gattServer == null)
 			gattServer = bluetoothManager.openGattServer(cordova.getActivity().getApplicationContext(), mBluetoothGattServerCallback);
 		if(gattServer == null){		// If statement added 2016-01-14
-			//Notify user of unsupported Bluetooth Smart
+			// Notify user of unsupported Bluetooth Smart
 			addProperty(returnObj, keyError, errorServerState);
 			addProperty(returnObj, keyMessage, logStateUnsupported);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);					// Save the callback so it can be invoked several times
+			pluginResult.setKeepCallback(false);
 			callbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext.sendPluginResult(pluginResult);
-			//serverRunningCallbackContext = null;
 			return;
 		}
 		
@@ -447,7 +379,6 @@ public class GattServerPlugin extends CordovaPlugin
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
 			//characteristic.setValue(ALERT_LEVEL_HIGH);	// Removed 2017-01-13
 			characteristic.setValue(ALERT_LEVEL_LOW);	// Added 2017-01-13
-			//immediateAlertService.addCharacteristic(characteristic);
 			if(!immediateAlertService.addCharacteristic(characteristic)){
 				// Notify user of error
 				addProperty(returnObj, keyError, errorServiceAdded);
@@ -459,43 +390,21 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 		}
 		else {
-			//Notify user of added service(s) and save callback
-			//Save the callback context
+			// Notify user of added service(s) and save callback context
 			serverRunningCallbackContext = callbackContext;
 			addProperty(returnObj, keyStatus, statusServiceExists);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+			pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 			//callbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 7/8 instead of line above
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
 			return;
 		}
 		
 		//Save the callback context for setting up GATT server
 		serverRunningCallbackContext = callbackContext;
 		
-		// Add Immediate Alert service, notify user and save callback
-		gattServer.addService(immediateAlertService);	// Added 2016-01-19 instead of if statement below // Will call onServiceAdded callback 
-		/*if(gattServer.addService(immediateAlertService)) {
-			addProperty(returnObj, keyStatus, statusServiceAdded);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-			pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-		}
-		else {
-			addProperty(returnObj, keyError, errorServiceAdded);
-			addProperty(returnObj, keyMessage, logService);
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			PluginResult.setKeepCallback(false);
-			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			serverRunningCallbackContext = null;
-			return;
-		}*/
-		
-		// Test
-		//BluetoothAdapter bluetoothAdapter;
-		//bluetoothAdapter = bluetoothManager.getAdapter();
-		//BluetoothDevice device = bluetoothAdapter.getRemoteDevice("D8:35:DA:54:1E:55");
-		//gattServer.connect(device, false);
+		// Add Immediate Alert service (this will call the implementation od the onServiceAdded callback)
+		gattServer.addService(immediateAlertService); 
 	}
 	
 	private void resetAlarmAction(CallbackContext callbackContext)		// Function added 2017-01-17
