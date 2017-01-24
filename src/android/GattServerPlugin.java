@@ -448,10 +448,17 @@ public class GattServerPlugin extends CordovaPlugin
 			//.setOnlyAlertOnce(true)	// Test how it works // Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
-			.setTicker("SenseSoft Mini")
-			.setVibrate(pattern)
-			//.setSound(Uri sound, AudioManager.STREAM_ALARM);	// Use if sound is to be played
-			.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)	// Use the default notification sound
+			.setTicker("SenseSoft Mini");
+			mBuilder.setVibrate(pattern);
+			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+				Uri soundPath = Uri.parse("android.resource://"+getPackageName()+"/raw/crash_short.mp3");
+				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played
+			}
+			else {
+				Uri soundPath = Uri.parse("android.resource://"+getPackageName()+"/raw/crash_short.mp3");
+				mBuilder.setSound(soundPath, AudioAttributes.USAGE_ALARM);	// Use if sound is to be played
+			}	
+			//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of above to use the default notification sound
 
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
