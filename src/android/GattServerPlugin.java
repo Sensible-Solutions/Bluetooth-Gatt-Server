@@ -451,11 +451,11 @@ public class GattServerPlugin extends CordovaPlugin
 			.setTicker("SenseSoft Mini");
 			mBuilder.setVibrate(pattern);
 			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-				Uri soundPath = Uri.parse("android.resource://"+getPackageName()+"/raw/crash_short.mp3");
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
 				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played
 			}
 			else {
-				Uri soundPath = Uri.parse("android.resource://"+getPackageName()+"/raw/crash_short.mp3");
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
 				mBuilder.setSound(soundPath, AudioAttributes.USAGE_ALARM);	// Use if sound is to be played
 			}	
 			//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of above to use the default notification sound
