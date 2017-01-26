@@ -471,8 +471,8 @@ public class GattServerPlugin extends CordovaPlugin
 		else if(!isInBackground){		// else statement and its code block added 2017-01-10
 			// Manually play alarm sound if app is in the foreground
 			// Section added 2017-01-24
-			Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
-			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
+			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
+			Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone 
 			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
 			MediaPlayer mediaPlayer = new MediaPlayer();
