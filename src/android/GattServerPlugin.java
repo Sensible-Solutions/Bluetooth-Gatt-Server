@@ -454,7 +454,7 @@ public class GattServerPlugin extends CordovaPlugin
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
 			.setTicker("SenseSoft Mini");
-			mBuilder.setVibrate(pattern);
+			//mBuilder.setVibrate(pattern);
 			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
 				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
