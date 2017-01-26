@@ -456,8 +456,10 @@ public class GattServerPlugin extends CordovaPlugin
 			.setTicker("SenseSoft Mini");
 			//mBuilder.setVibrate(pattern);
 			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
-				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
-				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Added 2017-01-24
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+				mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
 			//}
 			/*else {
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
