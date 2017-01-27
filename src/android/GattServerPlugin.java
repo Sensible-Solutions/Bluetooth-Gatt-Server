@@ -478,6 +478,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone 
 			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
+			showDebugMsgBox("soundPath: " + soundPath.toString());
 			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
 				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
