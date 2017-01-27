@@ -504,7 +504,7 @@ public class GattServerPlugin extends CordovaPlugin
 				}
 			} catch (Exception ex) {
 				// Do nothing
-				showDebugMsgBox("Error playing sound!");
+				showDebugMsgBox("Error playing sound: " + ex.getMessage());
 			}
 			// End section added 2017-01-24
 			
