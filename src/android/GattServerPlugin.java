@@ -49,6 +49,7 @@ import android.content.DialogInterface;		// For showing debug messaages
 import android.content.pm.PackageManager;	// Added 2017-01-24
 import android.os.Vibrator;			// Added 2017-01-24
 import android.Manifest.permission;		// Added 2017-01-24
+import java.io.File;				// Added 2017-01-27 just to debug if alarm file exists...remove when done
 
 import java.util.ArrayList;
 import java.util.List;
