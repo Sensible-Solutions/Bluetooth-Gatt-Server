@@ -157,6 +157,7 @@ public class GattServerPlugin extends CordovaPlugin
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
+					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 				}
 				// End section added 2017-01-24
 				
@@ -454,12 +455,12 @@ public class GattServerPlugin extends CordovaPlugin
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
 			.setTicker("SenseSoft Mini");
-			//mBuilder.setVibrate(pattern);
+			mBuilder.setVibrate(pattern);
 			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Added 2017-01-24
-				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
-				mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
+				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+				//mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
 			//}
 			/*else {
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
@@ -474,16 +475,16 @@ public class GattServerPlugin extends CordovaPlugin
 			// Manually play alarm sound if app is in the foreground
 			// Section added 2017-01-24
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
-			Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
+			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone 
-			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
+			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
 			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
 				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
-				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification
 				//mediaPlayer.setLooping(true);						// Use when playing default notification
-				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm/ringtone and own sound file
-				//mediaPlayer.setLooping(true);		// Use when playing default alarm/ringtone and own sound file
+				mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm/ringtone and own sound file
+				mediaPlayer.setLooping(true);		// Use when playing default alarm/ringtone and own sound file
 				mediaPlayer.prepare();
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
