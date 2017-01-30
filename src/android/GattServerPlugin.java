@@ -684,6 +684,8 @@ public class GattServerPlugin extends CordovaPlugin
 		// Called when the activity will start interacting with the user
 		isInBackground = false;		// App is put in foreground (added 2017-01-10)
 		super.onResume(multitasking);
+		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30, haven't tested it
+		//mNotificationManager.cancelAll(); // Added 2017-01-30, haven't tested it
 		showDebugMsgBox("onResume() called!");	// Added 2017-01-10
     	}
 	
