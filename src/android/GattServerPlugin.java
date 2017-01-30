@@ -12,7 +12,7 @@
  
 package com.sensiblesolutions.gattserver;
 
-import com.sensiblesolutions.sensesoftnotificationsmini.R;	// Added 2017-01-30
+//import com.sensiblesolutions.sensesoftnotificationsmini.R;	// Added 2017-01-30
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -483,7 +483,10 @@ public class GattServerPlugin extends CordovaPlugin
 			
 			// To try:
 			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file
-			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Use when playing own sound file
+			// Below compiles if you import com.sensiblesolutions.sensesoftnotificationsmini.R (do NOT import android.R!)
+			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Use when playing own sound file
+			// Below compiles if you do not import com.sensiblesolutions.sensesoftnotificationsmini.R
+			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + com.sensiblesolutions.sensesoftnotificationsmini.R.raw.crash_short);	// Use when playing own sound file
 			// end to try
 			
 			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Use when playing own sound file
