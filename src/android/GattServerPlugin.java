@@ -12,6 +12,7 @@
  
 package com.sensiblesolutions.gattserver;
 
+import com.sensiblesolutions.sensesoftnotificationsmini.R;	// Added 2017-01-30
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
