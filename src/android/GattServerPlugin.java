@@ -656,11 +656,13 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called!");	// Added 2017-01-10
 	 }
 	
-	/*@Override
+	@Override
 	public void onDestroy() {
 		 // The final call you receive before your activity is destroyed
 		super.onDestroy();
-	}*/
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
+		mNotificationManager.cancelAll(); // Added 2017-01-30
+	}
 	
 	/*@Override
 	 public void onStart() {
@@ -686,8 +688,8 @@ public class GattServerPlugin extends CordovaPlugin
 		// Called when the activity will start interacting with the user
 		isInBackground = false;		// App is put in foreground (added 2017-01-10)
 		super.onResume(multitasking);
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30, haven't tested it
-		//mNotificationManager.cancelAll(); // Added 2017-01-30, haven't tested it
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
+		mNotificationManager.cancelAll(); // Added 2017-01-30
 		showDebugMsgBox("onResume() called!");	// Added 2017-01-10
     	}
 	
