@@ -470,7 +470,8 @@ public class GattServerPlugin extends CordovaPlugin
 			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
 				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Added 2017-01-24
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Added 2017-01-24
-				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
+				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use if sound is to be played		// Added 2017-01-24
 				//mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
 			//}
 			/*else {
@@ -508,9 +509,10 @@ public class GattServerPlugin extends CordovaPlugin
 			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
 				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
-				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification
+				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification and own custom sound
 				//mediaPlayer.setLooping(true);						// Use when playing default notification
-				mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm/ringtone and own sound file
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);	// Use when playing default ringtone
 				mediaPlayer.setLooping(true);		// Use when playing default alarm/ringtone and own sound file
 				mediaPlayer.prepare();
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
