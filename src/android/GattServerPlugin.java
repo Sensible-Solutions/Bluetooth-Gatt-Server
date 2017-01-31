@@ -450,14 +450,15 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			Intent appActivity = new Intent();	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
+			//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
+			appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
 			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-			//.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30...sound volume doesn't matter using this setting (is always the highest)
-			.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
+			.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
+			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
 			.setOngoing(true)		// Added 2017-01-30
 			//.setAutoCancel(true)
 			.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
@@ -659,24 +660,27 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called!");	// Added 2017-01-10
 	 }
 	
-	@Override
+	/*@Override
 	public void onDestroy() {
 		 // The final call you receive before your activity is destroyed
 		super.onDestroy();
 		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
 		mNotificationManager.cancelAll(); // Added 2017-01-30
-	}
+	}*/
 	
 	/*@Override
 	 public void onStart() {
 		 // Called when the activity is becoming visible to the user
 		 super.onStart();
     	}*/
-	/*@Override
+	
+	@Override
 	 public void onStop() {
 		 // Called when the activity is no longer visible to the user
 		 super.onStop();
-   	 }*/
+		 NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
+		mNotificationManager.cancelAll(); // Added 2017-01-30
+   	 }
 	
 	@Override
 	public void onPause(boolean multitasking) {
