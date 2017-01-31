@@ -449,11 +449,11 @@ public class GattServerPlugin extends CordovaPlugin
 			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
+			Intent appActivity = new Intent();	// Added 2017-01-30
+			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			Intent appActivity = new Intent();	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
 			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			.setPriority(NotificationCompat.PRIORITY_MAX)
