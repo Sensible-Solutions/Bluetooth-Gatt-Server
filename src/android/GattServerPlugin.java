@@ -452,7 +452,9 @@ public class GattServerPlugin extends CordovaPlugin
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, new Intent(), 0))	// Added 2017-01-30, haven't tested it
+			//Intent appActivity = new Intent();
+			//appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			//.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			.setPriority(NotificationCompat.PRIORITY_MAX)
 			.setOngoing(true)		// Added 2017-01-30
