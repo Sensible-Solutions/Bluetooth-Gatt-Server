@@ -46,9 +46,9 @@ import android.app.NotificationManager;
 //import android.app.Notification;
 //import android.R;				// Removed 2017-01-30
 import android.app.AlertDialog;			// For showing debug messaages
-import android.app.PendingIntent;		// Added 2017-01-30
+//import android.app.PendingIntent;		// Added 2017-01-30
 import android.content.DialogInterface;		// For showing debug messaages
-import android.content.Intent;			// Added 2017-01-30
+//import android.content.Intent;			// Added 2017-01-30
 import android.content.pm.PackageManager;	// Added 2017-01-24
 import android.os.Vibrator;			// Added 2017-01-24
 import android.Manifest.permission;		// Added 2017-01-24
@@ -449,14 +449,14 @@ public class GattServerPlugin extends CordovaPlugin
 			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
-			Intent appActivity = new Intent();	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);	// Added 2017-01-30
-			appActivity.setPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
+			//Intent appActivity = new Intent();	// Added 2017-01-30
+			//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
+			//appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);	// Added 2017-01-30
+			//appActivity.setPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
+			//.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
@@ -677,13 +677,13 @@ public class GattServerPlugin extends CordovaPlugin
 		 super.onStart();
     	}*/
 	
-	@Override
+	/*@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
 		super.onStop();
 		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
 		mNotificationManager.cancelAll(); // Added 2017-01-30
-   	 }
+   	 }*/
 	
 	@Override
 	public void onPause(boolean multitasking) {
