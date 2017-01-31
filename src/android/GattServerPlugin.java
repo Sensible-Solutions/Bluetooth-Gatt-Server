@@ -46,6 +46,7 @@ import android.app.NotificationManager;
 //import android.app.Notification;
 //import android.R;				// Removed 2017-01-30
 import android.app.AlertDialog;			// For showing debug messaages
+import android.app.PendingIntent;			// Added 2017-01-30
 import android.content.DialogInterface;		// For showing debug messaages
 import android.content.pm.PackageManager;	// Added 2017-01-24
 import android.os.Vibrator;			// Added 2017-01-24
