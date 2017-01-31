@@ -453,7 +453,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, new Intent(), 0))	// Added 2017-01-30, haven't tested it
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			.setPriority(NotificationCompat.PRIORITY_MAX)
-			//.setOngoing(true)		// Added 2017-01-30, haven't tested it
+			.setOngoing(true)		// Added 2017-01-30, haven't tested it
 			//.setAutoCancel(true)
 			//.setOnlyAlertOnce(true)	// Test how it works // Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -461,7 +461,7 @@ public class GattServerPlugin extends CordovaPlugin
 			.setTicker("SenseSoft Mini");
 			mBuilder.setVibrate(pattern);
 			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
-				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Added 2017-01-24
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Added 2017-01-24
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Added 2017-01-24
 				mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
 				//mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
