@@ -451,6 +451,7 @@ public class GattServerPlugin extends CordovaPlugin
 			long[] pattern = { 0, 200, 500 };
 			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
 			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
+			appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);	// Added 2017-01-30
 			appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);	// Added 2017-01-30
 			//appActivity.setPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
@@ -462,7 +463,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
 			.setPriority(NotificationCompat.PRIORITY_HIGH)		// Added 2017-01-30
 			.setOngoing(true)		// Added 2017-01-30
-			.setAutoCancel(true)
+			//.setAutoCancel(true)
 			//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
@@ -711,36 +712,3 @@ public class GattServerPlugin extends CordovaPlugin
 		super.onReset();
 	}*/
 }
-
-
-/*public class AbstractClickActivity extends Activity {
-
-	// Called when local notification was clicked to launch the main intent
-	@Override
-    	public void onCreate (Bundle state) {
-        	super.onCreate(state);
-
-        	Intent intent = getIntent();
-        	//Bundle bundle   = intent.getExtras();
-        	Context context = cordova.getActivity().getApplicationContext();
-		//Intent appActivity = new Intent();	// Added 2017-01-30
-		//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
-		//appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);	// Added 2017-01-30
-		//appActivity.setPackage(cordova.getActivity().getApplicationContext().getPackageName());	
-
-        try {
-            String data = bundle.getString(Options.EXTRA);
-            JSONObject options = new JSONObject(data);
-
-            Builder builder =
-                    new Builder(context, options);
-
-            Notification notification =
-                    buildNotification(builder);
-
-            onClick(notification);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-}
-}*/
