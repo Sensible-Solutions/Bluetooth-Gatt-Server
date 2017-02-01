@@ -449,14 +449,14 @@ public class GattServerPlugin extends CordovaPlugin
 			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
-			/*Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
+			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
+			/*appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
 			appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);	// Added 2017-01-30
 			appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);*/	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			//.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
+			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			//.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
