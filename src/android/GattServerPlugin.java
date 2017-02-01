@@ -461,8 +461,8 @@ public class GattServerPlugin extends CordovaPlugin
 			.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
 			.setOngoing(true)		// Added 2017-01-30
-			//.setAutoCancel(true)
-			.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
+			.setAutoCancel(true)
+			//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
 			.setTicker("SenseSoft Mini");
