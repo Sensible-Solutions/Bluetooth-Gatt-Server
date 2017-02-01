@@ -450,9 +450,6 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
-			/*appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);	// Added 2017-01-30
-			appActivity.addFlags(Intent.FLAG_FROM_BACKGROUND);*/	// Added 2017-01-30
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
@@ -514,8 +511,9 @@ public class GattServerPlugin extends CordovaPlugin
 				//mediaPlayer.setLooping(true);						// Use when playing default notification
 				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm
 				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);	// Use when playing default ringtone
-				mediaPlayer.setLooping(true);		// Use when playing default alarm/ringtone and own sound file
-				mediaPlayer.prepare();
+				mediaPlayer.setLooping(false);		// Use when playing default alarm/ringtone and own sound file
+				//mediaPlayer.prepare();
+				mediaPlayer.prepareAsync();			// prepare async to not block main thread
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mp)
@@ -524,14 +522,29 @@ public class GattServerPlugin extends CordovaPlugin
 						//mp.reset();
 					}
 				});
-				mediaPlayer.start();
+				mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+					@Override
+    					public void onPrepared(MediaPlayer mp) {
+						// Called when MediaPlayer is ready
+        					mp.start();
+						// Vibrate the device if it has hardware vibrator and permission
+						Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+						if (vib.hasVibrator()){
+							if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+								vib.vibrate(1000);
+							}
+						}
+   				 	}
+				});
+				
+				//mediaPlayer.start();
 				// Vibrate the device if it has hardware vibrator and permission
-				Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+				/*Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 				if (vib.hasVibrator()){
 					if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
 						vib.vibrate(1000);
 					}
-				}
+				}*/
 			} catch (Exception ex) {
 				// Do nothing
 				showDebugMsgBox("Error playing sound: " + ex.getMessage());
