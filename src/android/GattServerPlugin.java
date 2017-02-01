@@ -677,13 +677,13 @@ public class GattServerPlugin extends CordovaPlugin
 		 super.onStart();
     	}*/
 	
-	/*@Override
+	@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
-		super.onStop();
 		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
 		mNotificationManager.cancelAll(); // Added 2017-01-30
-   	 }*/
+		super.onStop();
+   	 }
 	
 	@Override
 	public void onPause(boolean multitasking) {
