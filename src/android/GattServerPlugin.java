@@ -458,8 +458,9 @@ public class GattServerPlugin extends CordovaPlugin
 			.setContentText("Incoming SenseSoft Mini alarm!")
 			//.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-			.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
+			//.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
+			.setPriority(NotificationCompat.PRIORITY_HIGH)		// Added 2017-01-30
 			.setOngoing(true)		// Added 2017-01-30
 			.setAutoCancel(true)
 			//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
