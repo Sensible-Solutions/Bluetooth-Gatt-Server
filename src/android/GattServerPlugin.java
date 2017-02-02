@@ -436,11 +436,9 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Show local notification
 		long[] pattern = { 0, 200, 500 };
-		//NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 	        .setContentTitle("SenseSoft Notifications Mini")
 	        .setContentText("Incoming SenseSoft Mini alarm!")
-	        //.setSmallIcon(R.drawable.screen_background_dark)
 	        .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 	        .setPriority(NotificationCompat.PRIORITY_MAX)
 	        //.setAutoCancel(true)
@@ -449,12 +447,9 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setTicker("SenseSoft Mini")
 	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
 	        .setVibrate(pattern);
-	        //.setFullScreenIntent(PendingIntent intent, boolean highPriority)
-	        //.setSound(Uri sound, STREAM_ALARM);
 		
-		//NotificationManager mNotificationManager = (NotificationManager) Context.getSystemService(Context.NOTIFICATION_SERVICE);
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
+		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on
 		mNotificationManager.notify(1665, mBuilder.build());
 	}
   	
@@ -493,7 +488,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
 
-			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
 		}
 		else if(!isInBackground){
@@ -630,17 +625,16 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
-	 	super.pluginInitialize();
-		isInBackground = false;		// App is in foreground (added 2017-01-10)
-		showDebugMsgBox("pluginInitialize() called!");	// Added 2017-01-10
+		isInBackground = false;		// App is in foreground
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		super.pluginInitialize();
+		showDebugMsgBox("pluginInitialize() called!");
 	 }
 	
 	/*@Override
 	public void onDestroy() {
 		 // The final call you receive before your activity is destroyed
 		super.onDestroy();
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
-		mNotificationManager.cancelAll(); // Added 2017-01-30
 	}*/
 	
 	/*@Override
@@ -652,27 +646,27 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
-		mNotificationManager.cancelAll(); // Added 2017-01-30
+		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.cancelAll();
 		super.onStop();
    	 }
 	
 	@Override
 	public void onPause(boolean multitasking) {
 		// Called when the system is about to start resuming a previous activity
-		isInBackground = true;		// App is put in background (added 2017-01-10)
+		isInBackground = true;		// App is put in background
 		super.onPause(multitasking);
-		showDebugMsgBox("onPause() called!");	// Added 2017-01-10
+		showDebugMsgBox("onPause() called!");
     	}
 	
 	@Override
 	public void onResume(boolean multitasking) {
 		// Called when the activity will start interacting with the user
 		isInBackground = false;		// App is put in foreground
+		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.cancelAll();
 		super.onResume(multitasking);
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
-		mNotificationManager.cancelAll(); // Added 2017-01-30
-		showDebugMsgBox("onResume() called!");	// Added 2017-01-10
+		showDebugMsgBox("onResume() called!");
     	}
 	
 	/*@Override
