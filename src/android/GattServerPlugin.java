@@ -12,7 +12,7 @@
  
 package com.sensiblesolutions.gattserver;
 
-//import com.sensiblesolutions.sensesoftnotificationsmini.R;	// Added 2017-01-30
+//import com.sensiblesolutions.sensesoftnotificationsmini.R;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -33,26 +33,22 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
-import android.media.AudioManager;				// Added 2017-01-24
-import android.media.MediaPlayer;				// Added 2017-01-24
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 //import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;	// Added 2017-01-18
-import android.support.v4.content.ContextCompat;		// Added 2017-01-24
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.app.NotificationManager;
-//import android.app.ActivityManager;				// Added 2017-01-09
-//import android.app.ActivityManager.RunningAppProcessInfo;	// Added 2017-01-09
-//import android.app.Notification;
-//import android.R;				// Removed 2017-01-30
 import android.app.AlertDialog;			// For showing debug messaages
-import android.app.PendingIntent;		// Added 2017-01-30
+import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
-import android.content.Intent;			// Added 2017-01-30
-import android.content.pm.PackageManager;	// Added 2017-01-24
-import android.os.Vibrator;			// Added 2017-01-24
-import android.Manifest.permission;		// Added 2017-01-24
-//import java.io.File;				// Added 2017-01-27 just to debug if alarm file exists...remove when done
+import android.content.Intent;
+//import android.content.pm.PackageManager;	// Added 2017-01-24
+import android.os.Vibrator;
+import android.Manifest.permission;
+//import android.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +59,7 @@ public class GattServerPlugin extends CordovaPlugin
 {
 	// Immediate alert service
 	private final static UUID IMMEDIATE_ALERT_SERVICE_UUID = UUID.fromString("00001802-0000-1000-8000-00805f9b34fb");	// Service UUID
-	//private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002A06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (removed 2017-01-13)
-	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID (added 2017-01-13)
+	private final static UUID ALERT_LEVEL_CHAR_UUID = UUID.fromString("00002a06-0000-1000-8000-00805f9b34fb");		// Characteristic UUID
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_VALUE = 2;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE = 17;
 	//private static final int ALERT_LEVEL_CHARACTERISTIC_OFFSET = 0;
@@ -83,7 +78,7 @@ public class GattServerPlugin extends CordovaPlugin
 	// Action Name Strings
 	//private final String initializeActionName = "initialize";
 	private final static String START_GATT_SERVER = "startServer";
-	private final static String RESET_ALARM = "resetAlarm";		// Added 2017-01-13
+	private final static String RESET_ALARM = "resetAlarm";
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -95,35 +90,35 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String statusServiceExists = "serviceAlreadyProvided";
 	private final static String statusWriteRequest = "characteristicWriteRequest";
 	private final static String statusConnectionState = "serverConnectionState";
-	private final static String statusAlarmReseted = "alarmReseted";	// Added 2017-01-13
+	private final static String statusAlarmReseted = "alarmReseted";
 	//private final String statusServerStopped = "scanStopped";
   
 	// Error Types
 	//private final String errorInitialize = "initialize";
 	//private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
-	private final static String errorNoPermission = "noPermission"; // Added 2017-01-18
-	//private final static String errorGattServer = "gattServer";	// Added 2016-01-14
-	private final static String errorServerState = "serverState";	// Added 2016-01-19
+	private final static String errorNoPermission = "noPermission";
+	//private final static String errorGattServer = "gattServer";
+	private final static String errorServerState = "serverState";
 	private final static String errorServerStateOff = "serverStateOff";
 	private final static String errorServerStateUnsupported = "serverStateUnsupported";
 	private final static String errorServerStateUnauthorized = "serverStateUnauthorized";	// iOS only
-	private final static String errorServiceAdded = "serviceAdded"; // Added 2016-01-19
-	private final static String errorWriteRequest = "writeRequest";		// Added 2017-01-10
-	private final static String errorReadRequest = "readRequest";		// Added 2017-01-10
+	private final static String errorServiceAdded = "serviceAdded";
+	private final static String errorWriteRequest = "writeRequest";
+	private final static String errorReadRequest = "readRequest";
 
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
-	private final static String logNoPermission = "No permission granted for local notifications";	// Added 2017-01-18
+	private final static String logNoPermission = "No permission granted for local notifications";
 	private final static String logService = "Immediate Alert service could not be added";
 	private final static String logConnectionState = "Connection state changed with error";
-	private final static String logStateUnsupported = "BLE is not supported by device";	// Added 2016-01-14
-	private final static String logStatePoweredOff = "BLE is turned off for device";	// Added 2016-01-14
-	private final static String logRequestNotSupported = "Request is not supported"; 	// Added 2017-01-10
+	private final static String logStateUnsupported = "BLE is not supported by device";
+	private final static String logStatePoweredOff = "BLE is turned off for device";
+	private final static String logRequestNotSupported = "Request is not supported";
 	
-	private boolean isInBackground = false;			// Added 2017-01-10
-	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized. Added 2017-01-24
+	private boolean isInBackground = false;			// Flag indicating if app is in the background
+	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
 	
 	// Bluetooth GATT interface callbacks
@@ -133,15 +128,10 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			
-			//super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
-			//characteristic.setValue(value);		// Removed 2017-01-10
-			//JSONObject returnObj = new JSONObject();	// Added 2017-01-10 (removed 2017-01-13)
-			
 			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
-				// Section added 2017-01-24
 				int alertLevel = (int)value[0];
 				characteristic.setValue(value);
 				if(!iasInitialized && alertLevel != 0){
@@ -163,24 +153,15 @@ public class GattServerPlugin extends CordovaPlugin
 					// This must not be interpreted as an alert.
 					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 				}
-				// End section added 2017-01-24
 				
-				/*if(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != value[0]){	// If statement and it's code block added 2017-01-13 (removed 2017-01-24)
-					// There is an alarm
-					// After connecting to the clip, the clip first sends "No Alert" (sometimes twice). This must not be interpreted as an alarm.
-					// After that, the clip sends toggled alert levels when there are alarms (that is, alternating high and no alert level). 
-					characteristic.setValue(value);		// Set the value of the characteristic to the new alert level
-					alarm(parseCharacteristicValue(characteristic), device.getAddress());
-				}*/
-				
-				if (responseNeeded)	// If and it's code block added 2017-01-10
+				if (responseNeeded)
 					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
 			}
-			else {		// else and it's code block added 2017-01-10
+			else {
 				if (responseNeeded)
 					gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
 				
-				JSONObject returnObj = new JSONObject();	// Added 2017-01-13
+				JSONObject returnObj = new JSONObject();
 				addProperty(returnObj, keyError, errorWriteRequest);
 				addProperty(returnObj, keyMessage, logRequestNotSupported);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
@@ -225,10 +206,10 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			
-			showDebugMsgBox("onServiceAdded called!");
+			//showDebugMsgBox("onServiceAdded called!");
 			
 			JSONObject returnObj = new JSONObject();
-			// If statement below added 2016-01-19 for testing
+			
 			if(status != BluetoothGatt.GATT_SUCCESS){
 				// Notify user of error
 				addProperty(returnObj, keyError, errorServiceAdded);
@@ -243,7 +224,8 @@ public class GattServerPlugin extends CordovaPlugin
 				// Notify user and save callback
 				addProperty(returnObj, keyStatus, statusServiceAdded);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-				pluginResult.setKeepCallback(true);					// Save the callback so it can be invoked several times
+				// Save the callback so it can be invoked several times
+				pluginResult.setKeepCallback(true);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);	
 			}
 			
@@ -253,33 +235,34 @@ public class GattServerPlugin extends CordovaPlugin
 		public void onCharacteristicReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattCharacteristic characteristic) {
 			// Not supported/implemented
 			
-			JSONObject returnObj = new JSONObject();		// Added 2017-01-10
-			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);	// Added 2017-01-10
+			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
 			
-			addProperty(returnObj, keyError, errorReadRequest);	// Added 2017-01-10
-			addProperty(returnObj, keyMessage, logRequestNotSupported);	// Added 2017-01-10
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);	// Added 2017-01-10
-			pluginResult.setKeepCallback(true);	// Added 2017-01-10
-			serverRunningCallbackContext.sendPluginResult(pluginResult);	// Added 2017-01-10
+			// Not really needed since there are currently no read requests
+			JSONObject returnObj = new JSONObject();
+			addProperty(returnObj, keyError, errorReadRequest);
+			addProperty(returnObj, keyMessage, logRequestNotSupported);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(true);
+			serverRunningCallbackContext.sendPluginResult(pluginResult);
 		
 		}
 			
 
 		@Override
 		public void onDescriptorReadRequest(BluetoothDevice device, int requestId, int offset, BluetoothGattDescriptor descriptor) {
-			// Not supported
+			// Not supported/implemented
 			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
 		}
 
 		@Override
 		public void onDescriptorWriteRequest(BluetoothDevice device, int requestId, BluetoothGattDescriptor descriptor, boolean preparedWrite, boolean responseNeeded, int offset, byte[] value) {
-			// Not supported
+			// Not supported/implemented
 			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, offset, null);
 		}
 
 		@Override
 		public void onExecuteWrite(BluetoothDevice device, int requestId, boolean execute) {
-			// Not supported
+			// Not supported/implemented
 			gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED, 0, null);
 		}
 	};
@@ -288,6 +271,7 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException
 	{
+		// Will run on the WebCore thread which here is fine
 		try {
 			if (START_GATT_SERVER.equals(action)) { 
 				startServerAction(callbackContext);
@@ -313,12 +297,11 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void startServerAction(CallbackContext callbackContext)
 	{
-		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be reseted
-		// when calling this function.
+		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
+		// reseted when calling this function.
 		
 		JSONObject returnObj = new JSONObject();
 		
-		// If statement below added 2016-01-19 (moved up here 2016-01-21)
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
@@ -340,7 +323,7 @@ public class GattServerPlugin extends CordovaPlugin
 		    	}
 		}
 		
-		if(!NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){	// If statement and its code block added 2017-01-18
+		if(!NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){
 			// The function areNotificationsEnabled() from the support library returns true if notifications are
 			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
 			// actually are disabled for the app).
@@ -353,7 +336,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// return;
 		}
 		
-		iasInitialized = false; 	// Reset the flag indicating that Immediate Alert Service has been initialized. Added 2017-01-24
+		iasInitialized = false; 	// Reset the flag indicating that Immediate Alert Service has been initialized
 		
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
 		if((gattServer != null) && (serverRunningCallbackContext != null))
@@ -362,7 +345,7 @@ public class GattServerPlugin extends CordovaPlugin
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 			pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 			serverRunningCallbackContext.sendPluginResult(pluginResult);
-			//iasInitialized = false; 	// Added 2017-01-24
+			//iasInitialized = false;
 			return;
 		}
 		
@@ -386,8 +369,8 @@ public class GattServerPlugin extends CordovaPlugin
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
 			final BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(ALERT_LEVEL_CHAR_UUID, BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE, BluetoothGattCharacteristic.PERMISSION_WRITE);
 			//characteristic.setValue(ALERT_LEVEL_CHARACTERISTIC_VALUE, ALERT_LEVEL_CHARACTERISTIC_FORMATTYPE, ALERT_LEVEL_CHARACTERISTIC_OFFSET);
-			//characteristic.setValue(ALERT_LEVEL_HIGH);	// Removed 2017-01-13
-			characteristic.setValue(ALERT_LEVEL_LOW);	// Added 2017-01-13
+			//characteristic.setValue(ALERT_LEVEL_HIGH);
+			characteristic.setValue(ALERT_LEVEL_LOW);
 			if(!immediateAlertService.addCharacteristic(characteristic)){
 				// Notify user of error
 				addProperty(returnObj, keyError, errorServiceAdded);
@@ -415,14 +398,14 @@ public class GattServerPlugin extends CordovaPlugin
 		gattServer.addService(immediateAlertService); 
 	}
 	
-	private void resetAlarmAction(CallbackContext callbackContext)		// Function added 2017-01-17
+	private void resetAlarmAction(CallbackContext callbackContext)
 	{
 		// Resets the Immediate Alert Service initialized flag.
 		// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
 		// Immediate Alert Service, it writes it's current alert level (always "No Alert", that is alert level 0). This must
 		// not be interpreted as an alert.
 		
-		iasInitialized = false;		// Added 2017-01-24
+		iasInitialized = false;
 		
 		// Section below removed 2017-01-24
 		/*final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
@@ -440,8 +423,7 @@ public class GattServerPlugin extends CordovaPlugin
 		callbackContext.sendPluginResult(pluginResult);
 	}
 
-	//private void alarm(){		// Removed 2017-01-13
-	private void alarm(final String alertLevel, final String deviceUUID){		// Added 2017-01-13
+	private void alarm(final String alertLevel, final String deviceUUID){
 		
 		if (isInBackground && NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){
 			// Show local notification only if the app is in the background and notifications are enabled for the app.
@@ -455,28 +437,22 @@ public class GattServerPlugin extends CordovaPlugin
 			.setContentText("Incoming SenseSoft Mini alarm!")
 			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))	// Added 2017-01-30
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-			//.setPriority(NotificationCompat.PRIORITY_MAX)		// Removed 2017-01-30
-			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)	// Added 2017-01-30
-			.setPriority(NotificationCompat.PRIORITY_HIGH)		// Added 2017-01-30
-			.setOngoing(true)		// Added 2017-01-30
-			//.setAutoCancel(true)
+			//.setPriority(NotificationCompat.PRIORITY_MAX)
+			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+			.setPriority(NotificationCompat.PRIORITY_HIGH)
+			.setOngoing(true)
+			.setAutoCancel(true)
 			//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
 			.setTicker("SenseSoft Mini");
 			mBuilder.setVibrate(pattern);
-			//if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {	// if and else statement with their code blocks added 2017-01-24
-				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Added 2017-01-24
-				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Added 2017-01-24
-				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// Use if sound is to be played		// Added 2017-01-24
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use if sound is to be played		// Added 2017-01-24
-				//mBuilder.setSound(soundPath);	// Use if sound is to be played		// Added 2017-01-24
-			//}
-			/*else {
-				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");
-				mBuilder.setSound(soundPath, AudioAttributes.USAGE_ALARM);	// Use if sound is to be played
-			}*/	
-			//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of above to use the default notification sound
+			//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of below to use the default notification sound
+			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
+			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
+			//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
+			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
+			
 
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
