@@ -121,6 +121,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
 	private NotificationManager mNotificationManager = null;
+	//private MediaPlayer mediaPlayer = null;
 	
 	
 	/*********************************************************************************************************************
@@ -492,7 +493,8 @@ public class GattServerPlugin extends CordovaPlugin
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
 
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
+			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
+			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
 		else if(!isInBackground){
 			// Manually play alarm sound if app is in the foreground
@@ -516,13 +518,12 @@ public class GattServerPlugin extends CordovaPlugin
 				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
 				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
 				mediaPlayer.setLooping(false);
-				//mediaPlayer.prepare();
-				mediaPlayer.prepareAsync();	// prepare async to not block main thread
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mp)
 					{
-						mp.release();
+						mp.stop();
+						//mp.release();
 						//mp.reset();
 					}
 				});
@@ -540,6 +541,8 @@ public class GattServerPlugin extends CordovaPlugin
 						}
    				 	}
 				});
+				//mediaPlayer.prepare();
+				mediaPlayer.prepareAsync();	// prepare async to not block main thread
 				
 			} catch (Exception ex) {
 				// Do nothing
@@ -630,6 +633,8 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		//mediaPlayer = new MediaPlayer();
+		
 		super.pluginInitialize();
 		showDebugMsgBox("pluginInitialize() called!");
 	 }
