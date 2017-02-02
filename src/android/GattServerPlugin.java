@@ -448,7 +448,7 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
 	        .setVibrate(pattern);
 		
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on
 		mNotificationManager.notify(1665, mBuilder.build());
 	}
