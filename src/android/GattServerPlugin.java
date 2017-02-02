@@ -472,7 +472,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			appActivity.setAction(Intent.ACTION_MAIN);
 			appActivity.addCategory(Intent.CATEGORY_LAUNCHER);
-			//appActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			appActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
