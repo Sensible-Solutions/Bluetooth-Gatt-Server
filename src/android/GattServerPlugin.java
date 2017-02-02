@@ -452,44 +452,34 @@ public class GattServerPlugin extends CordovaPlugin
 			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
 			//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
-			
 
 			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
 		}
-		else if(!isInBackground){		// else statement and its code block added 2017-01-10
+		else if(!isInBackground){
 			// Manually play alarm sound if app is in the foreground
-			// Section added 2017-01-24
+			
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
 			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
-			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone 
-			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short.mp3");	// Use when playing own sound file
-			
-			// To try:
+			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone
 			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file (important: do NOT include file type extension!)
 			// Below compiles if you import com.sensiblesolutions.sensesoftnotificationsmini.R (do NOT import android.R!)
-			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Use when playing own sound file
+			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);
 			// Below compiles if you do not import com.sensiblesolutions.sensesoftnotificationsmini.R
-			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + com.sensiblesolutions.sensesoftnotificationsmini.R.raw.crash_short);	// Use when playing own sound file
-			// end to try
+			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + com.sensiblesolutions.sensesoftnotificationsmini.R.raw.crash_short);
 			
-			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Use when playing own sound file
-			showDebugMsgBox("soundPath: " + soundPath.toString());
-			/*File file = cordova.getActivity().getApplicationContext().getFileStreamPath("raw/crash_short.mp3");
-			if (file.exists())
-				showDebugMsgBox("File exists!");
-			else
-				showDebugMsgBox("File do not exist!");*/
+			//showDebugMsgBox("soundPath: " + soundPath.toString());
+			
 			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
 				mediaPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
-				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);	// Use when playing default notification and own custom sound
-				//mediaPlayer.setLooping(true);						// Use when playing default notification
-				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);	// Use when playing default alarm
-				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);	// Use when playing default ringtone
-				mediaPlayer.setLooping(false);		// Use when playing default alarm/ringtone and own sound file
+				// Use the notification stream when playing all sounds (notification, alarm, ringtone and own sound) so user easily can change the volume for all sounds with the device's notification volume controllers
+				mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+				//mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
+				mediaPlayer.setLooping(false);
 				//mediaPlayer.prepare();
-				mediaPlayer.prepareAsync();			// prepare async to not block main thread
+				mediaPlayer.prepareAsync();	// prepare async to not block main thread
 				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mp)
@@ -513,30 +503,12 @@ public class GattServerPlugin extends CordovaPlugin
    				 	}
 				});
 				
-				//mediaPlayer.start();
-				// Vibrate the device if it has hardware vibrator and permission
-				/*Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-				if (vib.hasVibrator()){
-					if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
-						vib.vibrate(1000);
-					}
-				}*/
 			} catch (Exception ex) {
 				// Do nothing
 				showDebugMsgBox("Error playing sound: " + ex.getMessage());
 			}
-			// End section added 2017-01-24
-			
-			/*try {		// Removed 2017-01-24
-				Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				Ringtone r = RingtoneManager.getRingtone(cordova.getActivity().getApplicationContext(), notification);
-				r.play();
-			} catch (Exception e) {
-				// Do nothing
-			}*/
 		}
 		
-		// Section added 2017-01-13
 		// Notify user of started server and save callback
 		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
@@ -546,11 +518,11 @@ public class GattServerPlugin extends CordovaPlugin
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
 		serverRunningCallbackContext.sendPluginResult(pluginResult);
-		// End section added 2017-01-13
 	}
+	
 	private void alarmAction(CallbackContext callbackContext)
 	{
-		// Action function just to test local notifications from outside the plugin
+		// Debug action function just to test local notifications from outside the plugin (can remove)
 		
 		// Show local notification
 		long[] pattern = { 0, 200, 500 };
