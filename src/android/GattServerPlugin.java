@@ -466,7 +466,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// enabled for the app and if API >= 19. If Api < 19 it will always return true (even if notifications
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
-			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());
+			//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());
 			Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), CordovaActivity.class);
 			
 			//appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
