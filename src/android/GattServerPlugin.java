@@ -467,13 +467,13 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());
-			Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), cordova.getActivity());
+			Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), CordovaActivity.class);
 			
 			//appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			//appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			appActivity.setAction(Intent.ACTION_MAIN);
-			appActivity.addCategory(Intent.CATEGORY_LAUNCHER);
+			//appActivity.setAction(Intent.ACTION_MAIN);
+			//appActivity.addCategory(Intent.CATEGORY_LAUNCHER);
 			appActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
