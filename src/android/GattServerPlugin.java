@@ -120,6 +120,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
+	private NotificationManager mNotificationManager = null;
 	
 	
 	/*********************************************************************************************************************
@@ -667,7 +668,7 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	public void onResume(boolean multitasking) {
 		// Called when the activity will start interacting with the user
-		isInBackground = false;		// App is put in foreground (added 2017-01-10)
+		isInBackground = false;		// App is put in foreground
 		super.onResume(multitasking);
 		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE); // Added 2017-01-30
 		mNotificationManager.cancelAll(); // Added 2017-01-30
