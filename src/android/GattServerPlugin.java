@@ -467,7 +467,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());
-			Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), CordovaActivity.class);
+			Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), org.apache.cordova.CordovaActivity.class);
 			
 			//appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
