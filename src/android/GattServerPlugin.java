@@ -467,6 +467,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());	// Added 2017-01-30
+			appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
