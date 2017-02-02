@@ -306,7 +306,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
 		// reseted when calling this function.
-		
+		showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
 		
 		if(BluetoothAdapter.getDefaultAdapter() == null){
