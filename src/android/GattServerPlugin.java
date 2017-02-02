@@ -45,7 +45,7 @@ import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
 import android.content.Intent;
-//import android.content.pm.PackageManager;
+import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.Manifest.permission;
 //import android.R;
