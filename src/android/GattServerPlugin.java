@@ -120,7 +120,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
-	private NotificationManager mNotificationManager = null;
+	//private NotificationManager mNotificationManager = null;
 	
 	
 	/*********************************************************************************************************************
@@ -488,7 +488,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
 
-			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update the notification later on
 		}
 		else if(!isInBackground){
@@ -626,7 +626,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
-		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		//mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		super.pluginInitialize();
 		showDebugMsgBox("pluginInitialize() called!");
 	 }
@@ -646,7 +646,7 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancelAll();
 		super.onStop();
    	 }
@@ -663,7 +663,7 @@ public class GattServerPlugin extends CordovaPlugin
 	public void onResume(boolean multitasking) {
 		// Called when the activity will start interacting with the user
 		isInBackground = false;		// App is put in foreground
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancelAll();
 		super.onResume(multitasking);
 		showDebugMsgBox("onResume() called!");
