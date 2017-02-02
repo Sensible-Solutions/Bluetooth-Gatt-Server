@@ -626,7 +626,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
-		NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		super.pluginInitialize();
 		showDebugMsgBox("pluginInitialize() called!");
 	 }
