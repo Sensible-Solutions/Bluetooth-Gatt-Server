@@ -45,7 +45,7 @@ import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
 import android.content.Intent;
-import android.content.pm.PackageManager;
+//import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.Manifest.permission;
 //import android.R;
@@ -467,26 +467,19 @@ public class GattServerPlugin extends CordovaPlugin
 			// actually are disabled for the app).
 			long[] pattern = { 0, 200, 500 };
 			//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName());
-			//Intent appActivity = new Intent(cordova.getActivity().getApplicationContext(), org.apache.cordova.CordovaActivity.class);
-			Intent appActivity = cordova.getActivity().getIntent();
-			
-			//appActivity.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			//appActivity.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			//appActivity.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			//appActivity.setAction(Intent.ACTION_MAIN);
-			//appActivity.addCategory(Intent.CATEGORY_LAUNCHER);
-			appActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Intent appIntent = cordova.getActivity().getIntent();
+			appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
 			.setContentText("Incoming SenseSoft Mini alarm!")
-			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appActivity, 0))
+			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			//.setPriority(NotificationCompat.PRIORITY_MAX)
 			//.setPriority(NotificationCompat.PRIORITY_DEFAULT)
 			.setPriority(NotificationCompat.PRIORITY_HIGH)
 			.setOngoing(true)
-			//.setAutoCancel(true)			// Do not use!
+			.setAutoCancel(true)			// Do not use!
 			//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 			.setCategory(NotificationCompat.CATEGORY_ALARM)
 			.setGroup("SENSESOFT_MINI")
