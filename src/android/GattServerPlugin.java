@@ -627,10 +627,16 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	private setBuilderVibrate(long[] pattern)
+	private setBuilderVibrate()
 	{
-		//long[] pattern = { 0, 500, 500 };
-		mBuilder.setVibrate(pattern);
+		// Check if device has vibrator and permission
+		Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+		if (vib.hasVibrator()){
+			if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+				long[] pattern = { 0, 500, 500 };
+				mBuilder.setVibrate(pattern);
+			}
+		}
 	}
 	
 	private void addProperty(JSONObject obj, String key, Object value)
