@@ -562,6 +562,60 @@ public class GattServerPlugin extends CordovaPlugin
 		serverRunningCallbackContext.sendPluginResult(pluginResult);
 	}
 	
+	private void setBuilder()
+	{
+		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will always be restarted (even if it's already running)
+		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
+		appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		mBuilder.setContentTitle("SenseSoft Notifications Mini")
+		.setContentText("Incoming SenseSoft Mini alarm.")
+		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
+		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+		.setPriority(NotificationCompat.PRIORITY_HIGH)
+		//.setOngoing(true)
+		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
+		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
+		.setCategory(NotificationCompat.CATEGORY_ALARM)
+		.setGroup("SENSESOFT_MINI")
+		.setTicker("SenseSoft Mini");
+	}
+	
+	private void setBuilderSound(final int sound)
+	{
+		switch (sound) {
+			case 0:
+				// Custom sound 1
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
+				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				break;
+			case 1:
+				// Custom sound 2
+				Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
+				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
+				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				break;
+			case 2:
+				// Device default notification sound
+				mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);
+				break;
+			case 3:
+				// Device default ringtone
+			case 4:
+				// Device default alarm sound
+			case 5:
+				// No sound	
+			default:
+				
+		}
+	}
+	
+	private setBuilderVibrate()
+	{
+		mBuilder.setVibrate(pattern);
+	}
+	
 	private void addProperty(JSONObject obj, String key, Object value)
 	{
 		try {
@@ -571,8 +625,7 @@ public class GattServerPlugin extends CordovaPlugin
 		{ /* Ignore */ }
 	}
   
-	//private String parseCharacteristicValue(final BluetoothGattCharacteristic characteristic)	// Removed 2017-01-24
-	private String parseCharacteristicValue(final int value)	// Added 2017-01-24
+	private String parseCharacteristicValue(final int value)
 	{
 		switch (value) {
 			case 0:
@@ -584,25 +637,6 @@ public class GattServerPlugin extends CordovaPlugin
 			default:
 				return "Parse Error";
 		}
-		
-		/*if (characteristic == null)	// Section removed 2017-01-24
-			return "";
-
-		if (characteristic.getUuid() == ALERT_LEVEL_CHAR_UUID) {
-			final int value = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-			switch (value) {
-				case 0:
-					return "No Alert";
-				case 1:
-					return "Mild Alert";
-				case 2:
-					return "High Alert";
-				default:
-					return "Parse Error";
-			}
-		}	
-		else	
-			return characteristic.getStringValue(0);*/
 	}
 	
 	private synchronized void showDebugMsgBox(final String message)
@@ -634,32 +668,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		
-		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will be restarted
-		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
-		appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		
-		mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
-		.setContentTitle("SenseSoft Notifications Mini")
-		.setContentText("Incoming SenseSoft Mini alarm.")
-		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
-		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-		//.setPriority(NotificationCompat.PRIORITY_MAX)
-		//.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-		.setPriority(NotificationCompat.PRIORITY_HIGH)
-		//.setOngoing(true)
-		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
-		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
-		.setCategory(NotificationCompat.CATEGORY_ALARM)
-		.setGroup("SENSESOFT_MINI")
-		.setTicker("SenseSoft Mini");
-		mBuilder.setVibrate(pattern);
-		//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of below to use the default notification sound
-		Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
-		//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
-		//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
-		mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
-		
-		
+		mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext());
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
