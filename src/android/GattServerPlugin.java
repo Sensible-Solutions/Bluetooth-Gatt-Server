@@ -121,6 +121,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
 	private NotificationManager mNotificationManager = null;
+	private NotificationCompat.Builder mBuilder = null;
 	//private MediaPlayer mediaPlayer = null;
 	
 	
@@ -436,7 +437,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// Debug action function just to test local notifications from outside the plugin (can remove)
 		
 		// Show local notification
-		long[] pattern = { 0, 200, 500 };
+		/*long[] pattern = { 0, 200, 500 };
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 	        .setContentTitle("SenseSoft Notifications Mini")
 	        .setContentText("Incoming SenseSoft Mini alarm!")
@@ -451,7 +452,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on
-		mNotificationManager.notify(1665, mBuilder.build());
+		mNotificationManager.notify(1665, mBuilder.build());*/
 	}
   	
 	
@@ -473,7 +474,7 @@ public class GattServerPlugin extends CordovaPlugin
 			
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 			.setContentTitle("SenseSoft Notifications Mini")
-			.setContentText("Incoming SenseSoft Mini alarm!")
+			.setContentText("Incoming SenseSoft Mini alarm.")
 			.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 			.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 			//.setPriority(NotificationCompat.PRIORITY_MAX)
@@ -632,6 +633,33 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
+		
+		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will be restarted
+		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
+		appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
+		.setContentTitle("SenseSoft Notifications Mini")
+		.setContentText("Incoming SenseSoft Mini alarm.")
+		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
+		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+		//.setPriority(NotificationCompat.PRIORITY_MAX)
+		//.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+		.setPriority(NotificationCompat.PRIORITY_HIGH)
+		//.setOngoing(true)
+		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
+		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
+		.setCategory(NotificationCompat.CATEGORY_ALARM)
+		.setGroup("SENSESOFT_MINI")
+		.setTicker("SenseSoft Mini");
+		mBuilder.setVibrate(pattern);
+		//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);	// Use instead of below to use the default notification sound
+		Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
+		//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
+		//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
+		mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
+		
+		
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
