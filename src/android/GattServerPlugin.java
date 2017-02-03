@@ -580,6 +580,8 @@ public class GattServerPlugin extends CordovaPlugin
 		.setGroup("SENSESOFT_MINI")
 		.setTicker("SenseSoft Mini")
 		.setVibrate(pattern);			// Will vibrate on a notification if device has hardware vibrator and it's turned on for the app's notifications
+	
+		this.setBuilderSound(1);
 	}
 	
 	private void setBuilderSound(final int sound)
@@ -693,7 +695,6 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is in foreground
 		
 		initNotificationBuilder();
-		setBuilderSound(1);
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
