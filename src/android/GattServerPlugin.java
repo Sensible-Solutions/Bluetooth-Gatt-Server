@@ -627,9 +627,9 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	private setBuilderVibrate()
+	private setBuilderVibrate(long[] pattern)
 	{
-		long[] pattern = { 0, 200, 500 };
+		//long[] pattern = { 0, 500, 500 };
 		mBuilder.setVibrate(pattern);
 	}
 	
@@ -686,6 +686,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is in foreground
 		
 		initNotificationBuilder();
+		setBuilderSound(1);
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
