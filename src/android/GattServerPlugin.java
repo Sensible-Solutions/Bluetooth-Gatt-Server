@@ -535,12 +535,7 @@ public class GattServerPlugin extends CordovaPlugin
 						// Called when MediaPlayer is ready
         					mp.start();
 						// Vibrate the device if it has hardware vibrator and permission
-						Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-						if (vib.hasVibrator()){
-							if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
-								vib.vibrate(1000);
-							}
-						}
+						vibrateDevice(); // Remember to also stop vibrator when media player is paused/stoped since it's set to repeat (implement it)
    				 	}
 				});
 				//mediaPlayer.prepare();
@@ -565,9 +560,12 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void initNotificationBuilder()
 	{	
+		long[] pattern = { 0, 500, 500 };
+	
 		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will always be restarted (even if it's already running)
 		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
 		appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
 		
 		mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
 		.setContentTitle("SenseSoft Notifications Mini")
@@ -580,7 +578,8 @@ public class GattServerPlugin extends CordovaPlugin
 		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 		.setCategory(NotificationCompat.CATEGORY_ALARM)
 		.setGroup("SENSESOFT_MINI")
-		.setTicker("SenseSoft Mini");
+		.setTicker("SenseSoft Mini")
+		.setVibrate(pattern);			// Will vibrate on a notification if device has hardware vibrator and it's turned on for the app's notifications
 	}
 	
 	private void setBuilderSound(final int sound)
@@ -627,14 +626,16 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	private setBuilderVibrate()
+	private void vibrateDevice()
 	{
 		// Check if device has vibrator and permission
 		Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 		if (vib.hasVibrator()){
 			if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+				// Vibrate
 				long[] pattern = { 0, 500, 500 };
-				mBuilder.setVibrate(pattern);
+				//vib.vibrate(1000);
+				vib.vibrate(pattern, 1);
 			}
 		}
 	}
