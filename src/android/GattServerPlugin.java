@@ -137,12 +137,13 @@ public class GattServerPlugin extends CordovaPlugin
 		SOUND_ALARM,			// Default alarm sound
 		SOUND_OFF;			// No alarm sound
 	}
+	
 	private class AppSettings
 	{
-		public String alert = "on";			// Alarm on/off flag ("on" or "off")
+		public boolean alert = true;			// Alarm on/off flag
 		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
-		public String vibration = "on";			// Vibration flag ("on" or "off")
-		public String log = "on";			// Alarm logging flag ("on" or "off")
+		public boolean vibration = "on";		// Vibration on/off flag
+		public boolean log = "on";			// Alarm logging on/off flag
 	}
 	
 	
@@ -582,7 +583,8 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void initNotificationBuilder()
 	{	
-		long[] pattern = { 0, 500, 500 };
+		//long[] pattern = {0, 1000, 1000};
+		long[] pattern = {0, 1000};	// Vibrate directly for 1000 ms
 	
 		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will always be restarted (even if it's already running)
 		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
@@ -602,11 +604,11 @@ public class GattServerPlugin extends CordovaPlugin
 		.setGroup("SENSESOFT_MINI")
 		.setTicker("SenseSoft Mini");
 		
-		if (AppSettings.alert.equals("on")){
+		if (myAppSettings.alert){
 			mBuilder.setVibrate(pattern);		// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
 		}
 		else {
-			mBuilder.setVibrate(0);			// Turns off vibration
+			mBuilder.setVibrate({0, 0});			// Turns off vibration (must test if it works)
 		}
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
 			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
@@ -666,9 +668,10 @@ public class GattServerPlugin extends CordovaPlugin
 		if (vib.hasVibrator()){
 			if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
 				// Vibrate
-				long[] pattern = { 0, 500, 500 };
-				//vib.vibrate(1000);
-				vib.vibrate(pattern, 1);
+				//long[] pattern = {0, 1000, 1000};
+				//long[] pattern = {0, 1000};	// Vibrate directly for 1000 ms
+				vib.vibrate(1000);		// Vibrate directly for 1000 ms
+				//vib.vibrate(pattern, -1);	// -1 disables repeating (0 repeats)
 			}
 		}
 	}
