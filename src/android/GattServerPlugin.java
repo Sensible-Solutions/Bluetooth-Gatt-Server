@@ -41,6 +41,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
@@ -123,6 +124,14 @@ public class GattServerPlugin extends CordovaPlugin
 	private NotificationManager mNotificationManager = null;
 	private NotificationCompat.Builder mBuilder = null;
 	//private MediaPlayer mediaPlayer = null;
+	
+	private class AppSettings
+	{
+		public String alert = "on";		// Alarm on/off flag ("on" or "off")
+		public String sound = "on";		// Sound flag
+		public String vibration = "on";		// Vibration flag ("on" or "off")
+		public String log = "on";		// Alarm logging flag ("on" or "off")
+	};
 	
 	
 	/*********************************************************************************************************************
@@ -572,15 +581,24 @@ public class GattServerPlugin extends CordovaPlugin
 		.setContentText("Incoming SenseSoft Mini alarm.")
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-		.setPriority(NotificationCompat.PRIORITY_HIGH)
+		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
 		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
 		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 		.setCategory(NotificationCompat.CATEGORY_ALARM)
 		.setGroup("SENSESOFT_MINI")
-		.setTicker("SenseSoft Mini")
-		.setVibrate(pattern);			// Will vibrate on a notification if device has hardware vibrator and it's turned on for the app's notifications
-	
+		.setTicker("SenseSoft Mini");
+		
+		if (appSettings.alert.equals("on")){
+			mBuilder.setVibrate(pattern);		// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
+		}
+		else {
+			mBuilder.setVibrate(0);			// Turns off vibration
+		}
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
+		}
+		
 		this.setBuilderSound(1);
 	}
 	
