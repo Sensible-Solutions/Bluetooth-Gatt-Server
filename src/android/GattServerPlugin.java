@@ -142,8 +142,8 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		public boolean alert = true;			// Alarm on/off flag
 		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
-		public boolean vibration = "on";		// Vibration on/off flag
-		public boolean log = "on";			// Alarm logging on/off flag
+		public boolean vibration = true;		// Vibration on/off flag
+		public boolean log = true;			// Alarm logging on/off flag
 	}
 	
 	
@@ -584,7 +584,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private void initNotificationBuilder()
 	{	
 		//long[] pattern = {0, 1000, 1000};
-		long[] pattern = {0, 1000};	// Vibrate directly for 1000 ms
+		long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
+		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works)
 	
 		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will always be restarted (even if it's already running)
 		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
@@ -605,10 +606,10 @@ public class GattServerPlugin extends CordovaPlugin
 		.setTicker("SenseSoft Mini");
 		
 		if (myAppSettings.alert){
-			mBuilder.setVibrate(pattern);		// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
+			mBuilder.setVibrate(pattern_on);	// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
 		}
 		else {
-			mBuilder.setVibrate({0, 0});			// Turns off vibration (must test if it works)
+			mBuilder.setVibrate(pattern_off);	// Turns off vibration (must test if it works)
 		}
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
 			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
