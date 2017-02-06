@@ -137,10 +137,10 @@ public class GattServerPlugin extends CordovaPlugin
 	};
 	private static class AppSettings
 	{
-		public String alert = "on";		// Alarm on/off flag ("on" or "off")
-		public int sound = AlarmSound.SOUND_1;	// Sound flag
-		public String vibration = "on";		// Vibration flag ("on" or "off")
-		public String log = "on";		// Alarm logging flag ("on" or "off")
+		public String alert = "on";			// Alarm on/off flag ("on" or "off")
+		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
+		public String vibration = "on";			// Vibration flag ("on" or "off")
+		public String log = "on";			// Alarm logging flag ("on" or "off")
 	};
 	
 	
@@ -613,40 +613,40 @@ public class GattServerPlugin extends CordovaPlugin
 		this.setBuilderSound(AppSettings.sound);
 	}
 	
-	private void setBuilderSound(final int sound)
+	private void setBuilderSound(final AlarmSound sound)
 	{
 		Uri soundPath = null;
 		
 		switch (sound) {
-			case AlarmSound.SOUND_1:
+			case SOUND_1:
 				// Custom sound 1
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case AlarmSound.SOUND_2:
+			case SOUND_2:
 				// Custom sound 2
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case AlarmSound.SOUND_NOTIFICATION:
+			case SOUND_NOTIFICATION:
 				// Device default notification sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);
 				break;
-			case AlarmSound.SOUND_RINGTONE:
+			case SOUND_RINGTONE:
 				// Device default ringtone (only available on phones and not tablets)
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case AlarmSound.SOUND_ALARM:
+			case SOUND_ALARM:
 				// Device default alarm sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case AlarmSound.SOUND_OFF:
+			case SOUND_OFF:
 				// No sound
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null
 			default:
