@@ -124,7 +124,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
-	private NotificationManager mNotificationManager = null;
+	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
 	private Notification alarmNotification = null;
 	//private MediaPlayer mediaPlayer = null;
@@ -476,9 +476,9 @@ public class GattServerPlugin extends CordovaPlugin
 	        .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS)
 	        .setVibrate(pattern);
 		
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on
-		mNotificationManager.notify(1665, mBuilder.build());*/
+		alarmNotificationManager.notify(1665, mBuilder.build());*/
 	}
   	
 	
@@ -522,8 +522,8 @@ public class GattServerPlugin extends CordovaPlugin
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			
 			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
-			mNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
-			//mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			alarmNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			//alarmNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
 		else if(!isInBackground){
 			// Manually play alarm sound if app is in the foreground
@@ -750,7 +750,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
 		initAlarmNotification();
-		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
 		super.pluginInitialize();
@@ -772,8 +772,8 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.cancelAll();
+		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		alarmNotificationManager.cancelAll();
 		super.onStop();
    	 }
 	
@@ -789,8 +789,8 @@ public class GattServerPlugin extends CordovaPlugin
 	public void onResume(boolean multitasking) {
 		// Called when the activity will start interacting with the user
 		isInBackground = false;		// App is put in foreground
-		//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.cancelAll();
+		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		alarmNotificationManager.cancelAll();
 		super.onResume(multitasking);
 		showDebugMsgBox("onResume() called!");
     	}
