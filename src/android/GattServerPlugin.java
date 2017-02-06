@@ -31,6 +31,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.media.Ringtone;
 import android.media.AudioManager;
