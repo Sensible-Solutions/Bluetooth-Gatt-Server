@@ -658,7 +658,7 @@ public class GattServerPlugin extends CordovaPlugin
 				break;
 			case SOUND_OFF:
 				// No sound
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null (test it!)
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null (test it!)
 			default:
 				// Device default notification sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -668,7 +668,15 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		alarmNotification.sound = soundPath;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
-			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
+			// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+			AudioAttributes aAttributes = new AudioAttributes.Builder(alarmNotification.audioAttributes)
+			.setUsage(AudioAttributes.USAGE_NOTIFICATION)
+			.build();
+			alarmNotification.audioAttributes = aAttributes;
+		}
+		else {
+			// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+			alarmNotification.audioStreamType = AudioManager.STREAM_NOTIFICATION;
 		}
 	}
 	
