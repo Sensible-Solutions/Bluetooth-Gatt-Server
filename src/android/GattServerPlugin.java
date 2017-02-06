@@ -521,7 +521,8 @@ public class GattServerPlugin extends CordovaPlugin
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			
 			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
-			mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			mNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			//mNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
 		else if(!isInBackground){
 			// Manually play alarm sound if app is in the foreground
