@@ -52,6 +52,7 @@ import android.Manifest.permission;
 //import android.R;
 
 import java.lang.Enum;
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,7 +124,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
 	private NotificationManager mNotificationManager = null;
-	private NotificationCompat.Builder mBuilder = null;
+	//private NotificationCompat.Builder mBuilder = null;
+	private Notification alarmNotification = null;
 	//private MediaPlayer mediaPlayer = null;
 	
 	private AppSettings myAppSettings = null;
@@ -581,8 +583,10 @@ public class GattServerPlugin extends CordovaPlugin
 		serverRunningCallbackContext.sendPluginResult(pluginResult);
 	}
 	
-	private void initNotificationBuilder()
+	private void initAlarmNotification()
 	{	
+		// Builds the alarms notification
+		
 		//long[] pattern = {0, 1000, 1000};
 		long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
 		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works)
@@ -592,8 +596,8 @@ public class GattServerPlugin extends CordovaPlugin
 		appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		
-		mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
-		.setContentTitle("SenseSoft Notifications Mini")
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext()) // Automatically sets the when field (displayed time of notification) to System.currentTimeMillis() 
+		.setContentTitle("SenseSoft Mini")
 		.setContentText("Incoming SenseSoft Mini alarm.")
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
@@ -603,7 +607,8 @@ public class GattServerPlugin extends CordovaPlugin
 		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 		.setCategory(NotificationCompat.CATEGORY_ALARM)
 		.setGroup("SENSESOFT_MINI")
-		.setTicker("SenseSoft Mini");
+		.setTicker("SenseSoft Mini")
+		.setShowWhen(true);			// Default is false in Android >= 5 and true in Android < 5
 		
 		if (myAppSettings.alert){
 			mBuilder.setVibrate(pattern_on);	// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
@@ -615,10 +620,11 @@ public class GattServerPlugin extends CordovaPlugin
 			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
 		}
 		
-		this.setBuilderSound(myAppSettings.sound);
+		alarmNotification = mBuilder.build();
+		this.setAlarmNotificationSound(myAppSettings.sound);
 	}
 	
-	private void setBuilderSound(final AlarmSound sound)
+	private void setAlarmNotificationSound(final AlarmSound sound)
 	{
 		Uri soundPath = null;
 		
@@ -626,39 +632,43 @@ public class GattServerPlugin extends CordovaPlugin
 			case SOUND_0:
 				// Custom sound 1
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_1:
 				// Custom sound 2
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_NOTIFICATION:
 				// Device default notification sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
-				//mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_LIGHTS);
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_RINGTONE:
 				// Device default ringtone (only available on phones and not tablets)
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_ALARM:
 				// Device default alarm sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_OFF:
 				// No sound
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null
+				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null (test it!)
 			default:
 				// Device default notification sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				
+		}
+		
+		alarmNotification.sound = soundPath;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
 		}
 	}
 	
@@ -729,7 +739,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
-		initNotificationBuilder();
+		initAlarmNotification();
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
 		
