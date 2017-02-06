@@ -126,6 +126,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private NotificationCompat.Builder mBuilder = null;
 	//private MediaPlayer mediaPlayer = null;
 	
+	private AppSettings myAppSettings = null;
+	
 	private enum AlarmSound
 	{
 		SOUND_0,			// custom mp3 sound
@@ -137,10 +139,10 @@ public class GattServerPlugin extends CordovaPlugin
 	}
 	private class AppSettings
 	{
-		public static String alert = "on";			// Alarm on/off flag ("on" or "off")
-		public static AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
-		public static String vibration = "on";			// Vibration flag ("on" or "off")
-		public static String log = "on";			// Alarm logging flag ("on" or "off")
+		public String alert = "on";			// Alarm on/off flag ("on" or "off")
+		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
+		public String vibration = "on";			// Vibration flag ("on" or "off")
+		public String log = "on";			// Alarm logging flag ("on" or "off")
 	}
 	
 	
@@ -610,7 +612,7 @@ public class GattServerPlugin extends CordovaPlugin
 			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
 		}
 		
-		this.setBuilderSound(AppSettings.sound);
+		this.setBuilderSound(myAppSettings.sound);
 	}
 	
 	private void setBuilderSound(final AlarmSound sound)
@@ -722,7 +724,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
-		
+		myAppSettings = new AppSettings();
 		initNotificationBuilder();
 		mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
