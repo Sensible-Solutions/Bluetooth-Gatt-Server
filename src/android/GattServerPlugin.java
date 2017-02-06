@@ -562,7 +562,7 @@ public class GattServerPlugin extends CordovaPlugin
 						// Called when MediaPlayer is ready
         					mp.start();
 						// Vibrate the device if it has hardware vibrator and permission
-						vibrateDevice(); // Remember to also stop vibrator when media player is paused/stoped since it's set to repeat (implement it)
+						vibrateDevice();
    				 	}
 				});
 				//mediaPlayer.prepare();
@@ -590,8 +590,8 @@ public class GattServerPlugin extends CordovaPlugin
 		// Builds the alarms notification
 		
 		//long[] pattern = {0, 1000, 1000};
-		long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
-		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works)
+		//long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
+		//long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works)
 	
 		//Intent appActivity = cordova.getActivity().getApplicationContext().getPackageManager().getLaunchIntentForPackage(cordova.getActivity().getApplicationContext().getPackageName()); // If used, app will always be restarted (even if it's already running)
 		Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
@@ -611,21 +611,21 @@ public class GattServerPlugin extends CordovaPlugin
 		.setGroup("SENSESOFT_MINI")
 		.setTicker("SenseSoft Mini")
 		.setShowWhen(true);			// Default is false in Android >= 5 and true in Android < 5
-		
-		if (myAppSettings.alert){
+		/*if (myAppSettings.vibration){
 			mBuilder.setVibrate(pattern_on);	// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
 		}
 		else {
 			mBuilder.setVibrate(pattern_off);	// Turns off vibration (must test if it works)
-		}
+		}*/
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
 			mBuilder.setVisibility(Notification.VISIBILITY_PRIVATE);	// Show this notification on all lockscreens, but conceal sensitive or private information on secure lockscreens
 		}
 		
 		alarmNotification = mBuilder.build();
 		this.setAlarmNotificationSound(myAppSettings.sound);
+		this.setAlarmNotificationVibrate(myAppSettings.vibration);
 	}
-	
+
 	private void setAlarmNotificationSound(final AlarmSound sound)
 	{
 		Uri soundPath = null;
@@ -682,17 +682,32 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
+	
+	private void setAlarmNotificationVibrate(final boolean vibrate)
+	{
+		//long[] pattern = {0, 1000, 1000};
+		long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
+		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works!)
+		
+		if (vibrate)
+			alarmNotification.vibrate = pattern_on;
+		else
+			alarmNotification.vibrate = pattern_off;
+	}
+	
 	private void vibrateDevice()
 	{
-		// Check if device has vibrator and permission
-		Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-		if (vib.hasVibrator()){
-			if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
-				// Vibrate
-				//long[] pattern = {0, 1000, 1000};
-				//long[] pattern = {0, 1000};	// Vibrate directly for 1000 ms
-				vib.vibrate(1000);		// Vibrate directly for 1000 ms
-				//vib.vibrate(pattern, -1);	// -1 disables repeating (0 repeats)
+		if (myAppSettings.vibration){
+			// Check if device has vibrator and permission
+			Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+			if (vib.hasVibrator()){
+				if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+					// Vibrate (works async)
+					//long[] pattern = {0, 1000, 1000};
+					//long[] pattern = {0, 1000};	// Vibrate directly for 1000 ms
+					vib.vibrate(1000);		// Vibrate directly for 1000 ms
+					//vib.vibrate(pattern, -1);	// -1 disables repeating (0 repeats)
+				}
 			}
 		}
 	}
