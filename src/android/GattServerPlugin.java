@@ -134,14 +134,14 @@ public class GattServerPlugin extends CordovaPlugin
 		SOUND_RINGTONE,			// Default ringtone sound
 		SOUND_ALARM,			// Default alarm sound
 		SOUND_OFF;			// No alarm sound
-	};
-	private static class AppSettings
+	}
+	private class AppSettings
 	{
-		public String alert = "on";			// Alarm on/off flag ("on" or "off")
-		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
-		public String vibration = "on";			// Vibration flag ("on" or "off")
-		public String log = "on";			// Alarm logging flag ("on" or "off")
-	};
+		public static String alert = "on";			// Alarm on/off flag ("on" or "off")
+		public static AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
+		public static String vibration = "on";			// Vibration flag ("on" or "off")
+		public static String log = "on";			// Alarm logging flag ("on" or "off")
+	}
 	
 	
 	
@@ -618,12 +618,12 @@ public class GattServerPlugin extends CordovaPlugin
 		Uri soundPath = null;
 		
 		switch (sound) {
-			case SOUND_1:
+			case SOUND_0:
 				// Custom sound 1
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
 				mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case SOUND_2:
+			case SOUND_1:
 				// Custom sound 2
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
 				//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);	// Also works if com.sensiblesolutions.sensesoftnotificationsmini.R has been imported
