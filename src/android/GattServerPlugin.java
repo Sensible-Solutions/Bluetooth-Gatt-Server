@@ -124,6 +124,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
+	private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep
 	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
 	private Notification alarmNotification = null;
@@ -337,6 +338,10 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
 		
+		// Acquire the wake lock if it hasn't been acquired but not yet released
+		if (!wakeLock.isHeld())
+			wakeLock.acquire();
+		
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
@@ -441,6 +446,10 @@ public class GattServerPlugin extends CordovaPlugin
 		// not be interpreted as an alert.
 		
 		iasInitialized = false;
+		
+		// Release the wake lock if it has been acquired but not yet released
+		if (wakeLock.isHeld())
+			wakeLock.release();
 		
 		// Section below removed 2017-01-24
 		/*final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
@@ -765,6 +774,11 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
+		// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep" 
+		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
+		wakeLock.setReferenceCounted(false);
+
 		initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		//mediaPlayer = new MediaPlayer();
@@ -773,11 +787,14 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called!");
 	 }
 	
-	/*@Override
+	@Override
 	public void onDestroy() {
 		 // The final call you receive before your activity is destroyed
 		super.onDestroy();
-	}*/
+		// Release the wake lock if it has been acquired but not yet released
+		if (wakeLock.isHeld())
+			wakeLock.release();
+	}
 	
 	/*@Override
 	 public void onStart() {
@@ -791,6 +808,7 @@ public class GattServerPlugin extends CordovaPlugin
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
 		super.onStop();
+		//showDebugMsgBox("onStop() called!");
    	 }
 	
 	@Override
@@ -811,10 +829,11 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("onResume() called!");
     	}
 	
-	/*@Override
+	@Override
     	public void onReset() {
 		// Called when the WebView does a top-level navigation or refreshes
 		// Plugins should stop any long-running processes and clean up internal state
 		super.onReset();
-	}*/
+		showDebugMsgBox("onReset() called!");
+	}
 }
