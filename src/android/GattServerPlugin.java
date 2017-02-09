@@ -85,6 +85,7 @@ public class GattServerPlugin extends CordovaPlugin
 	//private final String initializeActionName = "initialize";
 	private final static String START_GATT_SERVER = "startServer";
 	private final static String RESET_ALARM = "resetAlarm";
+	private final static String RELEASE_CPU = "releaseCpu";
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -329,6 +330,10 @@ public class GattServerPlugin extends CordovaPlugin
 				resetAlarmAction(callbackContext);
 				return true;
 			}
+			else if (RELEASE_CPU.equals(action)){		// Action for Android only
+				releaseCpuAction(callbackContext);
+				return true;
+			}
 			else if (action.equals("alarm")){
 				alarmAction(callbackContext);
 				return true;
@@ -477,6 +482,20 @@ public class GattServerPlugin extends CordovaPlugin
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(false);
 		callbackContext.sendPluginResult(pluginResult);
+	}
+	
+	private void releaseCpuAction(CallbackContext callbackContext)
+	{
+		// Releases the plugin's claim to the CPU by releasing acquired wake lock.
+		// In Android, a wake lock is needed to keep the cpu running so bluetooth
+		// connection doesn't disconnects when the device goes to "sleep".
+		// Android version only
+		
+		// Release the wake lock if it has been acquired but not yet released
+		if (wakeLock != null) {
+			if (wakeLock.isHeld())
+				wakeLock.release();
+		}
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
