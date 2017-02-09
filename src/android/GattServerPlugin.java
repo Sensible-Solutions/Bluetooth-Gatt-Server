@@ -212,6 +212,11 @@ public class GattServerPlugin extends CordovaPlugin
 			JSONObject returnObj = new JSONObject();
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
+				showDebugMsgBox("STATE_CONNECTED!")
+				// Acquire the wake lock if it hasn't been acquired but not yet released
+				if (!wakeLock.isHeld())
+					wakeLock.acquire();
+				
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "state", "connected");
@@ -221,6 +226,10 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
 				showDebugMsgBox("STATE_DISCONNECTED!");
+				// Release the wake lock if it has been acquired but not yet released
+				if (wakeLock.isHeld())
+					wakeLock.release();
+				
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "state", "disconnected");
@@ -451,8 +460,8 @@ public class GattServerPlugin extends CordovaPlugin
 		iasInitialized = false;
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock.isHeld())
-			wakeLock.release();
+		/*if (wakeLock.isHeld())
+			wakeLock.release();*/
 		
 		// Section below removed 2017-01-24
 		/*final BluetoothGattService iaService = gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID);
