@@ -850,7 +850,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// Called when the system is about to start resuming a previous activity
 		isInBackground = true;		// App is put in background
 		super.onPause(multitasking);
-		showDebugMsgBox("onPause() called!");
+		//showDebugMsgBox("onPause() called!");
     	}
 	
 	@Override
@@ -860,7 +860,7 @@ public class GattServerPlugin extends CordovaPlugin
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
 		super.onResume(multitasking);
-		showDebugMsgBox("onResume() called!");
+		//showDebugMsgBox("onResume() called!");
     	}
 	
 	@Override
