@@ -50,6 +50,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.Manifest.permission;
 //import android.R;
 
