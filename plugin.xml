@@ -23,6 +23,7 @@
     <!-- <lib-file src="libs/android/android-support-v4.jar" /> -->
     <source-file src="src/android/GattServerPlugin.java" target-dir="src/com/sensiblesolutions/gattserver" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
       	<uses-permission android:name="android.permission.BLUETOOTH"/>
       	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
       	<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
