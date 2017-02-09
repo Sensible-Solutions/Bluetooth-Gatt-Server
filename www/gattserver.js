@@ -6,6 +6,9 @@ var gattserver = {
 	resetAlarm: function(successCallback) {
 		cordova.exec(successCallback, successCallback, gattServerName, "resetAlarm", []);
 	},
+	releaseCpu: function(successCallback) {
+		cordova.exec(successCallback, successCallback, gattServerName, "releaseCpu", []);
+	},
 	alarm: function(successCallback, errorCallback) {
 		cordova.exec(successCallback, errorCallback, gattServerName, "alarm", []); 
 	},
