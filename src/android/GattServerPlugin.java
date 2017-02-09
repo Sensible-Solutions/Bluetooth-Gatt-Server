@@ -492,9 +492,11 @@ public class GattServerPlugin extends CordovaPlugin
 		// Android version only
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock != null) {
-			if (wakeLock.isHeld())
+		if (wakeLock != null){
+			if (wakeLock.isHeld()){
 				wakeLock.release();
+				showDebugMsgBox("wakeLock released!");
+			}
 		}
 	}
 	
