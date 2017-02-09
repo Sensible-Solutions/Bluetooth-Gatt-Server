@@ -49,6 +49,7 @@ import android.content.DialogInterface;		// For showing debug messaages
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
+import android.os.PowerManager;
 import android.Manifest.permission;
 //import android.R;
 
@@ -775,7 +776,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
 		// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep" 
-		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
 		wakeLock.setReferenceCounted(false);
 
