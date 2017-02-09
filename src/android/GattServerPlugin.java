@@ -220,6 +220,7 @@ public class GattServerPlugin extends CordovaPlugin
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+				showDebugMsgBox("STATE_DISCONNECTED!");
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "state", "disconnected");
