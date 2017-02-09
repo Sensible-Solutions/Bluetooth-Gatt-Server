@@ -491,12 +491,12 @@ public class GattServerPlugin extends CordovaPlugin
 		// connection doesn't disconnects when the device goes to "sleep".
 		// Android version only
 		
-		showDebugMsgBox("wakeLock released 0!");
+		//showDebugMsgBox("wakeLock released 0!");
 		// Release the wake lock if it has been acquired but not yet released
 		if (wakeLock != null){
 			if (wakeLock.isHeld()){
 				wakeLock.release();
-				showDebugMsgBox("wakeLock released 1!");
+				showDebugMsgBox("wakeLock released!");
 			}
 		}
 	}
