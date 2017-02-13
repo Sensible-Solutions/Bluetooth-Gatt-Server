@@ -85,6 +85,7 @@ public class GattServerPlugin extends CordovaPlugin
 	//private final String initializeActionName = "initialize";
 	private final static String START_GATT_SERVER = "startServer";
 	private final static String RESET_ALARM = "resetAlarm";
+	private final static String STOP_SOUND = "stopSound";
 	private final static String RELEASE_CPU = "releaseCpu";
 	
 	// Object keys
@@ -345,6 +346,10 @@ public class GattServerPlugin extends CordovaPlugin
 				resetAlarmAction(callbackContext);
 				return true;
 			}
+			else if (STOP_SOUND.equals(action)){
+				stopSoundAction(callbackContext);
+				return true;
+			}
 			else if (RELEASE_CPU.equals(action)){		// Action for Android only
 				releaseCpuAction(callbackContext);
 				return true;
@@ -497,6 +502,12 @@ public class GattServerPlugin extends CordovaPlugin
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(false);
 		callbackContext.sendPluginResult(pluginResult);
+	}
+	
+	private void stopSoundAction(CallbackContext callbackContext)
+	{
+		// Stops playback of any sound the MediaPlayer is playing
+		stopPlaying();
 	}
 	
 	private void releaseCpuAction(CallbackContext callbackContext)
