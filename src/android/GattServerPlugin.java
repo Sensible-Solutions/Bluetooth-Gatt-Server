@@ -587,10 +587,21 @@ public class GattServerPlugin extends CordovaPlugin
 		else if(!isInBackground){
 			// Manually play alarm sound if app is in the foreground
 			
-			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);	// Use when playing default notification
-			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);		// Use when playing default alarm
-			//Uri soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);		// Use when playing default ringtone
-			Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file (important: do NOT include file type extension!)
+			if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
+			    mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || mPlayerState == MediaPlayerState.STARTED){
+				try {
+					if (!mPlayer.isPlaying()){
+						mPlayer.start();
+						mPlayerState = MediaPlayerState.STARTED;
+					}
+				} catch (Exception ex) {
+					showDebugMsgBox("Error playing sound: " + ex.getMessage());
+					mPlayerState = MediaPlayerState.ERROR;
+					initMediaPlayer();	// Reset and reinitialize the MediaPlayer
+				}
+			}
+			
+			/*Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file (important: do NOT include file type extension!)
 			// Below compiles if you import com.sensiblesolutions.sensesoftnotificationsmini.R (do NOT import android.R!)
 			//Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/" + R.raw.crash_short);
 			// Below compiles if you do not import com.sensiblesolutions.sensesoftnotificationsmini.R
@@ -630,7 +641,7 @@ public class GattServerPlugin extends CordovaPlugin
 			} catch (Exception ex) {
 				// Do nothing
 				showDebugMsgBox("Error playing sound: " + ex.getMessage());
-			}
+			}*/
 		}
 		
 		// Notify user of started server and save callback
@@ -814,6 +825,7 @@ public class GattServerPlugin extends CordovaPlugin
 		mPlayerState = MediaPlayerState.INITIALIZED;
 		try {
 			mediaPlayer.prepareAsync();	// Prepare async to not block main thread
+			mPlayerState = MediaPlayerState.PREPARING;
 		} catch (Exception ex) {
 			mPlayerState = MediaPlayerState.ERROR;
 			showDebugMsgBox("Error preparing sound: " + ex.getMessage());
