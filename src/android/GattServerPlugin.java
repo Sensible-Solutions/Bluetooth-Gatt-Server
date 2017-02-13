@@ -593,6 +593,7 @@ public class GattServerPlugin extends CordovaPlugin
 					if (!mPlayer.isPlaying()){
 						mPlayer.start();
 						mPlayerState = MediaPlayerState.STARTED;
+						vibrateDevice();
 					}
 				} catch (Exception ex) {
 					showDebugMsgBox("Error playing sound: " + ex.getMessage());
@@ -762,7 +763,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		//long[] pattern = {0, 1000, 1000};
 		long[] pattern_on = {0, 1000};		// Vibrate directly for 1000 ms
-		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works!)
+		long[] pattern_off = {0, 0};		// Turns off vibration (must test if it works!)?
 		
 		if (vibrate)
 			alarmNotification.vibrate = pattern_on;
@@ -880,8 +881,30 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
+	private void stopPlaying()
+	{
+		// Stops playback of any sound the MediaPlayer is playing
+		
+		if (mPlayerState == MediaPlayerState.PAUSED || mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || 
+		    mPlayerState == MediaPlayerState.STARTED){
+			try {
+				if (mPlayer.isPlaying()){
+					mPlayer.pause();
+					mPlayerState = MediaPlayerState.PAUSED;
+					mPlayer.seekTo(0);	// Seek to the beginning of the sound
+				}
+			} catch (Exception ex) {
+				showDebugMsgBox("Error pausing sound: " + ex.getMessage());
+				mPlayerState = MediaPlayerState.ERROR;
+				initMediaPlayer();	// Reset and reinitialize the MediaPlayer
+			}
+		}
+	}
+	
 	private void vibrateDevice()
 	{
+		// Vibrate the device if it has hardware vibrator and permission
+		
 		if (myAppSettings.vibration){
 			// Check if device has vibrator and permission
 			Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -998,6 +1021,7 @@ public class GattServerPlugin extends CordovaPlugin
 	public void onPause(boolean multitasking) {
 		// Called when the system is about to start resuming a previous activity
 		isInBackground = true;		// App is put in background
+		stopPlaying();
 		super.onPause(multitasking);
 		//showDebugMsgBox("onPause() called!");
     	}
