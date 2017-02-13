@@ -811,7 +811,7 @@ public class GattServerPlugin extends CordovaPlugin
 				@Override
     				public boolean onError(MediaPlayer mp,  int what, int extra) {
 					// Called when when an error has happened during an asynchronous operation
-					showDebugMsgBox("Error during asynchronous operation: " + what.toString() + " (" + extra.toString() + ")");
+					showDebugMsgBox("Error during asynchronous operation: " + Integer.toString(what) + " (" + Integer.toString(extra) + ")");
 					mPlayerState = MediaPlayerState.ERROR;
 					return true;
    				 }
@@ -824,7 +824,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		mPlayerState = MediaPlayerState.INITIALIZED;
 		try {
-			mediaPlayer.prepareAsync();	// Prepare async to not block main thread
+			mPlayer.prepareAsync();		// Prepare async to not block main thread
 			mPlayerState = MediaPlayerState.PREPARING;
 		} catch (Exception ex) {
 			mPlayerState = MediaPlayerState.ERROR;
@@ -873,7 +873,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		try {
 			mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
-			mPlayer.setDataSource(soundPathl);
+			mPlayer.setDataSource(soundPath);
 		} catch (Exception ex) {
 			mPlayerState = MediaPlayerState.ERROR;
 			showDebugMsgBox("Error setting sound: " + ex.getMessage());
