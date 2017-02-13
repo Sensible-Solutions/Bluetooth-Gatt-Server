@@ -131,7 +131,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
 	private Notification alarmNotification = null;
-	//private MediaPlayer mediaPlayer = null;
+	private MediaPlayer mPlayer = null;
 	
 	private AppSettings myAppSettings = null;
 	
@@ -672,6 +672,11 @@ public class GattServerPlugin extends CordovaPlugin
 
 	private void setAlarmNotificationSound(final AlarmSound sound)
 	{
+		// Sets the alarm sound for the notification to use when the app is in the background
+		
+		if (alarmNotification == null)
+			return;
+			
 		Uri soundPath = null;
 		
 		switch (sound) {
@@ -705,6 +710,7 @@ public class GattServerPlugin extends CordovaPlugin
 			case SOUND_OFF:
 				// No sound
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION); // Not sure it works by setting soundPath to null (test it!)
+				break;
 			default:
 				// Device default notification sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -726,7 +732,6 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	
 	private void setAlarmNotificationVibrate(final boolean vibrate)
 	{
 		//long[] pattern = {0, 1000, 1000};
@@ -737,6 +742,55 @@ public class GattServerPlugin extends CordovaPlugin
 			alarmNotification.vibrate = pattern_on;
 		else
 			alarmNotification.vibrate = pattern_off;
+	}
+	
+	private void initMediaPlayer()
+	{
+		mPlayer = new MediaPlayer();
+		this.setAlarmSound(myAppSettings.sound);
+	}
+	
+	private void setAlarmSound(final AlarmSound sound)
+	{
+		// Sets the alarm sound to use by the media player when the app is in the foreground
+		
+		Uri soundPath = null;
+		
+		if (mPlayer == null)
+			return;
+			
+		switch (sound) {
+			case SOUND_0:
+				// Custom sound 1
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
+				break;
+			case SOUND_1:
+				// Custom sound 2
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
+				break;
+			case SOUND_NOTIFICATION:
+				// Device default notification sound
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+				break;
+			case SOUND_RINGTONE:
+				// Device default ringtone (only available on phones and not tablets)
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+				break;
+			case SOUND_ALARM:
+				// Device default alarm sound
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+				break;
+			case SOUND_OFF:
+				// No sound
+				break;
+			default:
+				// Device default notification sound
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+				
+		}
+		
+		mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
+		mPlayer.setDataSource(soundPathl);
 	}
 	
 	private void vibrateDevice()
@@ -813,10 +867,14 @@ public class GattServerPlugin extends CordovaPlugin
 		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
 		wakeLock.setReferenceCounted(false);
 
-		initAlarmNotification();
+		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		//mediaPlayer = new MediaPlayer();
 		
+		this.initMediaPlayer();
+		//mPlayer = new MediaPlayer();
+		//mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+		//mPlayer.setDataSource(url);
+
 		super.pluginInitialize();
 		showDebugMsgBox("pluginInitialize() called!");
 	 }
