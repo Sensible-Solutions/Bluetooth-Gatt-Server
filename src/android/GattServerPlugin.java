@@ -584,8 +584,8 @@ public class GattServerPlugin extends CordovaPlugin
 			alarmNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 			//alarmNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
-		else if(!isInBackground){
-			// Manually play alarm sound if app is in the foreground
+		else if((!isInBackground) && (myAppSettings.sound != AlarmSound.SOUND_OFF)){
+			// Manually play alarm sound if app is in the foreground and alarm sound is not off
 			
 			if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
 			    mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || mPlayerState == MediaPlayerState.STARTED){
@@ -784,52 +784,54 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		mPlayerState = MediaPlayerState.IDLE;
 		
-		this.setAlarmSound(myAppSettings.sound);
-		try {
-			mPlayer.setLooping(false);
-			mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-				@Override
-				public void onCompletion(MediaPlayer mp)
-				{
-					// Called when the end of the media source has been reached during playback
-					mPlayerState = MediaPlayerState.PLAYBACK_COMPLETED;
-					//mp.stop();
-					//mp.release();
-					//mp.reset();
-				}
-			});
-			mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-				@Override
-    				public void onPrepared(MediaPlayer mp) {
-					// Called when MediaPlayer is ready for playback
-					mPlayerState = MediaPlayerState.PREPARED;
-        				//mp.start();
-					// Vibrate the device if it has hardware vibrator and permission
-					//vibrateDevice();
-   				 }
-			});
-			mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-				@Override
-    				public boolean onError(MediaPlayer mp,  int what, int extra) {
-					// Called when when an error has happened during an asynchronous operation
-					showDebugMsgBox("Error during asynchronous operation: " + Integer.toString(what) + " (" + Integer.toString(extra) + ")");
-					mPlayerState = MediaPlayerState.ERROR;
-					return true;
-   				 }
-			});
-		}
-		catch (Exception ex) {
-			mPlayerState = MediaPlayerState.ERROR;
-			showDebugMsgBox("Error initializing sound: " + ex.getMessage());
-		}
-		
-		mPlayerState = MediaPlayerState.INITIALIZED;
-		try {
-			mPlayer.prepareAsync();		// Prepare async to not block main thread
-			mPlayerState = MediaPlayerState.PREPARING;
-		} catch (Exception ex) {
-			mPlayerState = MediaPlayerState.ERROR;
-			showDebugMsgBox("Error preparing sound: " + ex.getMessage());
+		if (myAppSettings.sound != AlarmSound.SOUND_OFF){
+			this.setAlarmSound(myAppSettings.sound);
+			try {
+				mPlayer.setLooping(false);
+				mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+					@Override
+					public void onCompletion(MediaPlayer mp)
+					{
+						// Called when the end of the media source has been reached during playback
+						mPlayerState = MediaPlayerState.PLAYBACK_COMPLETED;
+						//mp.stop();
+						//mp.release();
+						//mp.reset();
+					}
+				});
+				mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+					@Override
+					public void onPrepared(MediaPlayer mp) {
+						// Called when MediaPlayer is ready for playback
+						mPlayerState = MediaPlayerState.PREPARED;
+						//mp.start();
+						// Vibrate the device if it has hardware vibrator and permission
+						//vibrateDevice();
+					 }
+				});
+				mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+					@Override
+					public boolean onError(MediaPlayer mp,  int what, int extra) {
+						// Called when when an error has happened during an asynchronous operation
+						showDebugMsgBox("Error during asynchronous operation: " + Integer.toString(what) + " (" + Integer.toString(extra) + ")");
+						mPlayerState = MediaPlayerState.ERROR;
+						return true;
+					 }
+				});
+			}
+			catch (Exception ex) {
+				mPlayerState = MediaPlayerState.ERROR;
+				showDebugMsgBox("Error initializing sound: " + ex.getMessage());
+			}
+
+			mPlayerState = MediaPlayerState.INITIALIZED;
+			try {
+				mPlayer.prepareAsync();		// Prepare async to not block main thread
+				mPlayerState = MediaPlayerState.PREPARING;
+			} catch (Exception ex) {
+				mPlayerState = MediaPlayerState.ERROR;
+				showDebugMsgBox("Error preparing sound: " + ex.getMessage());
+			}
 		}
 	}
 	
