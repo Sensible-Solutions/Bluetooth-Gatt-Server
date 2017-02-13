@@ -807,7 +807,7 @@ public class GattServerPlugin extends CordovaPlugin
 					//vibrateDevice();
    				 }
 			});
-			mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener()
+			mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 				@Override
     				public boolean onError(MediaPlayer mp,  int what, int extra) {
 					// Called when when an error has happened during an asynchronous operation
