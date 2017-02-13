@@ -610,7 +610,7 @@ public class GattServerPlugin extends CordovaPlugin
    				 	}
 				});
 				//mediaPlayer.prepare();
-				mediaPlayer.prepareAsync();	// prepare async to not block main thread
+				mediaPlayer.prepareAsync();	// Prepare async to not block main thread
 				
 			} catch (Exception ex) {
 				// Do nothing
@@ -754,6 +754,7 @@ public class GattServerPlugin extends CordovaPlugin
 		else {
 			// Reset the MediaPlayer to its uninitialized state
 			mPlayer.reset();	// After reset(), the object is like being just created
+			mPlayerState = MediaPlayerState.IDLE;
 		}
 			
 		this.setAlarmSound(myAppSettings.sound);
@@ -764,6 +765,7 @@ public class GattServerPlugin extends CordovaPlugin
 				public void onCompletion(MediaPlayer mp)
 				{
 					// Called when the end of the media source has been reached during playback
+					mPlayerState = MediaPlayerState.PLAYBACK_COMPLETED;
 					//mp.stop();
 					//mp.release();
 					//mp.reset();
@@ -773,6 +775,7 @@ public class GattServerPlugin extends CordovaPlugin
 				@Override
     				public void onPrepared(MediaPlayer mp) {
 					// Called when MediaPlayer is ready for playback
+					mPlayerState = MediaPlayerState.PREPARED;
         				//mp.start();
 					// Vibrate the device if it has hardware vibrator and permission
 					//vibrateDevice();
@@ -783,13 +786,22 @@ public class GattServerPlugin extends CordovaPlugin
     				public boolean onError(MediaPlayer mp,  int what, int extra) {
 					// Called when when an error has happened during an asynchronous operation
 					showDebugMsgBox("Error during asynchronous operation: " + what.toString() + " (" + extra.toString() + ")");
+					mPlayerState = MediaPlayerState.ERROR;
 					return true;
    				 }
 			});
 		}
 		catch (Exception ex) {
-			// Do nothing
+			mPlayerState = MediaPlayerState.ERROR;
 			showDebugMsgBox("Error initializing sound: " + ex.getMessage());
+		}
+		
+		mPlayerState = MediaPlayerState.INITIALIZED;
+		try {
+			mediaPlayer.prepareAsync();	// Prepare async to not block main thread
+		} catch (Exception ex) {
+			mPlayerState = MediaPlayerState.ERROR;
+			showDebugMsgBox("Error preparing sound: " + ex.getMessage());
 		}
 	}
 	
@@ -832,8 +844,13 @@ public class GattServerPlugin extends CordovaPlugin
 				
 		}
 		
-		mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
-		mPlayer.setDataSource(soundPathl);
+		try {
+			mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
+			mPlayer.setDataSource(soundPathl);
+		} catch (Exception ex) {
+			// Do nothing
+			showDebugMsgBox("Error setting sound: " + ex.getMessage());
+		}
 	}
 	
 	private void vibrateDevice()
