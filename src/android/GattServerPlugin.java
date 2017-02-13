@@ -153,7 +153,22 @@ public class GattServerPlugin extends CordovaPlugin
 		public boolean log = true;			// Alarm logging on/off flag
 	}
 	
+	// MediaPlayer state diagram
+	private enum MediaPlayerState
+	{
+		IDLE,
+		INITIALIZED,
+		PREPARING,
+		PREPARED,
+		STARTED,
+		PAUSED,
+		STOPPED,
+		PLAYBACK_COMPLETED,
+		END,
+		ERROR;
+	}
 	
+	MediaPlayerState mPlayerState;				// MediaPlayer state
 	
 	/*********************************************************************************************************************
 	Bluetooth GATT interface callbacks
@@ -754,9 +769,9 @@ public class GattServerPlugin extends CordovaPlugin
 		else {
 			// Reset the MediaPlayer to its uninitialized state
 			mPlayer.reset();	// After reset(), the object is like being just created
-			mPlayerState = MediaPlayerState.IDLE;
 		}
-			
+		mPlayerState = MediaPlayerState.IDLE;
+		
 		this.setAlarmSound(myAppSettings.sound);
 		try {
 			mPlayer.setLooping(false);
@@ -848,7 +863,7 @@ public class GattServerPlugin extends CordovaPlugin
 			mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
 			mPlayer.setDataSource(soundPathl);
 		} catch (Exception ex) {
-			// Do nothing
+			mPlayerState = MediaPlayerState.ERROR;
 			showDebugMsgBox("Error setting sound: " + ex.getMessage());
 		}
 	}
