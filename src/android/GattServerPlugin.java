@@ -873,7 +873,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		try {
 			mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION); // Use the notification stream for playback so volume easily can be changed with the device's volume controller for notifications
-			mPlayer.setDataSource(soundPath);
+			mPlayer.setDataSource(cordova.getActivity().getApplicationContext(), soundPath);
 		} catch (Exception ex) {
 			mPlayerState = MediaPlayerState.ERROR;
 			showDebugMsgBox("Error setting sound: " + ex.getMessage());
