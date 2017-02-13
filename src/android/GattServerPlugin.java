@@ -759,14 +759,32 @@ public class GattServerPlugin extends CordovaPlugin
 		this.setAlarmSound(myAppSettings.sound);
 		try {
 			mPlayer.setLooping(false);
-			mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 				@Override
 				public void onCompletion(MediaPlayer mp)
 				{
+					// Called when the end of the media source has been reached during playback
 					//mp.stop();
 					//mp.release();
 					//mp.reset();
 				}
+			});
+			mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+				@Override
+    				public void onPrepared(MediaPlayer mp) {
+					// Called when MediaPlayer is ready for playback
+        				//mp.start();
+					// Vibrate the device if it has hardware vibrator and permission
+					//vibrateDevice();
+   				 }
+			});
+			mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener()
+				@Override
+    				public boolean onError(MediaPlayer mp,  int what, int extra) {
+					// Called when when an error has happened during an asynchronous operation
+					showDebugMsgBox("Error during asynchronous operation: " + what.toString() + " (" + extra.toString() + ")");
+					return true;
+   				 }
 			});
 		}
 		catch (Exception ex) {
