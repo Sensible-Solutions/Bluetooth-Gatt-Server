@@ -746,8 +746,33 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void initMediaPlayer()
 	{
-		mPlayer = new MediaPlayer();
+		// Creates and initialize the MediaPlayer object if not already created. If already created, it resets the
+		// MediaPlayer object to its uninitialized state and reinitializes it.
+		
+		if (mPlayer == null)
+			mPlayer = new MediaPlayer();
+		else {
+			// Reset the MediaPlayer to its uninitialized state
+			mPlayer.reset();	// After reset(), the object is like being just created
+		}
+			
 		this.setAlarmSound(myAppSettings.sound);
+		try {
+			mPlayer.setLooping(false);
+			mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp)
+				{
+					//mp.stop();
+					//mp.release();
+					//mp.reset();
+				}
+			});
+		}
+		catch (Exception ex) {
+			// Do nothing
+			showDebugMsgBox("Error initializing sound: " + ex.getMessage());
+		}
 	}
 	
 	private void setAlarmSound(final AlarmSound sound)
@@ -871,9 +896,6 @@ public class GattServerPlugin extends CordovaPlugin
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		this.initMediaPlayer();
-		//mPlayer = new MediaPlayer();
-		//mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-		//mPlayer.setDataSource(url);
 
 		super.pluginInitialize();
 		showDebugMsgBox("pluginInitialize() called!");
@@ -884,8 +906,15 @@ public class GattServerPlugin extends CordovaPlugin
 		 // The final call you receive before your activity is destroyed
 		super.onDestroy();
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock.isHeld())
+		if (wakeLock.isHeld()){
 			wakeLock.release();
+			wakeLock = null;
+		}
+		// Release the MediaPlayer
+		if (mPlayer != null){
+			mPlayer.release();
+			mPlayer = null;
+		}
 	}
 	
 	/*@Override
