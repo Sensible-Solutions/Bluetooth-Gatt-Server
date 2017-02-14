@@ -134,6 +134,10 @@ public class GattServerPlugin extends CordovaPlugin
 	private Notification alarmNotification = null;
 	private MediaPlayer mPlayer = null;
 	
+	private long elapsedAlarmTime = 0;			// Elapsed time in milliseconds since boot (including time spent in sleep)
+	private final long MIN_ALARM_INTERVAL = 3000;		// Minimum allowed time interval in milliseconds between a previous alarm and a new alarm.
+								// Any new alarms triggered in this time interval will be ignored.
+	
 	private AppSettings myAppSettings = null;
 	
 	private enum AlarmSound
@@ -556,6 +560,17 @@ public class GattServerPlugin extends CordovaPlugin
 	*********************************************************************************************************************/
 	
 	private void alarm(final String alertLevel, final String deviceUUID){
+		
+		// Alarms with appropiate sound etc
+		
+		// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
+		// of the alarms triggered because of loose connection between clip contacts and sensor)
+		long elapsedTime =  elapsedRealtime();
+		if ((elapsedTime - elapsedAlarmTime) < MIN_ALARM_INTERVAL){
+			elapsedAlarmTime = elapsedTime;
+			return;
+		}
+		elapsedAlarmTime = elapsedTime;
 		
 		if (isInBackground && NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){
 			// Show local notification only if the app is in the background and notifications are enabled for the app.
