@@ -606,6 +606,12 @@ public class GattServerPlugin extends CordovaPlugin
 						mPlayerState = MediaPlayerState.STARTED;
 						vibrateDevice();
 					}
+					else {	// else added 2017-02-14
+						//mPlayer.pause();
+						mPlayer.seekTo(0);	// Restart the playback (asynchronuous operation)
+						vibrateDevice();
+						//mPlayer.start();
+					}
 				} catch (Exception ex) {
 					showDebugMsgBox("Error playing sound: " + ex.getMessage());
 					mPlayerState = MediaPlayerState.ERROR;
@@ -904,7 +910,7 @@ public class GattServerPlugin extends CordovaPlugin
 				if (mPlayer.isPlaying()){
 					mPlayer.pause();
 					mPlayerState = MediaPlayerState.PAUSED;
-					mPlayer.seekTo(0);	// Seek to the beginning of the sound
+					mPlayer.seekTo(0);	// Seek to the beginning of the sound (asynchronuous operation)
 				}
 			} catch (Exception ex) {
 				showDebugMsgBox("Error pausing sound: " + ex.getMessage());
