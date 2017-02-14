@@ -566,7 +566,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
 		// of the alarms triggered because of loose connection between clip contacts and sensor)
-		long elapsedTime =  elapsedRealtime();
+		long elapsedTime =  SystemClock.elapsedRealtime();	// Milliseconds since boot, including time spent in sleep
 		if ((elapsedTime - elapsedAlarmTime) < MIN_ALARM_INTERVAL){
 			elapsedAlarmTime = elapsedTime;
 			return;
