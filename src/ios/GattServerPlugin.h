@@ -14,8 +14,6 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <AudioToolbox/AudioServices.h>
 
-//extern NSTimeInterval const MIN_ALARM_INTERVAL;		// Minimum allowed time interval in seconds between a previous alarm and a new alarm.
-							// Any new alarms triggered in this time interval will be ignored.
 
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
 {
