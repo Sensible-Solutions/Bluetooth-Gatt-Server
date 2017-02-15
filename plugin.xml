@@ -45,6 +45,7 @@
     <config-file target="*-Info.plist" parent="UIBackgroundModes">
       <array>
         <string>bluetooth-peripheral</string>
+	<string>audio</string>  <!-- Added 2017-02-15 to test AVAudioPlayer -->
       </array>
     </config-file>
     <config-file target="*-Info.plist" parent="UIFileSharingEnabled">
