@@ -1056,7 +1056,7 @@ public class GattServerPlugin extends CordovaPlugin
 	public void onPause(boolean multitasking) {
 		// Called when the system is about to start resuming a previous activity
 		isInBackground = true;		// App is put in background
-		stopPlaying();
+		//stopPlaying();	// If used, might stop playback when enters lock screen if an alarm was received right before
 		super.onPause(multitasking);
 		//showDebugMsgBox("onPause() called!");
     	}
@@ -1067,6 +1067,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is put in foreground
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
+		stopPlaying();			// Added 2017-02-15
 		super.onResume(multitasking);
 		//showDebugMsgBox("onResume() called!");
     	}
