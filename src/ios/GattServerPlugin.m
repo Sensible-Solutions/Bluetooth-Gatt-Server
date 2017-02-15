@@ -719,7 +719,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) pluginInitialize
 {
 	// Registers obervers
-    	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     	//eventQueue = [[NSMutableArray alloc] init];
 
@@ -737,6 +737,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
                	selector:@selector(didRegisterUserNotificationSettings:)
               	name:UIApplicationRegisterUserNotificationSettings
                	object:nil];*/
+	
+	[center addObserver:self selector:@selector(onPause) name:UIApplicationDidEnterBackgroundNotification object:nil]; // Test 2017-02-15
+	[center addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil]; // Test 2017-02-15
                	
         // Set up sound from main bundle to be played during alarms when the app is in the foreground
         //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
@@ -752,15 +755,21 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
-/*- (void) onPause
+- (void) onPause
 {
 	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
+	
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onPause" message:@"onPause plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 // Called when the activity will start interacting with the user (application is retrieved from the background)
 - (void) onResume
 {
 	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
-}*/
+	
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onResume" message:@"onResume plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+}
 
 // Called before app terminates
 - (void) onAppTerminate
