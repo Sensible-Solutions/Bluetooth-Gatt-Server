@@ -741,6 +741,14 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
         // Set up sound from main bundle to be played during alarms when the app is in the foreground
         //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
         AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
+
+
+	// Test 2017-02-15 (section)
+	// Configure and activate the app’s audio session
+	AVAudioSession *session = [AVAudioSession sharedInstance];
+	[session setCategory:AVAudioSessionCategoryPlayback error:nil];
+	//[session setPreferredIOBufferDuration:.005 error:nil];	// 0.005s is minimum allowed (default is about 20ms). Change/lower if experiencing high latency on playback
+	[session setActive:YES error:nil];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
