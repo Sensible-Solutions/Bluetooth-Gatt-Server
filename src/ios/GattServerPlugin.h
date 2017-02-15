@@ -12,7 +12,8 @@
 
 #import <Cordova/CDV.h>
 #import <CoreBluetooth/CoreBluetooth.h>
-#import <AudioToolbox/AudioServices.h>
+#import <AudioToolbox/AudioServices.h>	
+#import <AVFoundation/AVFoundation.h>		// Added 2017-02-15 for testing AVAudioPlayer
 
 
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
