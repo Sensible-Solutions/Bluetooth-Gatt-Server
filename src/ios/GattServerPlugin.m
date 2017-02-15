@@ -191,16 +191,29 @@ NSString *const KEY_LOG_SETTING = @"log";
 	// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
 	// Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	iasInitialized = false;
-	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAlarmReseted, keyStatus, nil];
+	NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAlarmReseted, keyStatus, nil];
 	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 	[pluginResult setKeepCallbackAsBool:false];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-// Action function just to test local notifications
+// Alarms with appropiate sound etc
 - (void) alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid
 //- (void)alarm:(CDVInvokedUrlCommand *)command			// Used for manually calling and debuging instead of row above
 {
+	// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
+	// of the alarms triggered because of loose connection between clip contacts and sensor)
+	if (alarmDate != nil){
+		NSTimeInterval alarmInterval = [alarmDate timeIntervalSinceNow];
+		alarmDate = [NSDate date];
+		if (alarmInterval < MIN_ALARM_INTERVAL){
+			return;
+		}
+	}
+	else {
+		alarmDate = [NSDate date];
+	}
+	
 	// Show local notification if the app is in the background
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-13
 	if (currentState == UIApplicationStateBackground){		// If but not its code block added 2017-01-13
@@ -353,7 +366,7 @@ NSString *const KEY_LOG_SETTING = @"log";
 	//UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:@"Hej" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[@(*myNumber) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	//[debugMessage show];
-    	NSNumber* myNumber = [command.arguments objectAtIndex:0];
+    	NSNumber *myNumber = [command.arguments objectAtIndex:0];
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[myNumber intValue]];	// Also clears the notifications in the notification center
 	
 	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:myNumber delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
