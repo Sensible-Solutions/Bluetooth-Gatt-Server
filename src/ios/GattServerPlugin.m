@@ -738,6 +738,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
               	name:UIApplicationRegisterUserNotificationSettings
                	object:nil];*/
 	
+	// Remove onPause and onResume observer registrations below if ending up not using them
 	[center addObserver:self selector:@selector(onPause) name:UIApplicationDidEnterBackgroundNotification object:nil]; // Test 2017-02-15
 	[center addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil]; // Test 2017-02-15
                	
