@@ -743,7 +743,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
         AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
 
 
-	// Test 2017-02-15 (section)
+	// Test 2017-02-15 (for testing AVAudioPlayer)
 	// Configure and activate the app’s audio session
 	AVAudioSession *session = [AVAudioSession sharedInstance];
 	[session setCategory:AVAudioSessionCategoryPlayback error:nil];
