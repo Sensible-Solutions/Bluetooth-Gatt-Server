@@ -66,7 +66,8 @@ NSString *const KEY_SOUND_SETTING = @"sound";
 NSString *const KEY_VIBRATION_SETTING = @"vibration";
 NSString *const KEY_LOG_SETTING = @"log";
 
-
+NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval in seconds between a previous alarm and a new alarm.
+							// Any new alarms triggered in this time interval will be ignored.
 
 @implementation GattServerPlugin
 
