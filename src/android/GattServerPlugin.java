@@ -567,11 +567,11 @@ public class GattServerPlugin extends CordovaPlugin
 		// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
 		// of the alarms triggered because of loose connection between clip contacts and sensor)
 		long elapsedTime =  SystemClock.elapsedRealtime();	// Milliseconds since boot, including time spent in sleep
-		if ((elapsedTime - elapsedAlarmTime) < MIN_ALARM_INTERVAL){
-			elapsedAlarmTime = elapsedTime;
+		long alarmInterval = elapsedTime - elapsedAlarmTime;
+		elapsedAlarmTime = elapsedTime;
+		if (alarmInterval < MIN_ALARM_INTERVAL){
 			return;
 		}
-		elapsedAlarmTime = elapsedTime;
 		
 		if (isInBackground && NotificationManagerCompat.from(cordova.getActivity().getApplicationContext()).areNotificationsEnabled()){
 			// Show local notification only if the app is in the background and notifications are enabled for the app.
