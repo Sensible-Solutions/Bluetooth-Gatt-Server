@@ -14,6 +14,9 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <AudioToolbox/AudioServices.h>
 
+//extern NSTimeInterval const MIN_ALARM_INTERVAL;		// Minimum allowed time interval in seconds between a previous alarm and a new alarm.
+							// Any new alarms triggered in this time interval will be ignored.
+
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
 {
 	CBPeripheralManager *peripheralManager;
@@ -24,9 +27,7 @@
 	
 	BOOL iasInitialized;				// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	BOOL iasAdded;					// Flag to indicate if Immediate Alert Service already has been added or not
-	NSDate *alarmDate = nil;			// Date and time for incoming alarm (used to calculating the time interval between two consecutive alarms)
-	NSTimeInterval MIN_ALARM_INTERVAL = 3.0;	// Minimum allowed time interval in seconds between a previous alarm and a new alarm.
-							// Any new alarms triggered in this time interval will be ignored.
+	NSDate *alarmDate;				// Date and time for incoming alarm (used to calculating the time interval between two consecutive alarms)
 	
 	// App settings
 	NSString *appSettingsAlert;
