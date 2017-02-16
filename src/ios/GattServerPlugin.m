@@ -205,9 +205,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
 	// of the alarms triggered because of loose connection between clip contacts and sensor)
 	if (alarmDate != nil){
-		NSTimeInterval alarmInterval = [alarmDate timeIntervalSinceNow];
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug alarmInterval" message:[[NSNumber numberWithDouble:alarmInterval] stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[debugAlert show];
+		NSTimeInterval alarmInterval = -1*[alarmDate timeIntervalSinceNow];	// If date object is earlier than the current date and time, the timeIntervalSinceNow value is negative
+		//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug alarmInterval" message:[[NSNumber numberWithDouble:alarmInterval] stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		//[debugAlert show];
 		alarmDate = [NSDate date];
 		if (alarmInterval < MIN_ALARM_INTERVAL){
 			return;
