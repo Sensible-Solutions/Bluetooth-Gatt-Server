@@ -709,7 +709,7 @@ public class GattServerPlugin extends CordovaPlugin
 		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
-		//.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
+		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
 		//.setOnlyAlertOnce(true)		// Set this flag if you would only like the sound, vibrate and ticker to be played if the notification is not already showing. 
 		.setCategory(NotificationCompat.CATEGORY_ALARM)
 		.setGroup("SENSESOFT_MINI")
