@@ -728,9 +728,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	if (alarmNotification == nil)
 		alarmNotification = [[UILocalNotification alloc] init];
 	//alarmNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];		// Specifies after how many second the notification will be delivered
-	alarmlNotification.alertBody = @"Incoming SenseSoft Mini alarm";			// Specifies notification message text
+	alarmNotification.alertBody = @"Incoming SenseSoft Mini alarm";			// Specifies notification message text
 	alarmNotification.alertTitle = @"SenseSoft Notifications Mini";			// Specifies notification message title
-	alarmlNotification.hasAction = false;						// Hides the alert button or slider
+	alarmNotification.hasAction = false;						// Hides the alert button or slider
 	alarmNotification.timeZone = [NSTimeZone defaultTimeZone];			// Specifies timeZone for notification delivery
 	// Set the soundName property for the notification if notification sound is enabled
 	//alarmNotification.soundName = UILocalNotificationDefaultSoundName;		// Works
