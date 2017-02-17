@@ -272,7 +272,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				if (grantedSettings.types & UIUserNotificationTypeBadge)
 					alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 				// Cancel any previous local notification (takes some time)
-				[[UIApplication sharedApplication] cancelAllLocalNotifications];	// Stops sound playback of any on going notification and also clears the notification center
+				//[[UIApplication sharedApplication] cancelAllLocalNotifications];		// Stops sound playback of any on going notification and also clears the notification center
+				[[UIApplication sharedApplication] cancelLocalNotification:alarmNotification];	// Stops sound playback of any on going notification and also clears the notification center
 				// Show the local notification
 				[[UIApplication sharedApplication] presentLocalNotificationNow:alarmNotification];
 				// Schedule the local notification
