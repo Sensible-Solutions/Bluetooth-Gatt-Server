@@ -235,7 +235,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			}*/
 			else if (grantedSettings.types & UIUserNotificationTypeAlert){
 				//NSLog(@"Alert Permission Granted");
-				UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+				
+				// UILocalNotification *localNotification = [[UILocalNotification alloc] init]; // Removed 2017-02-17 (test)
+				
 				// Specify after how many second the notification will be delivered
 				//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
 				// Specify notification message text
@@ -757,6 +759,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[session setCategory:AVAudioSessionCategoryPlayback error:nil];
 	//[session setPreferredIOBufferDuration:.005 error:nil];	// 0.005s is minimum allowed (default is about 20ms). Change/lower if experiencing high latency on playback
 	[session setActive:YES error:nil];
+	
+	localNotification = [[UILocalNotification alloc] init];	// Test 2017-02-17
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
