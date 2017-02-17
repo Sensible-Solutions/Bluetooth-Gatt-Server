@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2016 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin header for the Bluetooth GATT Profile server role.
@@ -27,7 +27,7 @@
 	BOOL iasInitialized;				// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	BOOL iasAdded;					// Flag to indicate if Immediate Alert Service already has been added or not
 	NSDate *alarmDate;				// Date and time for incoming alarm (used to calculating the time interval between two consecutive alarms)
-	UILocalNotification *localNotification;		// Added 2017-02-17 (test)
+	UILocalNotification *alarmNotification;		// Alarm local notification
 	
 	// App settings
 	NSString *appSettingsAlert;
