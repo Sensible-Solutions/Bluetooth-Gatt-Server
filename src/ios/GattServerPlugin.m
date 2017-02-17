@@ -220,11 +220,12 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Show local notification if the app is in the background
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-13
 	if (currentState == UIApplicationStateBackground){		// If but not its code block added 2017-01-13
-		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Check it's iOS 8 and above
+		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Checks if it's iOS 8 and above
+			
 			UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 
 			if (grantedSettings.types == UIUserNotificationTypeNone) {
-				// Notifications are turned off completely for the app (removed 2017-01-13)
+				// Notifications are turned off completely for the app
 				//NSLog(@"No notification permission granted");
 				//UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle:@"SenseSoft Notifications" message:@"Notifications are currently not allowed. Please turn on notifications in settings app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				//[notificationAlert show];
@@ -234,9 +235,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				//NSLog(@"Sound, alert and badge permissions ");
 			}*/
 			else if (grantedSettings.types & UIUserNotificationTypeAlert){
-				//NSLog(@"Alert Permission Granted");
+				// Alert permission granted
 				
-				// UILocalNotification *localNotification = [[UILocalNotification alloc] init]; // Removed 2017-02-17 (test)
+				/*UILocalNotification *localNotification = [[UILocalNotification alloc] init]; // Section removed 2017-02-17
 				
 				// Specify after how many second the notification will be delivered
 				//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
@@ -255,29 +256,31 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 					//localNotification.soundName = @"Resources/alarm.mp3";
 					//localNotification.soundName = @"alarm.mp3";	// Works
 					localNotification.soundName = @"crash_short.mp3";
-
-					// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
-					/*UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];	// Section removed 2017-01-13
-					if (currentState == UIApplicationStateActive) {
-						if ([appSettingsVibration isEqualToString:@"on"])
-							AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
-						else
-							AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
-					}*/
 				}
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
 				if (grantedSettings.types & UIUserNotificationTypeBadge)
 					localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 				// Cancel any previous local notification
-				[[UIApplication sharedApplication] cancelAllLocalNotifications];
+				[[UIApplication sharedApplication] cancelAllLocalNotifications];	// Added 2017-02-17
 				// Show the local notification
 				[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
 				// Schedule the local notification
-				//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+				//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];*/
+				
+				// Section below added 2017-02-17
+				// Increase app icon count by 1 when notification is sent if notification badge is enabled
+				if (grantedSettings.types & UIUserNotificationTypeBadge)
+					alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
+				// Cancel any previous local notification (takes some time)
+				[[UIApplication sharedApplication] cancelAllLocalNotifications];	// Stops sound playback of any on going notification and also clears the notification center
+				// Show the local notification
+				[[UIApplication sharedApplication] presentLocalNotificationNow:alarmNotification];
+				// Schedule the local notification
+				//[[UIApplication sharedApplication] scheduleLocalNotification:alarmNotification];
 			}
 		}
 	}
-	else {			// else and its code block added 2017-01-13
+	else {
 		// The app is in the foreground
 		// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
 		// Audio is played asynchronously so no need to play it in a background thread.
@@ -718,6 +721,25 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     return true;
 }
 
+- (void) initAlarmNotification	// Added 2017-02-17
+{
+	// Sets up the alarm local notification
+
+	if (alarmNotification == nil)
+		alarmNotification = [[UILocalNotification alloc] init];
+	//alarmNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];		// Specifies after how many second the notification will be delivered
+	alarmlNotification.alertBody = @"Incoming SenseSoft Mini alarm";			// Specifies notification message text
+	alarmNotification.alertTitle = @"SenseSoft Notifications Mini";			// Specifies notification message title
+	alarmlNotification.hasAction = false;						// Hides the alert button or slider
+	alarmNotification.timeZone = [NSTimeZone defaultTimeZone];			// Specifies timeZone for notification delivery
+	// Set the soundName property for the notification if notification sound is enabled
+	//alarmNotification.soundName = UILocalNotificationDefaultSoundName;		// Works
+	//alarmNotification.soundName = @"alarm.mp3";					// Works
+	alarmNotification.soundName = @"crash_short.mp3";				// Works
+	alarmNotification.applicationIconBadgeNumber = 0; 				// Set the application icon badge number	
+}
+
+
 #pragma mark -
 #pragma mark CDVPlugin delegates
 
@@ -760,7 +782,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//[session setPreferredIOBufferDuration:.005 error:nil];	// 0.005s is minimum allowed (default is about 20ms). Change/lower if experiencing high latency on playback
 	[session setActive:YES error:nil];
 	
-	localNotification = [[UILocalNotification alloc] init];	// Test 2017-02-17
+	[self initAlarmNotification];	// Added 2017-02-17
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 }
