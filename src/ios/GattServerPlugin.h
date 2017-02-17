@@ -27,6 +27,7 @@
 	BOOL iasInitialized;				// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	BOOL iasAdded;					// Flag to indicate if Immediate Alert Service already has been added or not
 	NSDate *alarmDate;				// Date and time for incoming alarm (used to calculating the time interval between two consecutive alarms)
+	UILocalNotification *localNotification;		// Added 2017-02-17 (test)
 	
 	// App settings
 	NSString *appSettingsAlert;
