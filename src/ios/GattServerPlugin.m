@@ -235,7 +235,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			}*/
 			else if (grantedSettings.types & UIUserNotificationTypeAlert){
 				//NSLog(@"Alert Permission Granted");
-				UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+				UILocalNotification *localNotification = [[UILocalNotification alloc] init];
 				// Specify after how many second the notification will be delivered
 				//localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:0];
 				// Specify notification message text
@@ -266,7 +266,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
 				if (grantedSettings.types & UIUserNotificationTypeBadge)
 					localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
-				//localNotification.applicationIconBadgeNumber = 1;
+				// Cancel any previous local notification
+				[[UIApplication sharedApplication] cancelAllLocalNotifications];
 				// Show the local notification
 				[[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
 				// Schedule the local notification
