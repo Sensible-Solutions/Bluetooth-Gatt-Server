@@ -740,6 +740,18 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	alarmNotification.applicationIconBadgeNumber = 0; 				// Set the application icon badge number	
 }
 
+- (void) initAudioPlayer	// Added 2017-02-17
+{
+	// Creates and initializes with sound the AVAudioPlayer object if not already created. If already created, reinitializes
+	// it with sound.
+	
+	// Construct URL to sound file
+    	NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
+    
+	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
+   	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+}
+
 
 #pragma mark -
 #pragma mark CDVPlugin delegates
@@ -784,8 +796,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[session setActive:YES error:nil];
 	
 	[self initAlarmNotification];	// Added 2017-02-17
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	[self initAudioPlayer];		// Added 2017-02-20
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
