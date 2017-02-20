@@ -198,7 +198,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void) stopAlarmSound:(CDVInvokedUrlCommand *)command
+- (void) stopAlarmSound:(CDVInvokedUrlCommand *)command		// Added 2017-02-20
 {
 	// Stops playback of any sound the audio player is playing
 	if (audioPlayer != nil){
@@ -699,12 +699,12 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//[debugMessage show];
 }
 
-// Called when the audio player has finished playing a sound
+// Called when the audio player has finished playing a sound	// Added 2017-02-20
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
 	// Calling the stop method or allowing a sound to finish playing, undoes the prepareToPlay setup so need to
 	// prepare it again in order to reduce playback delay
-	[self prepareToPlay];
+	[audioPlayer prepareToPlay];
 	//[self initAudioPlayer];
 	
    	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"audioPlayerDidFinishPlaying called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
