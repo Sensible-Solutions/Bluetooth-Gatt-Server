@@ -682,6 +682,17 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//[debugMessage show];
 }
 
+// Called when the audio player has finished playing a sound
+- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+	// Calling the stop method or allowing a sound to finish playing, undoes the prepareToPlay setup so need to
+	// prepare it again in order to reduce playback delay
+	[self initAudioPlayer];
+	
+   	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"audioPlayerDidFinishPlaying called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];
+}
+
 #pragma mark -
 #pragma mark General helpers
 
@@ -754,6 +765,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     
 	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
    	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+	audioPlayer.delegate = self;
 	
 	// Prepare the audio player for playback by preloading its buffers
 	[audioPlayer prepareToPlay];
