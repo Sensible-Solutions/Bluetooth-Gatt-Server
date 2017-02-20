@@ -202,8 +202,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	// Stops playback of any sound the audio player is playing
 	if (audioPlayer != nil){
-		if (audioPlayer.playing)
-			[audioPlayer stop];	// Stops playback and undoes the preparation needed for playback
+		if (audioPlayer.playing){
+			[audioPlayer stop];		// Stops playback and undoes the preparation needed for playback (but doesn't reset the playback position)
+			audioPlayer.currentTime = 0;	// Reset the playback position
+			[audioPlayer prepareToPlay];
+		}
 	 }
 }
 
@@ -299,8 +302,13 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		else
 			AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
 		*/
-		if (audioPlayer != nil)
-			[audioPlayer play];
+		if (audioPlayer != nil){	// Added 2017-02-20
+			if (audioPlayer.playing){
+				[audioPlayer stop];		// Stop doesn't reset the playback position
+				audioPlayer.currentTime = 0;	// Reset the playback position
+			}
+			[audioPlayer play];	// Implicitly calls the prepareToPlay method if the audio player is not already prepared to play
+		}
 	}
 	
 	// Notify user and save callback
@@ -696,7 +704,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	// Calling the stop method or allowing a sound to finish playing, undoes the prepareToPlay setup so need to
 	// prepare it again in order to reduce playback delay
-	[self initAudioPlayer];
+	[self prepareToPlay];
+	//[self initAudioPlayer];
 	
    	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"audioPlayerDidFinishPlaying called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	[debugMessage show];
