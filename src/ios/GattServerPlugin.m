@@ -285,10 +285,13 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		// The app is in the foreground
 		// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
 		// Audio is played asynchronously so no need to play it in a background thread.
-		if ([appSettingsVibration isEqualToString:@"on"])
+		/*if ([appSettingsVibration isEqualToString:@"on"])	// Removed 2017-02-20
 			AudioServicesPlayAlertSound(alarmSound);	// If the user has configured the Settings application for vibration on ring, also invokes vibration (works)
 		else
 			AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
+		*/
+		if (audioPlayer != nil)
+			[audioPlayer play];
 	}
 	
 	// Notify user and save callback
@@ -783,9 +786,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[center addObserver:self selector:@selector(onPause) name:UIApplicationDidEnterBackgroundNotification object:nil]; // Test 2017-02-15
 	[center addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil]; // Test 2017-02-15
                	
-        // Set up sound from main bundle to be played during alarms when the app is in the foreground
+        // Set up sound from main bundle to be played during alarms when the app is in the foreground (works) // Removed 2017-02-20
         //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
-        AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
+        //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]], &alarmSound);
 
 
 	// Test 2017-02-15 (for testing AVAudioPlayer)
