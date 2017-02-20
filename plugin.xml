@@ -53,7 +53,7 @@
     </config-file>
     <header-file src="src/ios/GattServerPlugin.h" />
     <source-file src="src/ios/GattServerPlugin.m" />
-    <!-- <resource-file src="www/res/sounds/alarm.mp3" target="Resources/alarm.mp3" /> -->
+    <resource-file src="www/res/sounds/alarm.mp3" target="Resources/alarm.mp3" />
     <resource-file src="www/res/sounds/crash_short.mp3" target="Resources/crash_short.mp3" />
     <framework src="CoreBluetooth.framework" />
   </platform>
