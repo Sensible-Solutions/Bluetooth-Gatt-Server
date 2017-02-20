@@ -748,12 +748,12 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Creates and initializes with sound the audio player object if not already created. If already created, reinitializes
 	// it with sound.
 	
-	/*// Construct URL to sound file
+	// Construct URL to sound file
     	NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
 	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
     
 	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
-   	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+   	/*audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
 	
 	// Prepare the audio player for playback by preloading its buffers
 	[audioPlayer prepareToPlay];*/
