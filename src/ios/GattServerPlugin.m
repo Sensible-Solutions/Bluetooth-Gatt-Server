@@ -279,6 +279,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				// Schedule the local notification
 				//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];*/
 				
+				[self stopAlarmSound:nil];	// Added 2017-02-20
 				// Section below added 2017-02-17
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
 				if (grantedSettings.types & UIUserNotificationTypeBadge)
@@ -302,13 +303,14 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		else
 			AudioServicesPlaySystemSound(alarmSound);	// Works, no vibration
 		*/
-		if (audioPlayer != nil){	// Added 2017-02-20
-			if (audioPlayer.playing){
-				[audioPlayer stop];		// Stop doesn't reset the playback position
-				audioPlayer.currentTime = 0;	// Reset the playback position
-			}
-			[audioPlayer play];	// Implicitly calls the prepareToPlay method if the audio player is not already prepared to play
-		}
+		[self stopAlarmSound:nil];		// Added 2017-02-20
+		//if (audioPlayer != nil){	// Added 2017-02-20
+		//	if (audioPlayer.playing){
+		//		[audioPlayer stop];		// Stop doesn't reset the playback position
+		//		audioPlayer.currentTime = 0;	// Reset the playback position
+		//	}
+		[audioPlayer play];	// Implicitly calls the prepareToPlay method if the audio player is not already prepared to play
+		//}
 	}
 	
 	// Notify user and save callback
