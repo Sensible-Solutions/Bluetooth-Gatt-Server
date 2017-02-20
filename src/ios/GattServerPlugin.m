@@ -844,7 +844,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     
     	// Call the following function when the sound is no longer used
 	// (must be done AFTER the sound is done playing)
-	AudioServicesDisposeSystemSoundID(alarmSound);
+	//AudioServicesDisposeSystemSoundID(alarmSound);	// Removed 2017-02-20
 	
 	//CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:IMMEDIATE_ALERT_SERVICE_UUID] primary:YES];
 	//[peripheralManager removeService:service];
