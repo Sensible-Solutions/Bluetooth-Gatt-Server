@@ -22,7 +22,7 @@
 	
 	NSString *serverRunningCallback;
 	
-	SystemSoundID alarmSound;
+	//SystemSoundID alarmSound;			// Removed 2017-02-20
 	
 	BOOL iasInitialized;				// When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level. This must not be interpreted as an alert.
 	BOOL iasAdded;					// Flag to indicate if Immediate Alert Service already has been added or not
@@ -39,7 +39,7 @@
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
 //- (void)alarm:(CDVInvokedUrlCommand *)command;		// Removed 2017-01-10
-- (void)alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid;	// Added 2017-01-10
+//- (void)alarm:(NSString *)alertLevel deviceUUID:(NSString *)uuid;	// Removed 2017-02-20
 - (void)registerNotifications:(CDVInvokedUrlCommand *)command;
 - (void)setAlarmSettings:(CDVInvokedUrlCommand *)command;
 - (void)getAlarmSettings:(CDVInvokedUrlCommand *)command;
