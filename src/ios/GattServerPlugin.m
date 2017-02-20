@@ -75,7 +75,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 #pragma mark Interface
 
 // Plugin actions
-- (void)startServer:(CDVInvokedUrlCommand *)command
+- (void) startServer:(CDVInvokedUrlCommand *)command
 {
 	// Check that BLE is supported and on
 	if(peripheralManager != nil){
@@ -186,7 +186,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	}
 }
 
-- (void)resetAlarm:(CDVInvokedUrlCommand *)command
+- (void) resetAlarm:(CDVInvokedUrlCommand *)command
 {
 	// Resets the Immediate Alert Service initialized flag.
 	// Should be called after a client has disconnected since when a nRF8002 module connects to the GATT server running
@@ -196,6 +196,15 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 	[pluginResult setKeepCallbackAsBool:false];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void) stopAlarmSound:(CDVInvokedUrlCommand *)command
+{
+	// Stops playback of any sound the audio player is playing
+	if (audioPlayer != nil){
+		if (audioPlayer.playing)
+			[audioPlayer stop];	// Stops playback and undoes the preparation needed for playback
+	 }
 }
 
 // Alarms with appropiate sound etc
@@ -304,7 +313,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Set granted local notifications for app
-- (void)setAlarmSettings:(CDVInvokedUrlCommand *)command
+- (void) setAlarmSettings:(CDVInvokedUrlCommand *)command
 {
 	NSDictionary* obj = [self getArgsObject:command.arguments];
 	if ([self isNotArgsObject:obj :command])
@@ -333,7 +342,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Get granted local notifications for app
-- (void)getAlarmSettings:(CDVInvokedUrlCommand *)command
+- (void) getAlarmSettings:(CDVInvokedUrlCommand *)command
 {
 	// Notify user of settings
 	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
@@ -345,7 +354,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Register for local notifications.
 // In iOS 8 and later, apps that use either local (or remote notifications) must register the types of notifications they intend to deliver.
 // The system then gives the user the ability to limit the types of notifications your app displays.
-- (void)registerNotifications:(CDVInvokedUrlCommand *)command
+- (void) registerNotifications:(CDVInvokedUrlCommand *)command
 {
 	UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
@@ -360,7 +369,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Apps that specify to use Bluetooth background modes (central and/or peripheral) need
 // bluetooth sharing to be enabled for the app in order to be able to process bluetooth
 // related tasks while in the background.
-- (void)isBluetoothSharingAuthorized:(CDVInvokedUrlCommand *)command
+- (void) isBluetoothSharingAuthorized:(CDVInvokedUrlCommand *)command
 {
 	NSMutableDictionary* returnObj = [NSMutableDictionary dictionary];
 	if([CBPeripheralManager authorizationStatus] == CBPeripheralManagerAuthorizationStatusAuthorized)
@@ -374,7 +383,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Sets the application badge number
-- (void)setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command	// Function added 2017-01-19
+- (void) setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command	// Function added 2017-01-19
 {
 	//UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:@"Hej" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[@(*myNumber) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
