@@ -28,6 +28,7 @@
 	BOOL iasAdded;					// Flag to indicate if Immediate Alert Service already has been added or not
 	NSDate *alarmDate;				// Date and time for incoming alarm (used to calculating the time interval between two consecutive alarms)
 	UILocalNotification *alarmNotification;		// Alarm local notification
+	AVAudioPlayer *mPlayer;				// Added 2017-02-20
 	
 	// App settings
 	NSString *appSettingsAlert;
