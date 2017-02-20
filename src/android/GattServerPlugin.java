@@ -806,7 +806,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void initMediaPlayer()
 	{
-		// Creates and initialize the MediaPlayer object if not already created. If already created, it resets the
+		// Creates and initializes the MediaPlayer object if not already created. If already created, it resets the
 		// MediaPlayer object to its uninitialized state and reinitializes it.
 		
 		if (mPlayer == null)
