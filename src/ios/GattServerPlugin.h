@@ -17,13 +17,21 @@
 
 
 /*typedef enum {
-	SOUND_0,			// custom mp3 sound
-	SOUND_1,			// custom mp3 sound
+	SOUND_0,			// Custom mp3 sound
+	SOUND_1,			// Custom mp3 sound
 	SOUND_NOTIFICATION,		// Notification sound
 	//SOUND_RINGTONE,		// Default ringtone sound (no way to acess default ringtone in iOS)
 	//SOUND_ALARM,			// Default alarm sound (alarm sounds are not available in iOS)
 	SOUND_OFF 			// No alarm sound
 } AlarmSound;*/
+typedef NS_ENUM(NSInteger, AlarmSound) {
+	AlarmSound_0,			// Custom alarm sound
+   	AlarmSound_1,			// custom alarm sound
+    	AlarmSoundNotification_0,	// Notification sound
+    	//AlarmSoundRingtone,		// Default ringtone sound (no way to acess default ringtone in iOS)
+	//AlarmSoundAlarm,		// Default alarm sound (alarm sounds are not available in iOS)
+   	 AlarmSoundOff			// No alarm sound
+};
 
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
 {
@@ -42,11 +50,12 @@
 	// App settings
 	NSString *appSettingsAlert;
 	NSString *appSettingsSound;
+	//AlarmSound appSettingsSound;
 	NSString *appSettingsVibration;
 	NSString *appSettingsLog;
 	/*typedef enum AlarmSound {
-		SOUND_0,			// custom mp3 sound
-		SOUND_1,			// custom mp3 sound
+		SOUND_0,			// Custom mp3 sound
+		SOUND_1,			// Custom mp3 sound
 		SOUND_NOTIFICATION,		// Notification sound
 		//SOUND_RINGTONE,		// Default ringtone sound (no way to acess default ringtone in iOS)
 		//SOUND_ALARM,			// Default alarm sound (alarm sounds are not available in iOS)
