@@ -41,17 +41,17 @@
 	
 	// App settings
 	NSString *appSettingsAlert;
-	//NSString *appSettingsSound;
+	NSString *appSettingsSound;
 	NSString *appSettingsVibration;
 	NSString *appSettingsLog;
-	typedef enum AlarmSound {
+	/*typedef enum AlarmSound {
 		SOUND_0,			// custom mp3 sound
 		SOUND_1,			// custom mp3 sound
 		SOUND_NOTIFICATION,		// Notification sound
 		//SOUND_RINGTONE,		// Default ringtone sound (no way to acess default ringtone in iOS)
 		//SOUND_ALARM,			// Default alarm sound (alarm sounds are not available in iOS)
 		SOUND_OFF 			// No alarm sound
-	} appSettingsSound;
+	} appSettingsSound;*/
 }
 
 - (void)startServer:(CDVInvokedUrlCommand *)command;
