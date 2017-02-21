@@ -809,6 +809,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Creates and initializes the MediaPlayer object if not already created. If already created, it resets the
 		// MediaPlayer object to its uninitialized state and reinitializes it.
+		// Note: To change sound (prepare another sound), just call this method again after the app sound setting has changed
 		
 		if (mPlayer == null)
 			mPlayer = new MediaPlayer();
