@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, AlarmSound) {
     	AlarmSoundNotification_0,	// Notification sound
     	//AlarmSoundRingtone,		// Default ringtone sound (no way to acess default ringtone in iOS)
 	//AlarmSoundAlarm,		// Default alarm sound (alarm sounds are not available in iOS)
-   	 AlarmSoundOff			// No alarm sound
+   	AlarmSoundOff			// No alarm sound
 };
 
 @interface GattServerPlugin : CDVPlugin <CBPeripheralManagerDelegate>
