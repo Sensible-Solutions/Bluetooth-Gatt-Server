@@ -734,6 +734,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void setAlarmNotificationSound(final AlarmSound sound)
 	{
 		// Sets the alarm sound for the notification to use when the app is in the background
+		// Note: To change notification sound, just call this method again with the app sound setting as parameter
 		
 		if (alarmNotification == null)
 			return;
