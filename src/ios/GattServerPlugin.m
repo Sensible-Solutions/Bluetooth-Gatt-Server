@@ -767,20 +767,23 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	alarmNotification.alertTitle = @"SenseSoft Notifications Mini";			// Specifies notification message title
 	alarmNotification.hasAction = false;						// Hides the alert button or slider
 	alarmNotification.timeZone = [NSTimeZone defaultTimeZone];			// Specifies timeZone for notification delivery
+	alarmNotification.applicationIconBadgeNumber = 0; 				// Set the application icon badge number
 	// Set the soundName property for the notification if notification sound is enabled
 	//alarmNotification.soundName = UILocalNotificationDefaultSoundName;		// Works
 	//alarmNotification.soundName = @"alarm.mp3";					// Works
-	alarmNotification.soundName = @"crash_short.mp3";				// Works
-	alarmNotification.applicationIconBadgeNumber = 0; 				// Set the application icon badge number	
+	//alarmNotification.soundName = @"crash_short.mp3";				// Works // Removed 2017-02-21
+	[self setAlarmNotificationSound:AlarmSound_1]; // Change the parameter to the app sound setting later (Added 2017-02-21)	
 }
 
 - (void) initAudioPlayer	// Added 2017-02-17
 {
 	// Creates and initializes with sound the audio player object if not already created. If already created, reinitializes
 	// it with sound.
+	// Note: To change sound (prepare another sound), just call this method again after the app sound setting has changed
 	
 	// Construct URL to sound file
-    	NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+	NSURL *soundUrl = [self getAlarmSoundUrl:AlarmSound_0];	// Change the parameter to the app sound setting later (Added 2017-02-21)
+    	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]]; // Works (removed 2017-02-21)
 	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
     
 	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
@@ -788,7 +791,57 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	audioPlayer.delegate = self;
 	
 	// Prepare the audio player for playback by preloading its buffers
-	[audioPlayer prepareToPlay];
+	if (soundUrl != nil)
+		[audioPlayer prepareToPlay];
+}
+
+- (void) setAlarmNotificationSound:(AlarmSound) alarmSound	// Added 2017-02-21
+{
+	// Sets the alarm sound for the notification to use when the app is in the background
+	// Note: To change notification sound, just call this method again with the app sound setting as parameter
+		
+	if (alarmNotification == nil)
+		return;
+	
+	switch (alarmSound) {
+        	case AlarmSound_0:
+			alarmNotification.soundName = @"alarm.mp3";
+			break;
+		case AlarmSound_1:
+			alarmNotification.soundName = @"crash_short.mp3";
+        		break;
+		case AlarmSoundNotification_0:
+			alarmNotification.soundName =  UILocalNotificationDefaultSoundName; // Change to the notification sound file name later
+        		break;
+		case AlarmSoundOff:
+			alarmNotification.soundName = nil;	// Should work (test it!)
+        		break;
+        	default:
+			// Change to the notification sound file name later
+			alarmNotification.soundName =  UILocalNotificationDefaultSoundName;
+           		break;
+    	}
+}
+
+- (NSURL *) getAlarmSoundUrl:(AlarmSound) alarmSound	// Added 2017-02-21
+{
+	// Gets the alarm sound to use by the audio player when the app is in the foreground
+	
+	switch (alarmSound) {
+        	case AlarmSound_0:
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+		case AlarmSound_1:
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
+		case AlarmSoundNotification_0:
+			// Change to the notification sound file name later
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+		case AlarmSoundOff:
+			return nil;
+        	default:
+			// Change to the notification sound file name later
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+           		break;
+    	}
 }
 
 
