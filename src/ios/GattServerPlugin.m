@@ -246,8 +246,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
 				//NSLog(@"Sound, alert and badge permissions ");
 			}*/
-			else if (grantedSettings.types & UIUserNotificationTypeAlert){
-				// Alert permission granted
+			//else if (grantedSettings.types & UIUserNotificationTypeAlert){ // Removed 2017-02-22
+			else {		// Added 2017-02-22 instead of above
+				// Local notifications are enabled for the app (how the user actually will be alerted depends on the user's preference in the settings app)
 				
 				/*UILocalNotification *localNotification = [[UILocalNotification alloc] init]; // Section removed 2017-02-17
 				
@@ -283,7 +284,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				// Section below added 2017-02-17
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
 				//if (grantedSettings.types & UIUserNotificationTypeBadge)	// Removed 2017-02-22
-					alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
+				alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 				// Cancel any previous local notification (takes some time)
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];			// Stops sound playback of any on going notification and also clears the notification center
 				//[[UIApplication sharedApplication] cancelLocalNotification:alarmNotification]; // Not working!
