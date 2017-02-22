@@ -328,8 +328,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	NSDictionary* obj = [self getArgsObject:command.arguments];
 	if ([self isNotArgsObject:obj :command])
-        return;
-
+        	return;
+	
+	// A hint if going to useBOOL appSettings: http://stackoverflow.com/questions/25415236/how-to-pass-boolean-in-phonegap-ios
+	
 	//appSettingsAlert = [command.arguments objectAtIndex:0];
 	appSettingsAlert = [self getSetting:obj forKey:KEY_ALERTS_SETTING];
 	//appSettingsSound = [command.arguments objectAtIndex:1];
