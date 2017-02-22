@@ -734,14 +734,15 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 
 -(NSString*) getSetting:(NSDictionary *)obj forKey:(NSString *)key
 {
-    NSString* setting = [obj valueForKey:key];
+    	//NSString* setting = [obj valueForKey:key];	// Removed 2017-02-22
+   	id setting = [obj valueForKey:key];		// Added 2017-02-22
 
-    if (setting == nil)
-        return nil;
-    if (![setting isKindOfClass:[NSString class]])
-        return nil;
+    	if (setting == nil)
+        	return nil;
+    	if (![setting isKindOfClass:[NSString class]])
+        	return nil;
 
-    return setting;
+    	return setting;
 }
 
 - (BOOL) isNotArgsObject:(NSDictionary*) obj :(CDVInvokedUrlCommand *)command
