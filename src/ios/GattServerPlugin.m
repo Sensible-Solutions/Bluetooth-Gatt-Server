@@ -235,7 +235,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){	// Checks if it's iOS 8 and above
 			
 			UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-
+			
 			if (grantedSettings.types == UIUserNotificationTypeNone) {
 				// Notifications are turned off completely for the app
 				//NSLog(@"No notification permission granted");
@@ -282,7 +282,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				[self stopAlarmSound:nil];	// Added 2017-02-20
 				// Section below added 2017-02-17
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
-				if (grantedSettings.types & UIUserNotificationTypeBadge)
+				//if (grantedSettings.types & UIUserNotificationTypeBadge)	// Removed 2017-02-22
 					alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 				// Cancel any previous local notification (takes some time)
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];			// Stops sound playback of any on going notification and also clears the notification center
@@ -399,7 +399,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[@(*myNumber) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
 	//[debugMessage show];
     	NSNumber *myNumber = [command.arguments objectAtIndex:0];
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[myNumber intValue]];	// Also clears the notifications in the notification center
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[myNumber intValue]];	// Also clears the notifications in the notification center if set to 0
 	
 	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:myNumber delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[myNumber stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
