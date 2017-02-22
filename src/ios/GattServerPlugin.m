@@ -232,7 +232,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Show local notification if the app is in the background
 	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-13
 	if (currentState == UIApplicationStateBackground){		// If but not its code block added 2017-01-13
-		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){			// Checks if it's iOS 8 and above
+		if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){	// Checks if it's iOS 8 and above
 			
 			UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 
@@ -294,7 +294,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			}
 		}
 	}
-	else {
+	else { // <--- Change to an else if that checks that alarm sound is not off later when app settings are in place
 		// The app is in the foreground
 		// Play sound manually from the main bundle if app is in foreground (because sound for local notifications are not played if the app is in the foreground)
 		// Audio is played asynchronously so no need to play it in a background thread.
