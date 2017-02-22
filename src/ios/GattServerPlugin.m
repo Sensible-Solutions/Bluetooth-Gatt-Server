@@ -732,7 +732,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     return (NSDictionary *)[args objectAtIndex:0];
 }
 
--(NSString*) getSetting:(NSDictionary *)obj forKey:(NSString *)key
+//- (NSString*) getSetting:(NSDictionary *)obj forKey:(NSString *)key 	// Removed 2017-02-22
+- (id) getSetting:(NSDictionary *)obj forKey:(NSString *)key		// Added 2017-02-22
 {
     	//NSString* setting = [obj valueForKey:key];	// Removed 2017-02-22
    	id setting = [obj valueForKey:key];		// Added 2017-02-22
