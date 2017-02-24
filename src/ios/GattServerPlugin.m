@@ -381,7 +381,6 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}
 		
 		// Set the sound
-		//NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
 		NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
 		[self setAlarmNotificationSound:[appSettingsSound intValue]];
 		[self initAudioPlayer];
@@ -395,6 +394,12 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Get granted local notifications for app
 - (void) getAppSettings:(CDVInvokedUrlCommand *)command
 {
+	// Just a test section
+	NSNumber *test = [self getAppSetting:KEY_SOUND_SETTING];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[test stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+	// End test section
+	
 	/*[self.commandDelegate runInBackground:^{
 		
 		CDVPluginResult *pluginResult = nil;
@@ -975,6 +980,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
+	 [self getAppSettings:nil];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
