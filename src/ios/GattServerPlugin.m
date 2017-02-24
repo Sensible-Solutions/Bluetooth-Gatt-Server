@@ -236,18 +236,18 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			
 			UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 			
-			if (grantedSettings.types == UIUserNotificationTypeNone) {
+			//if (grantedSettings.types == UIUserNotificationTypeNone) {
 				// Notifications are turned off completely for the app
 				//NSLog(@"No notification permission granted");
 				//UIAlertView *notificationAlert = [[UIAlertView alloc] initWithTitle:@"SenseSoft Notifications" message:@"Notifications are currently not allowed. Please turn on notifications in settings app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				//[notificationAlert show];
 				//return;
-			}
+			//}
 			/*else if (grantedSettings.types & UIUserNotificationTypeSound & UIUserNotificationTypeAlert & UIUserNotificationTypeBadge){
 				//NSLog(@"Sound, alert and badge permissions ");
 			}*/
 			//else if (grantedSettings.types & UIUserNotificationTypeAlert){ // Removed 2017-02-22
-			else {		// Added 2017-02-22 instead of above
+			if (grantedSettings.types != UIUserNotificationTypeNone) { // Added 2017-02-23 instead of above
 				// Local notifications are enabled for the app (how the user actually will be alerted depends on the user's preference in the settings app)
 				
 				/*UILocalNotification *localNotification = [[UILocalNotification alloc] init]; // Section removed 2017-02-17
@@ -280,13 +280,13 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				// Schedule the local notification
 				//[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];*/
 				
-				[self stopAlarmSound:nil];	// Added 2017-02-20
+				[self stopAlarmSound:nil];	// Stop any ongoing sound playback that was triggered when the app was in the foreground
 				// Section below added 2017-02-17
 				// Increase app icon count by 1 when notification is sent if notification badge is enabled
 				//if (grantedSettings.types & UIUserNotificationTypeBadge)	// Removed 2017-02-22
 				alarmNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1; 
 				// Cancel any previous local notification (takes some time)
-				[[UIApplication sharedApplication] cancelAllLocalNotifications];			// Stops sound playback of any on going notification and also clears the notification center
+				[[UIApplication sharedApplication] cancelAllLocalNotifications];	// Stops sound playback of any on going notification and also clears the notification center
 				//[[UIApplication sharedApplication] cancelLocalNotification:alarmNotification]; // Not working!
 				// Show the local notification
 				[[UIApplication sharedApplication] presentLocalNotificationNow:alarmNotification];
