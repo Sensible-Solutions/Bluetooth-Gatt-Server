@@ -21,7 +21,7 @@ var gattserver = {
 	isBluetoothSharingAuthorized: function(successCallback) {
 		cordova.exec(successCallback, successCallback, gattServerName, "isBluetoothSharingAuthorized", []); 
 	},
-	getAlarmSettings: function(successCallback, errorCallback) {
+	/*getAlarmSettings: function(successCallback, errorCallback) {
 		cordova.exec(successCallback, errorCallback, gattServerName, "getAlarmSettings", []); 
 	},
 	setAlarmSettings: function(successCallback, errorCallback, alerts, sound, vibration, log) {
@@ -31,6 +31,13 @@ var gattserver = {
 			"vibration": vibration,
 			"log":log
 		}]); 
+	},*/
+	getAppSettings: function(successCallback, errorCallback) {
+		cordova.exec(successCallback, errorCallback, gattServerName, "getAppSettings", []); 
+	},
+	setAppSettings: function(successCallback, errorCallback, params) {
+		// Note: JS object parameter (params)
+		cordova.exec(successCallback, errorCallback, gattServerName, "setAppSettings", [params]);
 	},
 	setApplicationBadgeNumber: function(successCallback, badgeNumber) {
 		cordova.exec(successCallback, successCallback, gattServerName, "setApplicationBadgeNumber", [badgeNumber]);
