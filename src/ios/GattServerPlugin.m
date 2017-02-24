@@ -369,21 +369,22 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		if ([defaults synchronize]){
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		}
 		else {
 			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString::@"Writing user preferences failed"];
 			NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorAppSettings, keyError, logAppSettings, keyMessage, nil];
     			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];	
 			[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			return;
 		}
-		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		
 		// Set the sound
-		NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
+		//NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
+		NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
 		[self setAlarmNotificationSound:appSettingsSound];
 		[self initAudioPlayer];
-		// Set the logging
-		NSNumber *appSettingsLog = [self getSetting:obj forKey:KEY_LOG_SETTING];
 	}];
 	
 	//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];	// Added 2017-01-19
@@ -796,10 +797,13 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 //- (NSString*) getSetting:(NSDictionary *)obj forKey:(NSString *)key 	// Removed 2017-02-22
 - (id) getSetting:(NSDictionary *)obj forKey:(NSString *)key		// Added 2017-02-22
 {
+	if (obj == nil || key == nil)	// Added 2017-02-24
+		return nil;
+	
     	//NSString* setting = [obj valueForKey:key];	// Removed 2017-02-22
    	id setting = [obj valueForKey:key];		// Added 2017-02-22
 
-    	if (setting == nil)
+    	if (setting == nil)	// Value not found
         	return nil;
     	//if (![setting isKindOfClass:[NSString class]])	// Removed 2017-02-24
         //	return nil;
@@ -846,8 +850,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Note: To change sound (prepare another sound), just call this method again after the app sound setting has changed
 	
 	// Construct URL to sound file
-	NSURL *soundUrl = [self getAlarmSoundUrl:AlarmSound_0];	// Change the parameter to the app sound setting later (Added 2017-02-21)
-    	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]]; // Works (removed 2017-02-21)
+	NSNumber *sound = [self getAppSetting:KEY_SOUND_SETTING];	// Added 2017-02-24
+	NSURL *soundUrl = [self getAlarmSoundUrl:sound];		// Added 2017-02-24
+	//NSURL *soundUrl = [self getAlarmSoundUrl:AlarmSound_0];		// Removed 2017-02-24
+    	
+	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]]; // Works (removed 2017-02-21)
 	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
     
 	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
@@ -906,6 +913,15 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
            		break;
     	}
+}
+
+- (id) getAppSetting(NSString *key)	// Added 2017-02-24
+{	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *appSettings = [defaults objectForKey:KEY_APP_SETTINGS];
+	if (appSettings == nil)
+		return nil;
+	return [self getSetting:appSettings forKey:key];
 }
 
 
