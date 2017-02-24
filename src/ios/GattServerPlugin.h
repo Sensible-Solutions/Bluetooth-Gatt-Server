@@ -48,11 +48,12 @@ typedef NS_ENUM(NSInteger, AlarmSound) {
 	AVAudioPlayer *audioPlayer;			// Added 2017-02-20
 	
 	// App settings
-	NSString *appSettingsAlert;
+	//NSString *appSettingsAlert;
 	//NSString *appSettingsSound;
 	//AlarmSound appSettingsSound;
-	NSString *appSettingsVibration;
-	NSString *appSettingsLog;
+	//NSString *appSettingsVibration;
+	//NSString *appSettingsLog;
+	
 	/*typedef enum AlarmSound {
 		SOUND_0,			// Custom mp3 sound
 		SOUND_1,			// Custom mp3 sound
