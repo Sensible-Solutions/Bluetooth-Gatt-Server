@@ -395,7 +395,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) getAppSettings:(CDVInvokedUrlCommand *)command
 {
 	// Just a test section
-	integer test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
+	int test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[test stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 	// End test section
