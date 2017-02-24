@@ -840,7 +840,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//alarmNotification.soundName = UILocalNotificationDefaultSoundName;		// Works
 	//alarmNotification.soundName = @"alarm.mp3";					// Works
 	//alarmNotification.soundName = @"crash_short.mp3";				// Works // Removed 2017-02-21
-	[self setAlarmNotificationSound:AlarmSound_1]; // Change the parameter to the app sound setting later (Added 2017-02-21)	
+	NSNumber *sound = [self getAppSetting:KEY_SOUND_SETTING];	// Added 2017-02-24
+	[self setAlarmNotificationSound:[sound intValue]];		// Added 2017-02-24
+	//[self setAlarmNotificationSound:AlarmSound_1]; // Change the parameter to the app sound setting later // Removed 2017-02-24	
 }
 
 - (void) initAudioPlayer	// Added 2017-02-17
@@ -850,7 +852,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Note: To change sound (prepare another sound), just call this method again after the app sound setting has changed
 	
 	// Construct URL to sound file
-	NSNumber *sound = [self getAppSetting:KEY_SOUND_SETTING];	// Added 2017-02-24
+	NSNumber *sound = [self getAppSetting:KEY_SOUND_SETTING];		// Added 2017-02-24
 	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];		// Added 2017-02-24
 	//NSURL *soundUrl = [self getAlarmSoundUrl:AlarmSound_0];		// Removed 2017-02-24
     	
