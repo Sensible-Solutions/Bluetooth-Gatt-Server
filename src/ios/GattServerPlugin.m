@@ -327,7 +327,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Set granted local notifications for app
-- (void) setAlarmSettings:(CDVInvokedUrlCommand *)command
+- (void) setAppSettings:(CDVInvokedUrlCommand *)command
 {
 	/*NSDictionary* obj = [self getArgsObject:command.arguments];
 	if ([self isNotArgsObject:obj :command])
@@ -352,19 +352,19 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];*/
 	
-	
 	[self.commandDelegate runInBackground:^{
 		
 		CDVPluginResult *pluginResult = nil;
 		NSDictionary *obj = [self getArgsObject:command.arguments];
 		if ([self isNotArgsObject:obj :command])
         		return;
-	
-		NSString *settingsString = [command.arguments objectAtIndex:0];
+		//NSNumber *soundSetting = [self getSetting:obj forKey:KEY_SOUND_SETTING];
+		//if (soundSetting != nil)
+		//NSString *settingsString = [command.arguments objectAtIndex:0];
 		// Get the shared defaults object
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		// Set the object to store in the defaults database
-		[defaults setObject:settingsString forKey:KEY_APP_SETTINGS];
+		[defaults setObject:obj forKey:KEY_APP_SETTINGS];
 		// Write any modifications to the persistent domains to disk and notify user
 		if ([defaults synchronize]){
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
@@ -377,6 +377,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			[pluginResult setKeepCallbackAsBool:false];
 		}
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		
+		// Set the sound
+		NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
+		[self setAlarmNotificationSound:appSettingsSound];
+		
 	}];
 	
 	//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];	// Added 2017-01-19
@@ -385,11 +390,33 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Get granted local notifications for app
-- (void) getAlarmSettings:(CDVInvokedUrlCommand *)command
+- (void) getAppSettings:(CDVInvokedUrlCommand *)command
 {
+	/*[self.commandDelegate runInBackground:^{
+		
+		CDVPluginResult *pluginResult = nil;
+		NSString *settingsString = [[NSUserDefaults standardUserDefaults] stringForKey:KEY_APP_SETTINGS];
+		
+		
+		if(reference!=nil)
+		{
+			NSString* aString = [[NSUserDefaults standardUserDefaults] stringForKey:reference];
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsString:aString];
+			if(aString==nil)
+			{
+				pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsInt:2]; //Ref not found
+			}
+		}
+		else
+		{
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsInt:3]; //Reference was null
+		}
+		[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
+	}];*/
+	
 	// Notify user of settings
-	NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
-	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
+	NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
+	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 	[pluginResult setKeepCallbackAsBool:false];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -772,8 +799,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 
     	if (setting == nil)
         	return nil;
-    	if (![setting isKindOfClass:[NSString class]])
-        	return nil;
+    	//if (![setting isKindOfClass:[NSString class]])	// Removed 2017-02-24
+        //	return nil;
 
     	return setting;
 }
