@@ -915,7 +915,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     	}
 }
 
-- (id) getAppSetting(NSString *key)	// Added 2017-02-24
+- (id) getAppSetting:(NSString *) key	// Added 2017-02-24
 {	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSDictionary *appSettings = [defaults objectForKey:KEY_APP_SETTINGS];
