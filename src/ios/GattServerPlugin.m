@@ -47,6 +47,7 @@ NSString *const errorServerStateUnsupported = @"serverStateUnsupported";
 NSString *const errorServerStateUnauthorized = @"serverStateUnauthorized";
 NSString *const errorWriteRequest = @"writeRequest";	// Added 2017-01-10
 NSString *const errorReadRequest = @"readRequest";	// Added 2017-01-10
+NSString *const errorAppSettings = @"appSettings";	// Added 2017-02-24
 
 // Error Messages
 NSString *const logServerAlreadyRunning = @"GATT server is already running";
@@ -59,6 +60,7 @@ NSString *const logStateUnsupported = @"BLE is not supported by device";
 NSString *const logStateUnauthorized = @"BLE is turned off for app";
 NSString *const logNoArgObj = @"Argument object can not be found";
 NSString *const logRequestNotSupported = @"Request is not supported";	// Added 2017-01-10
+NSString *const logAppSettings = @"Writing user preferences failed";	// Added 2017-02-24
 
 // Settings keys
 NSString *const KEY_ALERTS_SETTING = @"alerts";
@@ -326,11 +328,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Set granted local notifications for app
 - (void) setAlarmSettings:(CDVInvokedUrlCommand *)command
 {
-	NSDictionary* obj = [self getArgsObject:command.arguments];
+	/*NSDictionary* obj = [self getArgsObject:command.arguments];
 	if ([self isNotArgsObject:obj :command])
         	return;
 	
-	/*// A hint if going to useBOOL appSettings: http://stackoverflow.com/questions/25415236/how-to-pass-boolean-in-phonegap-ios
+	// A hint if going to useBOOL appSettings: http://stackoverflow.com/questions/25415236/how-to-pass-boolean-in-phonegap-ios
 	
 	//appSettingsAlert = [command.arguments objectAtIndex:0];
 	appSettingsAlert = [self getSetting:obj forKey:KEY_ALERTS_SETTING];
@@ -351,39 +353,34 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	
 	[self.commandDelegate runInBackground:^{
-		CDVPluginResult* pluginResult = nil;
-		//NSString* reference = [command.arguments objectAtIndex:0];
-		NSString* settingsString = [command.arguments objectAtIndex:1];
+		
+		CDVPluginResult *pluginResult = nil;
+		NSDictionary *obj = [self getArgsObject:command.arguments];
+		if ([self isNotArgsObject:obj :command])
+        		return;
+	
+		NSString *settingsString = [command.arguments objectAtIndex:0];
+		// Get the shared defaults object
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		[defaults setBool: aBoolean forKey:reference];
+		// Set the object to store in the defaults database
+		[defaults setObject:settingsString forKey:appSettingsKey];
+		// Write any modifications to the persistent domains to disk and notify user
 		if ([defaults synchronize]){
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		}
 		else {
-			
+			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString::@"Writing user preferences failed"];
+			NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorAppSettings, keyError, logAppSettings, keyMessage, nil];
+    			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];	
+			[pluginResult setKeepCallbackAsBool:false];
 		}
-		
-		if(reference!=nil)
-		{
-			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-			[defaults setBool: aBoolean forKey:reference];
-			BOOL success = [defaults synchronize];
-			if(success) pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsBool:aBoolean];
-			else pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Write has failed"];
-		}
-		else
-		{
-			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Reference was null"];
-		}
-		[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
-}];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}];
 	
-	
-	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
-	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
+	//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];	// Added 2017-01-19
+	//[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
+	//[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
 // Get granted local notifications for app
@@ -758,7 +755,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     if (args.count != 1)
         return nil;
 
-    NSObject* arg = [args objectAtIndex:0];
+    NSObject *arg = [args objectAtIndex:0];
 
     if (![arg isKindOfClass:[NSDictionary class]])
         return nil;
@@ -785,8 +782,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     if (obj != nil)
         return false;
 
-    NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorArguments, keyError, logNoArgObj, keyMessage, nil];
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
+    NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorArguments, keyError, logNoArgObj, keyMessage, nil];
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];
     [pluginResult setKeepCallbackAsBool:false];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 
