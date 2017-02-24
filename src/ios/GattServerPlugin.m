@@ -383,7 +383,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		// Set the sound
 		//NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
 		NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
-		[self setAlarmNotificationSound:appSettingsSound];
+		[self setAlarmNotificationSound:[appSettingsSound intValue]];
 		[self initAudioPlayer];
 	}];
 	
@@ -851,7 +851,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	// Construct URL to sound file
 	NSNumber *sound = [self getAppSetting:KEY_SOUND_SETTING];	// Added 2017-02-24
-	NSURL *soundUrl = [self getAlarmSoundUrl:sound];		// Added 2017-02-24
+	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];		// Added 2017-02-24
 	//NSURL *soundUrl = [self getAlarmSoundUrl:AlarmSound_0];		// Removed 2017-02-24
     	
 	//NSURL *soundUrl = [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]]; // Works (removed 2017-02-21)
