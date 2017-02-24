@@ -145,10 +145,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
         return;
     }
     
-    appSettingsAlert = nil;
+    //appSettingsAlert = nil;
     //appSettingsSound = nil;
-    appSettingsVibration = nil;
-    appSettingsLog = nil;
+    //appSettingsVibration = nil;
+    //appSettingsLog = nil;
     
 	/*UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
