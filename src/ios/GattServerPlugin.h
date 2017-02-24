@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, AlarmSound) {
 	
 	// App settings
 	NSString *appSettingsAlert;
-	NSString *appSettingsSound;
+	//NSString *appSettingsSound;
 	//AlarmSound appSettingsSound;
 	NSString *appSettingsVibration;
 	NSString *appSettingsLog;
