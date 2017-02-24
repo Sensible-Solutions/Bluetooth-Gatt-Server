@@ -63,6 +63,7 @@ NSString *const logRequestNotSupported = @"Request is not supported";	// Added 2
 NSString *const logAppSettings = @"Writing user preferences failed";	// Added 2017-02-24
 
 // Settings keys
+NSString *const KEY_APP_SETTINGS = @"user_settings";			// Added 2017-02-24
 NSString *const KEY_ALERTS_SETTING = @"alerts";
 NSString *const KEY_SOUND_SETTING = @"sound";
 NSString *const KEY_VIBRATION_SETTING = @"vibration";
@@ -363,7 +364,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		// Get the shared defaults object
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		// Set the object to store in the defaults database
-		[defaults setObject:settingsString forKey:appSettingsKey];
+		[defaults setObject:settingsString forKey:KEY_APP_SETTINGS];
 		// Write any modifications to the persistent domains to disk and notify user
 		if ([defaults synchronize]){
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
