@@ -395,8 +395,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) getAppSettings:(CDVInvokedUrlCommand *)command
 {
 	// Just a test section
-	NSNumber *test = [self getAppSetting:KEY_SOUND_SETTING];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[test intValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	integer test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[test stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 	// End test section
 	
@@ -800,7 +800,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 //- (NSString*) getSetting:(NSDictionary *)obj forKey:(NSString *)key 	// Removed 2017-02-22
-- (id) getSetting:(NSDictionary *)obj forKey:(NSString *)key		// Added 2017-02-22
+/*- (id) getSetting:(NSDictionary *)obj forKey:(NSString *)key		// Removed 2017-02-24
 {
 	if (obj == nil || key == nil)	// Added 2017-02-24
 		return nil;
@@ -814,7 +814,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
         //	return nil;
 
     	return setting;
-}
+}*/
 
 - (BOOL) isNotArgsObject:(NSDictionary*) obj :(CDVInvokedUrlCommand *)command
 {
@@ -924,11 +924,18 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 
 - (id) getAppSetting:(NSString *) key	// Added 2017-02-24
 {	
+	if (key == nil)
+		return nil;
+	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSDictionary *appSettings = [defaults objectForKey:KEY_APP_SETTINGS];
 	if (appSettings == nil)
 		return nil;
-	return [self getSetting:appSettings forKey:key];
+	//return [self getSetting:appSettings forKey:key];
+	
+   	id setting = [appSettings valueForKey:key];
+
+	return setting;
 }
 
 
