@@ -64,9 +64,9 @@ NSString *const logAppSettings = @"Writing user preferences failed";	// Added 20
 
 // Settings keys
 NSString *const KEY_APP_SETTINGS = @"user_settings";			// Added 2017-02-24
-NSString *const KEY_ALERTS_SETTING = @"alerts";
+//NSString *const KEY_ALERTS_SETTING = @"alerts";
 NSString *const KEY_SOUND_SETTING = @"sound";
-NSString *const KEY_VIBRATION_SETTING = @"vibration";
+//NSString *const KEY_VIBRATION_SETTING = @"vibration";		// Can't controll vibraton manually in iOS 
 NSString *const KEY_LOG_SETTING = @"log";
 
 NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval in seconds between a previous alarm and a new alarm.
@@ -381,7 +381,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		// Set the sound
 		NSNumber *appSettingsSound = [self getSetting:obj forKey:KEY_SOUND_SETTING];
 		[self setAlarmNotificationSound:appSettingsSound];
-		
+		[self initAudioPlayer];
+		// Set the logging
+		NSNumber *appSettingsLog = [self getSetting:obj forKey:KEY_LOG_SETTING];
 	}];
 	
 	//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];	// Added 2017-01-19
@@ -951,6 +953,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
+	
+	
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
 }
