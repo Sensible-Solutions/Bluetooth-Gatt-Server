@@ -396,7 +396,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	// Just a test section
 	int test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:test delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[@(test) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 	// End test section
 	
