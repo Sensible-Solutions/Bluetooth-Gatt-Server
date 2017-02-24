@@ -179,7 +179,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[peripheralManager addService:service];
 	}
 	else {
-	        NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, nil];
+	        NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, nil];
 	        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];
 		[pluginResult setKeepCallbackAsBool:true];
 	        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -330,7 +330,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	if ([self isNotArgsObject:obj :command])
         	return;
 	
-	// A hint if going to useBOOL appSettings: http://stackoverflow.com/questions/25415236/how-to-pass-boolean-in-phonegap-ios
+	/*// A hint if going to useBOOL appSettings: http://stackoverflow.com/questions/25415236/how-to-pass-boolean-in-phonegap-ios
 	
 	//appSettingsAlert = [command.arguments objectAtIndex:0];
 	appSettingsAlert = [self getSetting:obj forKey:KEY_ALERTS_SETTING];
@@ -347,7 +347,39 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	if (![appSettingsSound isEqualToString:@"off"])
 		types |= UIUserNotificationTypeSound;
 	UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+	[[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];*/
+	
+	
+	[self.commandDelegate runInBackground:^{
+		CDVPluginResult* pluginResult = nil;
+		//NSString* reference = [command.arguments objectAtIndex:0];
+		NSString* settingsString = [command.arguments objectAtIndex:1];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setBool: aBoolean forKey:reference];
+		if ([defaults synchronize]){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
+			[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		else {
+			
+		}
+		
+		if(reference!=nil)
+		{
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+			[defaults setBool: aBoolean forKey:reference];
+			BOOL success = [defaults synchronize];
+			if(success) pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsBool:aBoolean];
+			else pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Write has failed"];
+		}
+		else
+		{
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Reference was null"];
+		}
+		[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
+}];
+	
 	
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
 	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
