@@ -928,7 +928,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		return nil;
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSDictionary *appSettings = [defaults objectForKey:KEY_APP_SETTINGS];
+	//NSDictionary *appSettings = [defaults objectForKey:KEY_APP_SETTINGS];
+	NSDictionary *appSettings = [defaults dictionaryForKey:KEY_APP_SETTINGS];
 	if (appSettings == nil)
 		return nil;
 	//return [self getSetting:appSettings forKey:key];
@@ -987,7 +988,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
-	 [self getAppSettings:nil];
+	// Register the user preference defaults
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:@"CacheDataAgressively"];
+	//[NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+	[self getAppSettings:nil];	// Just a test of the function (remove the call later)
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
