@@ -982,17 +982,19 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//[session setPreferredIOBufferDuration:.005 error:nil];	// 0.005s is minimum allowed (default is about 20ms). Change/lower if experiencing high latency on playback
 	[session setActive:YES error:nil];
 	
-	[self initAlarmNotification];	// Added 2017-02-17
-	[self initAudioPlayer];		// Added 2017-02-20
 	
-	
-	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	//[debugAlert show];
 	// Register the user preference defaults
 	NSDictionary *appSettingsDefaults = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithUnsignedShort:1], KEY_SOUND_SETTING, [NSNumber numberWithBool:YES], KEY_LOG_SETTING, nil];
 	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:appSettingsDefaults forKey:KEY_APP_SETTINGS];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 	[self getAppSettings:nil];	// Just a test of the function (remove the call later)
+	
+	
+	[self initAlarmNotification];	// Added 2017-02-17
+	[self initAudioPlayer];		// Added 2017-02-20
+	
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
