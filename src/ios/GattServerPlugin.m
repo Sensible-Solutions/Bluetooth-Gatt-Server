@@ -989,8 +989,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
 	// Register the user preference defaults
-	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:@"CacheDataAgressively"];
-	//[NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
+	NSDictionary *appSettingsDefaults = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithUnsignedShort:0], KEY_SOUND_SETTING, [NSNumber numberWithBool:YES], KEY_LOG_SETTING, nil];
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:appSettingsDefaults forKey:KEY_APP_SETTINGS];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 	[self getAppSettings:nil];	// Just a test of the function (remove the call later)
 }
