@@ -369,7 +369,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		if ([defaults synchronize]){
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
 			[pluginResult setKeepCallbackAsBool:false];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			//[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		}
 		else {
 			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString::@"Writing user preferences failed"];
@@ -384,6 +384,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
 		[self setAlarmNotificationSound:[appSettingsSound intValue]];
 		[self initAudioPlayer];
+		
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}];
 	
 	//CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];	// Added 2017-01-19
@@ -987,7 +989,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	NSDictionary *appSettingsDefaults = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithUnsignedShort:1], KEY_SOUND_SETTING, [NSNumber numberWithBool:YES], KEY_LOG_SETTING, nil];
 	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:appSettingsDefaults forKey:KEY_APP_SETTINGS];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
-	[self getAppSettings:nil];	// Just a test of the function (remove the call later)
+	//[self getAppSettings:nil];	// Just a test of the function (remove the call later)
 	
 	
 	[self initAlarmNotification];	// Added 2017-02-17
