@@ -366,12 +366,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		// Set the object to store in the defaults database
 		[defaults setObject:obj forKey:KEY_APP_SETTINGS];
 		// Write any modifications to the persistent domains to disk and notify user
-		if ([defaults synchronize]){
-			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
-			[pluginResult setKeepCallbackAsBool:false];
+		if (![defaults synchronize]){
+			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
+			//[pluginResult setKeepCallbackAsBool:false];
 			//[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-		}
-		else {
 			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString::@"Writing user preferences failed"];
 			NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorAppSettings, keyError, logAppSettings, keyMessage, nil];
     			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];	
@@ -379,12 +377,23 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 			return;
 		}
+		/*else {
+			//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString::@"Writing user preferences failed"];
+			NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: errorAppSettings, keyError, logAppSettings, keyMessage, nil];
+    			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnObj];	
+			[pluginResult setKeepCallbackAsBool:false];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			return;
+		}*/
 		
 		// Set the sound
 		NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
 		[self setAlarmNotificationSound:[appSettingsSound intValue]];
 		[self initAudioPlayer];
 		
+		// Notify user
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
+		[pluginResult setKeepCallbackAsBool:false];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}];
 	
