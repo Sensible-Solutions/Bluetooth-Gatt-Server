@@ -417,11 +417,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		NSDictionary *appSettings = [[NSUserDefaults standardUserDefaults] dictionaryForKey:KEY_APP_SETTINGS];
 		
 		if(appSettings != nil){
-			//pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary:appSettings];
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary:appSettings];
 		}
-		//else {
+		else {
 			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Could not get app settings dictionary from the user's defaults database"];
-		//}
+		}
 		[pluginResult setKeepCallbackAsBool:false];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}];
