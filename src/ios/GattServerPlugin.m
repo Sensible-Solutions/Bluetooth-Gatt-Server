@@ -395,32 +395,32 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) getAppSettings:(CDVInvokedUrlCommand *)command
 {
 	// Just a test section
-	int test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
+	/*int test = [[self getAppSetting:KEY_SOUND_SETTING] intValue];
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"getAppSettings" message:[@(test) stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	[debugAlert show];*/
 	// End test section
 	
-	/*[self.commandDelegate runInBackground:^{
+	[self.commandDelegate runInBackground:^{
 		
 		CDVPluginResult *pluginResult = nil;
-		NSString *settingsString = [[NSUserDefaults standardUserDefaults] stringForKey:KEY_APP_SETTINGS];
+		NSDictionary *appSettings = [[NSUserDefaults standardUserDefaults] dictionaryForKey:KEY_APP_SETTINGS];
 		
-		
-		if(reference!=nil)
+		if(appSettings != nil)
 		{
-			NSString* aString = [[NSUserDefaults standardUserDefaults] stringForKey:reference];
-			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsString:aString];
-			if(aString==nil)
+			//NSString* aString = [[NSUserDefaults standardUserDefaults] stringForKey:reference];
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsDictionary:appSettings];
+			/*if(aString==nil)
 			{
 				pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsInt:2]; //Ref not found
-			}
+			}*/
 		}
 		else
 		{
-			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsInt:3]; //Reference was null
+			pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Could not get app settings dictionary from the user's defaults database"];
 		}
-		[self.commandDelegate sendPluginResult:pluginResult callbackId: command.callbackId];
-	}];*/
+		[pluginResult setKeepCallbackAsBool:false];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}];
 	
 	// Notify user of settings
 	/*NSDictionary *returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusAppSettings, keyStatus, @"alert", appSettingsAlert, @"sound", appSettingsSound, @"vibration", appSettingsVibration, @"log", appSettingsLog, nil];
