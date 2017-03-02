@@ -685,7 +685,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			// Ignore first value(s) received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level (sometimes twice). This must not be interpreted as an alert.
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
-			[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString]; // Added 2017-02-16 just to test sounds without having to manually trigger an alarm. Remove when done!!!
+			//[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString]; // Added 2017-02-16 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 		}
 		
 		// No need to respond to the write request since the it's of the type "request with no response"
@@ -971,8 +971,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
                	object:nil];*/
 	
 	// Remove onPause and onResume observer registrations below if ending up not using them
-	[center addObserver:self selector:@selector(onPause) name:UIApplicationDidEnterBackgroundNotification object:nil]; // Test 2017-02-15
-	[center addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil]; // Test 2017-02-15
+	//[center addObserver:self selector:@selector(onPause) name:UIApplicationDidEnterBackgroundNotification object:nil]; // Works!
+	//[center addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil]; // Works!
                	
         // Set up sound from main bundle to be played during alarms when the app is in the foreground (works) // Removed 2017-02-20
         //AudioServicesCreateSystemSoundID((__bridge CFURLRef) [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]], &alarmSound);
@@ -1005,17 +1005,19 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) onPause
 {
 	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
+	// (that is add onPause observer registrations in pluginInitialize method above)
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onPause" message:@"onPause plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onPause" message:@"onPause plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show]; // Works
 }
 // Called when the activity will start interacting with the user (application is retrieved from the background)
 - (void) onResume
 {
 	// NOTE: if you want to use this, make sure you add the corresponding notification handler in CDVPlugin.m
+	// (that is add onResume observer registrations in pluginInitialize method above)
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onResume" message:@"onResume plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug onResume" message:@"onResume plugin test!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show]; // Works!
 }
 
 // Called before app terminates
