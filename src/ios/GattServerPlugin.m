@@ -685,7 +685,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 			// Ignore first value(s) received. When a nRF8002 module connects to the GATT server running Immediate Alert Service, it writes it's current alert level (sometimes twice). This must not be interpreted as an alert.
 			//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug 0" message:alertLevelParsed delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			//[debugAlert show];
-			//[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString]; // Added 2017-02-16 just to test sounds without having to manually trigger an alarm. Remove when done!!!
+			[self alarm:alertLevelParsed deviceUUID:attributeRequest.central.identifier.UUIDString]; // Added 2017-02-16 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 		}
 		
 		// No need to respond to the write request since the it's of the type "request with no response"
