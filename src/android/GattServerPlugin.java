@@ -563,7 +563,7 @@ public class GattServerPlugin extends CordovaPlugin
 		try {
 			JSONObject appSettings = settings.getJSONObject(0);
 			appPreferencesEditor.putString(APP_SETTINGS_NAME, appSettings.toString());
-                        if (!appPreferencesEditor.commit()){
+                        if (!appPreferencesEditor.commit()) {
 				// Failed to write user's preferences to persistent storage
 				// Notify user of error
 				addProperty(returnObj, keyError, errorAppSettings);
@@ -573,19 +573,28 @@ public class GattServerPlugin extends CordovaPlugin
 				callbackContext.sendPluginResult(pluginResult);
 				return;	
 			}
-                       
-			
-			
-                        String ref = args.getString(0);
-                        String aString = args.getString(1);
-                        editor.putString(ref, aString);
-                        boolean success = editor.commit();
-                        if (success) callbackContext.success(aString);
-                        else callbackContext.error(1); //nativeWrite failed
-                    } catch (Exception e) {
-                        Log.e(TAG, "setItem :", e);
-                        callbackContext.error(e.getMessage());
+            	} 
+		catch (Exception e) {
+                	// Notify user of error
+			addProperty(returnObj, keyError, errorAppSettings);
+			addProperty(returnObj, keyMessage, e.getMessage());
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);
+			callbackContext.sendPluginResult(pluginResult);
+			return;	
 		}
+		
+		// Set the sound
+		//NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
+		setAlarmNotificationSound();
+		initMediaPlayer();
+		//[self setAlarmNotificationSound:[appSettingsSound intValue]];
+		//[self initAudioPlayer];
+		
+		// Notify user
+		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
+		pluginResult.setKeepCallback(false);
+		callbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void getAppSettingsAction(CallbackContext callbackContext)
@@ -1059,6 +1068,17 @@ public class GattServerPlugin extends CordovaPlugin
            		 };
 		};
 		cordova.getActivity().runOnUiThread(runnable);	// Run it on the ui thread as cordova plugins runs on the WebCore thread (also the plugin's JavaScript runs on the WebCore thread).
+	}
+	
+	private String getAppSetting(String key)
+	{
+		if (key == null)
+			return null;
+			
+		try {
+			if (key == 
+			String s = sharedPref.getString(ref, "nativestorage_null");
+		}
 	}
 	
 	
