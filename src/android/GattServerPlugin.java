@@ -1085,8 +1085,14 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		try {
 			JSONObject setting = new JSONObject(appPreferences.getString(KEY_APP_SETTINGS, ""));
-			switch (key) {
-				case KEY_SOUND_SETTING:
+			if (key == KEY_SOUND_SETTING){
+				return setting.getInt(key);
+			}
+			else {
+				return (setting.getBoolean(key)) ? 1 : 0;
+			}
+			
+				/*case KEY_SOUND_SETTING:
 					return setting.getInt(key);
 					//return setting.getInt(key).toString();
 					//String s = appPreferences.getString(key, "false");
@@ -1102,8 +1108,8 @@ public class GattServerPlugin extends CordovaPlugin
 					//String s = appPreferences.getString(key, "true");
 					//return Boolean.parseBoolean(s);
 				default:
-					return 0;
-			}
+					return 0;*/
+			
 		}
 		catch (JSONException e) {
 			showDebugMsgBox("getAppSetting exception thrown!");
