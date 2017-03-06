@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.content.SharedPreferences;		// Added 2017-03-06
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattServer;
@@ -43,6 +44,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.NotificationManager;
 import android.app.Notification;
+import android.app.Activity;			// Added 2017-03-06 for shared preferences
 import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
@@ -550,6 +552,16 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
+	private void setAppSettingsAction(CallbackContext callbackContext, JSONArray settings)
+	{
+	
+	}
+	
+	private void getAppSettingsAction(CallbackContext callbackContext)
+	{
+	
+	}
+	
 	private void alarmAction(CallbackContext callbackContext)
 	{
 		// Debug action function just to test local notifications from outside the plugin (can remove)
@@ -1032,7 +1044,11 @@ public class GattServerPlugin extends CordovaPlugin
 		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
 		wakeLock.setReferenceCounted(false);
-
+		
+		// Get shared preference objects used for retrieving and storing the user's app preferences
+		sharedPref = cordova.getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+		sharedPrefEditor = sharedPref.edit();
+		
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		
