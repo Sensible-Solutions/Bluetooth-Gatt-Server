@@ -44,7 +44,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.NotificationManager;
 import android.app.Notification;
-import android.app.Activity;			// Added 2017-03-06 for shared preferences
+//import android.app.Activity;			// Added 2017-03-06 for shared preferences
 import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
@@ -142,6 +142,9 @@ public class GattServerPlugin extends CordovaPlugin
 	private long elapsedAlarmTime = 0;			// Elapsed time in milliseconds since boot (including time spent in sleep)
 	private final long MIN_ALARM_INTERVAL = 3000;		// Minimum allowed time interval in milliseconds between a previous alarm and a new alarm.
 								// Any new alarms triggered in this time interval will be ignored.
+	
+	private SharedPreferences appPreferences;
+	private SharedPreferences.Editor appPreferencesEditor;
 	
 	private AppSettings myAppSettings = null;
 	
@@ -1046,8 +1049,8 @@ public class GattServerPlugin extends CordovaPlugin
 		wakeLock.setReferenceCounted(false);
 		
 		// Get shared preference objects used for retrieving and storing the user's app preferences
-		sharedPref = cordova.getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
-		sharedPrefEditor = sharedPref.edit();
+		appPreferences = cordova.getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		appPreferencesEditor = appPreferences.edit();
 		
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
