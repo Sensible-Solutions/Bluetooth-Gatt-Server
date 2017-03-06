@@ -1087,18 +1087,18 @@ public class GattServerPlugin extends CordovaPlugin
 			JSONObject setting = new JSONObject(appPreferences.getString(KEY_APP_SETTINGS, ""));
 			switch (key) {
 				case KEY_SOUND_SETTING:
-					return setting.getInt(key, 0);
-					//return setting.getInt(key, 0).toString();
+					return setting.getInt(key);
+					//return setting.getInt(key).toString();
 					//String s = appPreferences.getString(key, "false");
 					//return Boolean.parseBoolean(s);
 				case KEY_LOG_SETTING:
-					return (setting.getBoolean(key, true)) ? 1 : 0;
-					//return setting.getBoolean(key, true).toString();
+					return (setting.getBoolean(key)) ? 1 : 0;
+					//return setting.getBoolean(key).toString();
 					//String s = appPreferences.getString(key, "true");
 					//return Boolean.parseBoolean(s);
 				case KEY_VIBRATION_SETTING:
-					return (setting.getBoolean(key, true)) ? 1 : 0;
-					//return setting.getBoolean(key, true).toString();
+					return (setting.getBoolean(key)) ? 1 : 0;
+					//return setting.getBoolean(key).toString();
 					//String s = appPreferences.getString(key, "true");
 					//return Boolean.parseBoolean(s);
 				default:
