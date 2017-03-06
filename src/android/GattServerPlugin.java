@@ -119,7 +119,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String errorServiceAdded = "serviceAdded";
 	private final static String errorWriteRequest = "writeRequest";
 	private final static String errorReadRequest = "readRequest";
-
+	private final static String errorAppSettings = "appSettings";
 	
 	// Error Messages
 	private final static String logServerAlreadyRunning = "GATT server is already running";
@@ -129,6 +129,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String logStateUnsupported = "BLE is not supported by device";
 	private final static String logStatePoweredOff = "BLE is turned off for device";
 	private final static String logRequestNotSupported = "Request is not supported";
+	private final static String logAppSettings = "Writing user preferences failed";
 	
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
@@ -145,6 +146,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private SharedPreferences appPreferences;
 	private SharedPreferences.Editor appPreferencesEditor;
+	private final static String APP_SETTINGS_NAME = "user_settings";
 	
 	private AppSettings myAppSettings = null;
 	
@@ -557,7 +559,33 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void setAppSettingsAction(CallbackContext callbackContext, JSONArray settings)
 	{
-	
+		JSONObject returnObj = new JSONObject();
+		try {
+			JSONObject appSettings = settings.getJSONObject(0);
+			appPreferencesEditor.putString(APP_SETTINGS_NAME, appSettings.toString());
+                        if (!appPreferencesEditor.commit()){
+				// Failed to write user's preferences to persistent storage
+				// Notify user of error
+				addProperty(returnObj, keyError, errorAppSettings);
+				addProperty(returnObj, keyMessage, logAppSettings);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+				return;	
+			}
+                       
+			
+			
+                        String ref = args.getString(0);
+                        String aString = args.getString(1);
+                        editor.putString(ref, aString);
+                        boolean success = editor.commit();
+                        if (success) callbackContext.success(aString);
+                        else callbackContext.error(1); //nativeWrite failed
+                    } catch (Exception e) {
+                        Log.e(TAG, "setItem :", e);
+                        callbackContext.error(e.getMessage());
+		}
 	}
 	
 	private void getAppSettingsAction(CallbackContext callbackContext)
@@ -1049,7 +1077,7 @@ public class GattServerPlugin extends CordovaPlugin
 		wakeLock.setReferenceCounted(false);
 		
 		// Get shared preference objects used for retrieving and storing the user's app preferences
-		appPreferences = cordova.getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+		appPreferences = cordova.getActivity().getSharedPreferences(APP_SETTINGS_NAME, Context.MODE_PRIVATE);
 		appPreferencesEditor = appPreferences.edit();
 		
 		this.initAlarmNotification();
