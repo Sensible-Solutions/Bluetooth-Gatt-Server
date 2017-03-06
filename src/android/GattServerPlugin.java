@@ -59,6 +59,7 @@ import android.Manifest.permission;
 
 import java.lang.Enum;
 import java.lang.System;
+//import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -146,7 +147,12 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private SharedPreferences appPreferences;
 	private SharedPreferences.Editor appPreferencesEditor;
-	private final static String APP_SETTINGS_NAME = "user_settings";
+	private final static String APP_SETTINGS_NAME = "user_settings";	// Shared preference persistent storage file name
+	// Settings keys
+	private final static String KEY_APP_SETTINGS = "user_settings";
+	private final static String KEY_SOUND_SETTING = "sound";
+	private final static String KEY_VIBRATION_SETTING = "vibration";
+	private final static String KEY_LOG_SETTING = "log";
 	
 	private AppSettings myAppSettings = null;
 	
@@ -562,7 +568,7 @@ public class GattServerPlugin extends CordovaPlugin
 		JSONObject returnObj = new JSONObject();
 		try {
 			JSONObject appSettings = settings.getJSONObject(0);
-			appPreferencesEditor.putString(APP_SETTINGS_NAME, appSettings.toString());
+			appPreferencesEditor.putString(KEY_APP_SETTINGS, appSettings.toString());
                         if (!appPreferencesEditor.commit()) {
 				// Failed to write user's preferences to persistent storage
 				// Notify user of error
@@ -586,7 +592,8 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Set the sound
 		//NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
-		setAlarmNotificationSound();
+		//setAlarmNotificationSound(Integer.parseInt(getAppSetting(KEY_SOUND_SETTING)));
+		setAlarmNotificationSound(getAppSetting(KEY_SOUND_SETTING));
 		initMediaPlayer();
 		//[self setAlarmNotificationSound:[appSettingsSound intValue]];
 		//[self initAudioPlayer];
@@ -1070,14 +1077,37 @@ public class GattServerPlugin extends CordovaPlugin
 		cordova.getActivity().runOnUiThread(runnable);	// Run it on the ui thread as cordova plugins runs on the WebCore thread (also the plugin's JavaScript runs on the WebCore thread).
 	}
 	
-	private String getAppSetting(String key)
+	//private String getAppSetting(String key)
+	private int getAppSetting(String key)
 	{
 		if (key == null)
-			return null;
-			
+			return 0;
+		
 		try {
-			if (key == 
-			String s = sharedPref.getString(ref, "nativestorage_null");
+			JSONObject setting = new JSONObject(appPreferences.getString(KEY_APP_SETTINGS, ""));
+			switch (key) {
+				case KEY_SOUND_SETTING:
+					return setting.getInt(key, 0);
+					//return setting.getInt(key, 0).toString();
+					//String s = appPreferences.getString(key, "false");
+					//return Boolean.parseBoolean(s);
+				case KEY_LOG_SETTING:
+					return (setting.getBoolean(key, true)) ? 1 : 0;
+					//return setting.getBoolean(key, true).toString();
+					//String s = appPreferences.getString(key, "true");
+					//return Boolean.parseBoolean(s);
+				case KEY_VIBRATION_SETTING:
+					return (setting.getBoolean(key, true)) ? 1 : 0;
+					//return setting.getBoolean(key, true).toString();
+					//String s = appPreferences.getString(key, "true");
+					//return Boolean.parseBoolean(s);
+				default:
+					return 0;
+			}
+		}
+		catch (JSONException e) {
+			showDebugMsgBox("getAppSetting exception thrown!");
+			return 0;
 		}
 	}
 	
