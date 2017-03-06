@@ -88,6 +88,8 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String RESET_ALARM = "resetAlarm";
 	private final static String STOP_SOUND = "stopAlarmSound";
 	private final static String RELEASE_CPU = "releaseCpu";
+	private final static String SET_APP_SETTINGS = "setAppSettings";
+	private final static String GET_APP_SETTINGS = "getAppSettings";
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -357,6 +359,22 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 			else if (RELEASE_CPU.equals(action)){		// Action for Android only
 				releaseCpuAction(callbackContext);
+				return true;
+			}
+			else if (SET_APP_SETTINGS.equals(action)){
+				cordova.getThreadPool().execute(new Runnable() {
+					public void run() {
+						setAppSettingsAction(callbackContext, args);
+					}				
+				});
+				return true;
+			}
+			else if (GET_APP_SETTINGS.equals(action)){
+				cordova.getThreadPool().execute(new Runnable() {
+					public void run() {
+						getAppSettingsAction(callbackContext);
+					}				
+				});
 				return true;
 			}
 			else if (action.equals("alarm")){
