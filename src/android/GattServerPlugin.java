@@ -593,7 +593,6 @@ public class GattServerPlugin extends CordovaPlugin
 		// Set the sound
 		//NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
 		//setAlarmNotificationSound(Integer.parseInt(getAppSetting(KEY_SOUND_SETTING)));
-		MyEnum.values()[x]
 		setAlarmNotificationSound(AlarmSound.values()[getAppSetting(KEY_SOUND_SETTING)]);
 		initMediaPlayer();
 		//[self setAlarmNotificationSound:[appSettingsSound intValue]];
