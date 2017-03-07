@@ -618,7 +618,7 @@ public class GattServerPlugin extends CordovaPlugin
 				// Shared preferences don't exist yet, notify user with defaults
 				if (callbackContext != null){
 					returnObj = new JSONObject();
-					addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound);
+					addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound.ordinal());
 					addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
 					addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
 					PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
