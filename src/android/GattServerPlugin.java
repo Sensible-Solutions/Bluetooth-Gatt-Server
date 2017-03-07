@@ -1184,6 +1184,8 @@ public class GattServerPlugin extends CordovaPlugin
 		// Get shared preference objects used for retrieving and storing the user's app preferences
 		appPreferences = cordova.getActivity().getSharedPreferences(APP_SETTINGS_NAME, Context.MODE_PRIVATE);
 		appPreferencesEditor = appPreferences.edit();
+		// "Load" the app preferences from the shared preferences
+		this.getAppSettingsAction(null);
 		
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
