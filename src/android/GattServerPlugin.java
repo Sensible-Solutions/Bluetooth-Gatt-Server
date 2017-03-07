@@ -168,8 +168,8 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private class AppSettings
 	{
-		public boolean alert = true;			// Alarm on/off flag
-		public AlarmSound sound = AlarmSound.SOUND_1;	// Sound flag
+		//public boolean alert = true;			// Alarm on/off flag
+		public AlarmSound sound = AlarmSound.SOUND_0;	// Sound flag
 		public boolean vibration = true;		// Vibration on/off flag
 		public boolean log = true;			// Alarm logging on/off flag
 	}
@@ -566,8 +566,12 @@ public class GattServerPlugin extends CordovaPlugin
 	private void setAppSettingsAction(CallbackContext callbackContext, JSONArray settings)
 	{
 		JSONObject returnObj = new JSONObject();
+		JSONObject appSettings;
 		try {
-			JSONObject appSettings = settings.getJSONObject(0);
+			appSettings = settings.getJSONObject(0);
+			myAppSettings.sound = AlarmSound.values()[appSettings.getInt(KEY_SOUND_SETTING)];
+			myAppSettings.vibration = appSettings.getBoolean(KEY_VIBRATION_SETTING);
+			myAppSettings.log = appSettings.getBoolean(KEY_LOG_SETTING);
 			appPreferencesEditor.putString(KEY_APP_SETTINGS, appSettings.toString());
                         if (!appPreferencesEditor.commit()) {
 				// Failed to write user's preferences to persistent storage
@@ -591,12 +595,9 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Set the sound
-		//NSNumber *appSettingsSound = [self getAppSetting:KEY_SOUND_SETTING];
-		//setAlarmNotificationSound(Integer.parseInt(getAppSetting(KEY_SOUND_SETTING)));
-		setAlarmNotificationSound(AlarmSound.values()[getAppSetting(KEY_SOUND_SETTING)]);
+		setAlarmNotificationSound(myAppSettings.sound);
+		//setAlarmNotificationSound(AlarmSound.values()[getAppSetting(KEY_SOUND_SETTING)]);
 		initMediaPlayer();
-		//[self setAlarmNotificationSound:[appSettingsSound intValue]];
-		//[self initAudioPlayer];
 		
 		// Notify user
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
@@ -605,8 +606,40 @@ public class GattServerPlugin extends CordovaPlugin
 	}
 	
 	private void getAppSettingsAction(CallbackContext callbackContext)
-	{
-	
+	{	
+		JSONObject returnObj;
+		try {
+			String settingsString = appPreferences.getString(KEY_APP_SETTINGS, "NA");
+			if (settingsString.equals("NA") && callbackContext != null){
+				.getBoolean(KEY_VIBRATION_SETTING);
+				// Shared preferences don't exist yet, notify user with defaults
+				returnObj = new JSONObject();
+				addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound);
+				addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
+				addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+				return;		
+			}
+			returnObj = new JSONObject(settingsString);
+		}
+		catch (Exception e) {
+			showDebugMsgBox("getAppSetting exception thrown!");
+			// Notify user of error
+			returnObj = new JSONObject();
+			addProperty(returnObj, keyError, errorAppSettings);
+			addProperty(returnObj, keyMessage, e.getMessage());
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+			pluginResult.setKeepCallback(false);
+			callbackContext.sendPluginResult(pluginResult);
+			return;		
+		}
+		
+		// Notify user
+		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+		pluginResult.setKeepCallback(false);
+		callbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
@@ -1078,7 +1111,7 @@ public class GattServerPlugin extends CordovaPlugin
 	}
 	
 	//private String getAppSetting(String key)
-	private int getAppSetting(String key)
+	/*private int getAppSetting(String key)
 	{
 		if (key == null)
 			return 0;
@@ -1090,7 +1123,7 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 			else {
 				return (setting.getBoolean(key)) ? 1 : 0;
-			}
+			} */
 			
 				/*case KEY_SOUND_SETTING:
 					return setting.getInt(key);
@@ -1108,14 +1141,14 @@ public class GattServerPlugin extends CordovaPlugin
 					//String s = appPreferences.getString(key, "true");
 					//return Boolean.parseBoolean(s);
 				default:
-					return 0;*/
+					return 0;*//*
 			
 		}
 		catch (JSONException e) {
 			showDebugMsgBox("getAppSetting exception thrown!");
 			return 0;
 		}
-	}
+	}*/
 	
 	
 	/*********************************************************************************************************************
