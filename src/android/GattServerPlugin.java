@@ -633,7 +633,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 			if (callbackContext != null){
 				// Notify user
-				returnObj.getBoolean(KEY_VIBRATION_SETTING);
+				//returnObj.getBoolean(KEY_VIBRATION_SETTING);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				pluginResult.setKeepCallback(false);
 				callbackContext.sendPluginResult(pluginResult);
@@ -641,8 +641,10 @@ public class GattServerPlugin extends CordovaPlugin
 			else {
 				// Set/load the user's app preferences
 				myAppSettings.sound = AlarmSound.values()[returnObj.getInt(KEY_SOUND_SETTING)];
-				myAppSettings.vibration = returnObj.getBoolean(KEY_VIBRATION_SETTING);
-				myAppSettings.log = returnObj.getBoolean(KEY_LOG_SETTING);
+				//myAppSettings.vibration = returnObj.getBoolean(KEY_VIBRATION_SETTING);
+				myAppSettings.vibration = (returnObj.getInt(KEY_VIBRATION_SETTING) != 0);	// Converts int to boolean
+				//myAppSettings.log = returnObj.getBoolean(KEY_LOG_SETTING);
+				myAppSettings.log = (returnObj.getInt(KEY_LOG_SETTING) != 0);			// Converts int to boolean
 			}
 		}
 		catch (Exception e) {
