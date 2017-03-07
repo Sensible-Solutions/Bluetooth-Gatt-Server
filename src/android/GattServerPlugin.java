@@ -570,8 +570,10 @@ public class GattServerPlugin extends CordovaPlugin
 		try {
 			appSettings = settings.getJSONObject(0);
 			myAppSettings.sound = AlarmSound.values()[appSettings.getInt(KEY_SOUND_SETTING)];
-			myAppSettings.vibration = appSettings.getBoolean(KEY_VIBRATION_SETTING);
-			myAppSettings.log = appSettings.getBoolean(KEY_LOG_SETTING);
+			//myAppSettings.vibration = appSettings.getBoolean(KEY_VIBRATION_SETTING);
+			myAppSettings.vibration = (appSettings.getInt(KEY_VIBRATION_SETTING) != 0);	// Converts int to boolean
+			//myAppSettings.log = appSettings.getBoolean(KEY_LOG_SETTING);
+			myAppSettings.log = (appSettings.getBoolean(KEY_LOG_SETTING) != 0);	// Converts int to boolean
 			appPreferencesEditor.putString(KEY_APP_SETTINGS, appSettings.toString());
                         if (!appPreferencesEditor.commit()) {
 				// Failed to write user's preferences to persistent storage
