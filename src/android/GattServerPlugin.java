@@ -607,39 +607,55 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void getAppSettingsAction(CallbackContext callbackContext)
 	{	
+		// Returns the app settings from the shared preferences if callbackContext is not null. 
+		// Otherwise, it "loads" the user's app preferneces from the shared preferences.
+		
 		JSONObject returnObj;
 		try {
 			String settingsString = appPreferences.getString(KEY_APP_SETTINGS, "NA");
-			if (settingsString.equals("NA") && callbackContext != null){
-				.getBoolean(KEY_VIBRATION_SETTING);
+			if (settingsString.equals("NA")){
+				
 				// Shared preferences don't exist yet, notify user with defaults
-				returnObj = new JSONObject();
-				addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound);
-				addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
-				addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
-				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-				pluginResult.setKeepCallback(false);
-				callbackContext.sendPluginResult(pluginResult);
+				if (callbackContext != null){
+					returnObj = new JSONObject();
+					addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound);
+					addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
+					addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
+					PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+					pluginResult.setKeepCallback(false);
+					callbackContext.sendPluginResult(pluginResult);
+				}
 				return;		
 			}
 			returnObj = new JSONObject(settingsString);
+		
+			if (callbackContext != null){
+				// Notify user
+				returnObj.getBoolean(KEY_VIBRATION_SETTING);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+			}
+			else {
+				// Set/load the user's app preferences
+				myAppSettings.sound = AlarmSound.values()[returnObj.getInt(KEY_SOUND_SETTING)];
+				myAppSettings.vibration = returnObj.getBoolean(KEY_VIBRATION_SETTING);
+				myAppSettings.log = returnObj.getBoolean(KEY_LOG_SETTING);
+			}
 		}
 		catch (Exception e) {
 			showDebugMsgBox("getAppSetting exception thrown!");
 			// Notify user of error
-			returnObj = new JSONObject();
-			addProperty(returnObj, keyError, errorAppSettings);
-			addProperty(returnObj, keyMessage, e.getMessage());
-			PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-			pluginResult.setKeepCallback(false);
-			callbackContext.sendPluginResult(pluginResult);
-			return;		
+			if (callbackContext != null){
+				returnObj = new JSONObject();
+				addProperty(returnObj, keyError, errorAppSettings);
+				addProperty(returnObj, keyMessage, e.getMessage());
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				pluginResult.setKeepCallback(false);
+				callbackContext.sendPluginResult(pluginResult);
+				return;
+			}
 		}
-		
-		// Notify user
-		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
-		pluginResult.setKeepCallback(false);
-		callbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
