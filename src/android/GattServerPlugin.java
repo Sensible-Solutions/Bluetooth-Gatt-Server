@@ -649,10 +649,11 @@ public class GattServerPlugin extends CordovaPlugin
 			showDebugMsgBox("getAppSetting exception thrown!");
 			// Notify user of error
 			if (callbackContext != null){
-				returnObj = new JSONObject();
-				addProperty(returnObj, keyError, errorAppSettings);
-				addProperty(returnObj, keyMessage, e.getMessage());
-				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				//returnObj = new JSONObject();
+				//addProperty(returnObj, keyError, errorAppSettings);
+				//addProperty(returnObj, keyMessage, e.getMessage());
+				//PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
+				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
 				pluginResult.setKeepCallback(false);
 				callbackContext.sendPluginResult(pluginResult);
 				return;
