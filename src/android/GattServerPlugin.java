@@ -375,19 +375,19 @@ public class GattServerPlugin extends CordovaPlugin
 				return true;
 			}
 			else if (SET_APP_SETTINGS.equals(action)){
-				cordova.getThreadPool().execute(new Runnable() {
-					public void run() {
+				//cordova.getThreadPool().execute(new Runnable() {
+				//	public void run() {
 						setAppSettingsAction(callbackContext, args);
-					}				
-				});
+				//	}				
+				//});
 				return true;
 			}
 			else if (GET_APP_SETTINGS.equals(action)){
-				cordova.getThreadPool().execute(new Runnable() {
-					public void run() {
+				//cordova.getThreadPool().execute(new Runnable() {
+				//	public void run() {
 						getAppSettingsAction(callbackContext);
-					}				
-				});
+				//	}				
+				//});
 				return true;
 			}
 			else if (action.equals("alarm")){
