@@ -300,6 +300,7 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
+				showDebugMsgBox("onServiceAdded error!");
 				//return;
 			}
 			else {
@@ -308,7 +309,8 @@ public class GattServerPlugin extends CordovaPlugin
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				// Save the callback so it can be invoked several times
 				pluginResult.setKeepCallback(true);
-				serverRunningCallbackContext.sendPluginResult(pluginResult);	
+				serverRunningCallbackContext.sendPluginResult(pluginResult);
+				showDebugMsgBox("onServiceAdded success!");
 			}
 			
 		}
