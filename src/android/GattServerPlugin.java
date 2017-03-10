@@ -1268,7 +1268,13 @@ public class GattServerPlugin extends CordovaPlugin
 		stopPlaying();			// Added 2017-02-15
 		super.onResume(multitasking);
 		showDebugMsgBox("onResume() called!");
-    	}
+		
+		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+		List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
+		if (!clientClips.isEmpty())
+			showDebugMsgBox("not empty!");
+			gattServer.cancelConnection(clientClips.get(0));
+    		}
 	
 	@Override
     	public void onReset() {
