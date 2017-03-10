@@ -200,7 +200,7 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onCharacteristicWriteRequest(final BluetoothDevice device, final int requestId, final BluetoothGattCharacteristic characteristic, final boolean preparedWrite, final boolean responseNeeded, final int offset, final byte[] value) {
 			
-			showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
+			//showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
 				
@@ -300,7 +300,7 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
-				showDebugMsgBox("onServiceAdded error!");
+				//showDebugMsgBox("onServiceAdded error!");
 				//return;
 			}
 			else {
@@ -310,7 +310,7 @@ public class GattServerPlugin extends CordovaPlugin
 				// Save the callback so it can be invoked several times
 				pluginResult.setKeepCallback(true);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
-				showDebugMsgBox("onServiceAdded success!");
+				//showDebugMsgBox("onServiceAdded success!");
 			}
 			
 		}
@@ -410,13 +410,13 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
 		// reseted when calling this function.
-		showDebugMsgBox("startServerAction() called!");
+		//showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
 		
 		// Acquire the wake lock if it hasn't been acquired but not yet released
 		if (!wakeLock.isHeld())
 			wakeLock.acquire();
-		showDebugMsgBox("startServerAction() 0");
+		
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
@@ -450,7 +450,7 @@ public class GattServerPlugin extends CordovaPlugin
 			callbackContext.sendPluginResult(pluginResult);
 			// return;
 		}
-		showDebugMsgBox("startServerAction() 1");
+		
 		iasInitialized = false; 	// Reset the flag indicating that Immediate Alert Service has been initialized
 		
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
@@ -478,7 +478,7 @@ public class GattServerPlugin extends CordovaPlugin
 				return;
 			}
 		}
-		showDebugMsgBox("startServerAction() 2");
+		
 		// Create an Immediate Alert service if not already provided by the device
 		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
@@ -511,7 +511,6 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Add Immediate Alert service (this will call the implementation od the onServiceAdded callback)
 		gattServer.addService(immediateAlertService);
-		showDebugMsgBox("startServerAction() 3");
 	}
 	
 	private void resetAlarmAction(CallbackContext callbackContext)
@@ -1232,7 +1231,7 @@ public class GattServerPlugin extends CordovaPlugin
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
 		super.onStop();
-		//showDebugMsgBox("onStop() called!");
+		showDebugMsgBox("onStop() called!");
    	 }
 	
 	@Override
