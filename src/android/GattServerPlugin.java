@@ -1273,6 +1273,7 @@ public class GattServerPlugin extends CordovaPlugin
 		List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
 		if (!clientClips.isEmpty())
 			showDebugMsgBox("not empty!");
+			showDebugMsgBox(clientClips.get(0).getAddress());
 			gattServer.cancelConnection(clientClips.get(0));
     		}
 	
