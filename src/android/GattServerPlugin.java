@@ -223,7 +223,7 @@ public class GattServerPlugin extends CordovaPlugin
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
-					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
+					//alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 				}
 				
 				if (responseNeeded)
@@ -249,7 +249,7 @@ public class GattServerPlugin extends CordovaPlugin
 			JSONObject returnObj = new JSONObject();
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
-				//showDebugMsgBox("STATE_CONNECTED!");
+				showDebugMsgBox("STATE_CONNECTED!");
 				// Acquire the wake lock if it hasn't been acquired but not yet released
 				//if (!wakeLock.isHeld())
 				//	wakeLock.acquire();
@@ -262,7 +262,7 @@ public class GattServerPlugin extends CordovaPlugin
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-				//showDebugMsgBox("STATE_DISCONNECTED!");
+				showDebugMsgBox("STATE_DISCONNECTED!");
 				// Release the wake lock if it has been acquired but not yet released
 				//if (wakeLock.isHeld())
 				//	wakeLock.release();
