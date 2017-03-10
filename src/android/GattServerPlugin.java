@@ -217,18 +217,18 @@ public class GattServerPlugin extends CordovaPlugin
 					// "toggled" levels. That is, it sends "No Alert" on every second positive flank and the
 					// configured alert level on every other. So interpret every write to this characteristic as
 					// an alarm after the first alarm.
-					try {
 					alarm(parseCharacteristicValue(alertLevel), device.getAddress());
-					}
-					catch (Exception e) {
-						showDebugMsgBox("Hej: " + e.getMessage());
-					}
 				}
 				else {
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
+					try {
 					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
+					}
+					catch (Exception e) {
+						showDebugMsgBox("Hej: " + e.getMessage());
+					}
 				}
 				
 				if (responseNeeded)
