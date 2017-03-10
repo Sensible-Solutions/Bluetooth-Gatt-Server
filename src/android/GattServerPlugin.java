@@ -135,7 +135,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
-	private BluetoothDevice clipDevice = null;		// Added 2017-03-10
+	//private BluetoothDevice clipDevice = null;		// Added 2017-03-10
 	private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep
 	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
@@ -251,7 +251,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
 				showDebugMsgBox("STATE_CONNECTED!");
-				clipDevice = device;		// Added 2017-03-10
+				//clipDevice = device;		// Added 2017-03-10
 				// Acquire the wake lock if it hasn't been acquired but not yet released
 				//if (!wakeLock.isHeld())
 				//	wakeLock.acquire();
@@ -1222,12 +1222,10 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		// Close the GATT server instance (Added 2017-03-10)
 		if (gattServer != null){
-			//if (clipDevice != null)
-			//	gattServer.cancelConnection(clipDevice);
-			final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+			/*final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
 			if (!clientClips.isEmpty())
-				gattServer.cancelConnection(clientClips.get(0));
+				gattServer.cancelConnection(clientClips.get(0));*/
 			gattServer.close();
 		}
 			
@@ -1268,14 +1266,7 @@ public class GattServerPlugin extends CordovaPlugin
 		stopPlaying();			// Added 2017-02-15
 		super.onResume(multitasking);
 		showDebugMsgBox("onResume() called!");
-		
-		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT_SERVER);
-		if (!clientClips.isEmpty())
-			showDebugMsgBox("not empty!");
-			showDebugMsgBox(clientClips.get(0).getAddress());
-			gattServer.cancelConnection(clientClips.get(0));
-    		}
+    	}
 	
 	@Override
     	public void onReset() {
