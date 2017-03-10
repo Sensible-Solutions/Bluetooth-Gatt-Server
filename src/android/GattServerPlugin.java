@@ -1195,6 +1195,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		alarmNotificationManager.cancelAll();	// Added 2017-03-10
 		
 		this.initMediaPlayer();
 
