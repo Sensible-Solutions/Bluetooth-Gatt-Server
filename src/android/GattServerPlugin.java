@@ -135,6 +135,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
+	private BluetoothDevice clipDevice = null;		// Added 2017-03-10
 	private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep
 	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
@@ -250,6 +251,7 @@ public class GattServerPlugin extends CordovaPlugin
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
 				showDebugMsgBox("STATE_CONNECTED!");
+				clipDevice = device;		// Added 2017-03-10
 				// Acquire the wake lock if it hasn't been acquired but not yet released
 				//if (!wakeLock.isHeld())
 				//	wakeLock.acquire();
@@ -263,6 +265,7 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
 				showDebugMsgBox("STATE_DISCONNECTED!");
+				
 				// Release the wake lock if it has been acquired but not yet released
 				//if (wakeLock.isHeld())
 				//	wakeLock.release();
@@ -1218,8 +1221,11 @@ public class GattServerPlugin extends CordovaPlugin
 			mPlayer = null;
 		}
 		// Close the GATT server instance (Added 2017-03-10)
-		if (gattServer != null)
+		if (gattServer != null){
+			if (clipDevice != null)
+				gattServer.cancelConnection(clipDevice);
 			gattServer.close();
+		}
 			
 		super.onDestroy();
 	}
