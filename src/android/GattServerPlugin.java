@@ -696,7 +696,6 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarm(final String alertLevel, final String deviceUUID){
 		
 		// Alarms with appropiate sound etc
-		showDebugMsgBox("Background: " + isInBackground.toString());
 		// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
 		// of the alarms triggered because of loose connection between clip contacts and sensor)
 		long elapsedTime =  SystemClock.elapsedRealtime();	// Milliseconds since boot, including time spent in sleep
@@ -738,7 +737,7 @@ public class GattServerPlugin extends CordovaPlugin
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
 			*/
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-			
+			showDebugMsgBox("Hej 1");
 			stopPlaying();			// Added 2017-02-20
 			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
 			alarmNotification.when = System.currentTimeMillis();		// Set the time of the notification since was set when building the notification (default)
@@ -747,7 +746,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		else if((!isInBackground) && (myAppSettings.sound != AlarmSound.SOUND_OFF)){
 			// Manually play alarm sound if app is in the foreground and alarm sound is not off
-			
+			showDebugMsgBox("Hej 2");
 			/*if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
 			    mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || mPlayerState == MediaPlayerState.STARTED){
 				try {
