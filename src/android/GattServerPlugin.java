@@ -223,7 +223,7 @@ public class GattServerPlugin extends CordovaPlugin
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
-					//alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
+					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 				}
 				
 				if (responseNeeded)
