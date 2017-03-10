@@ -738,10 +738,10 @@ public class GattServerPlugin extends CordovaPlugin
 			*/
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 			showDebugMsgBox("Hej 1");
-			stopPlaying();			// Added 2017-02-20
+			/*stopPlaying();			// Added 2017-02-20
 			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
 			alarmNotification.when = System.currentTimeMillis();		// Set the time of the notification since was set when building the notification (default)
-			alarmNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			alarmNotificationManager.notify(1665, alarmNotification);*/	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 			//alarmNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
 		else if((!isInBackground) && (myAppSettings.sound != AlarmSound.SOUND_OFF)){
