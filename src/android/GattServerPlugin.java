@@ -748,7 +748,7 @@ public class GattServerPlugin extends CordovaPlugin
 		else if((!isInBackground) && (myAppSettings.sound != AlarmSound.SOUND_OFF)){
 			// Manually play alarm sound if app is in the foreground and alarm sound is not off
 			
-			if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
+			/*if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
 			    mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || mPlayerState == MediaPlayerState.STARTED){
 				try {
 					if (!mPlayer.isPlaying()){
@@ -767,7 +767,7 @@ public class GattServerPlugin extends CordovaPlugin
 					mPlayerState = MediaPlayerState.ERROR;
 					initMediaPlayer();	// Reset and reinitialize the MediaPlayer
 				}
-			}
+			}*/
 			
 			/*Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file (important: do NOT include file type extension!)
 			// Below compiles if you import com.sensiblesolutions.sensesoftnotificationsmini.R (do NOT import android.R!)
@@ -813,14 +813,14 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Notify user of started server and save callback
-		/*JSONObject returnObj = new JSONObject();
+		JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
 		addProperty(returnObj, "device", deviceUUID);
 		addProperty(returnObj, "characteristic", ALERT_LEVEL_CHAR_UUID.toString());
 		addProperty(returnObj, "value", alertLevel);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
-		serverRunningCallbackContext.sendPluginResult(pluginResult);*/
+		serverRunningCallbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void initAlarmNotification()
