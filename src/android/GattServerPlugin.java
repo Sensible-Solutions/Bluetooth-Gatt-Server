@@ -1222,8 +1222,11 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		// Close the GATT server instance (Added 2017-03-10)
 		if (gattServer != null){
-			if (clipDevice != null)
-				gattServer.cancelConnection(clipDevice);
+			//if (clipDevice != null)
+			//	gattServer.cancelConnection(clipDevice);
+			List<BluetoothDevice> clientClips = gattServer.getConnectedDevices(GATT_SERVER);
+			if (!clientClips.isEmpty())
+				gattServer.cancelConnection(clientClips.get(0));
 			gattServer.close();
 		}
 			
