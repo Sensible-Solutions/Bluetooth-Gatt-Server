@@ -696,7 +696,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void alarm(final String alertLevel, final String deviceUUID){
 		
 		// Alarms with appropiate sound etc
-		
+		showDebugMsgBox("Background: " + isInBackground.toString());
 		// Ignore alarm if not enough elapsed time since last alarm (to prevent responding to some
 		// of the alarms triggered because of loose connection between clip contacts and sensor)
 		long elapsedTime =  SystemClock.elapsedRealtime();	// Milliseconds since boot, including time spent in sleep
@@ -1240,7 +1240,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = true;		// App is put in background
 		//stopPlaying();	// If used, might stop playback when enters lock screen if an alarm was received right before
 		super.onPause(multitasking);
-		//showDebugMsgBox("onPause() called!");
+		showDebugMsgBox("onPause() called!");
     	}
 	
 	@Override
@@ -1251,7 +1251,7 @@ public class GattServerPlugin extends CordovaPlugin
 		alarmNotificationManager.cancelAll();
 		stopPlaying();			// Added 2017-02-15
 		super.onResume(multitasking);
-		//showDebugMsgBox("onResume() called!");
+		showDebugMsgBox("onResume() called!");
     	}
 	
 	@Override
