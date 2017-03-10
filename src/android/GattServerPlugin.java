@@ -1225,7 +1225,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//if (clipDevice != null)
 			//	gattServer.cancelConnection(clipDevice);
 			final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT_SERVER);
+			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
 			if (!clientClips.isEmpty())
 				gattServer.cancelConnection(clientClips.get(0));
 			gattServer.close();
