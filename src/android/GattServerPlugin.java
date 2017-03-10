@@ -414,7 +414,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// Acquire the wake lock if it hasn't been acquired but not yet released
 		if (!wakeLock.isHeld())
 			wakeLock.acquire();
-		
+		showDebugMsgBox("startServerAction() 0");
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
 			addProperty(returnObj, keyError, errorServerState);
@@ -448,7 +448,7 @@ public class GattServerPlugin extends CordovaPlugin
 			callbackContext.sendPluginResult(pluginResult);
 			// return;
 		}
-		
+		showDebugMsgBox("startServerAction() 1");
 		iasInitialized = false; 	// Reset the flag indicating that Immediate Alert Service has been initialized
 		
 		// If GATT server has been initialized or the GATT server is already running, don't start it again
@@ -476,7 +476,7 @@ public class GattServerPlugin extends CordovaPlugin
 				return;
 			}
 		}
-		
+		showDebugMsgBox("startServerAction() 2");
 		// Create an Immediate Alert service if not already provided by the device
 		final BluetoothGattService immediateAlertService = new BluetoothGattService(IMMEDIATE_ALERT_SERVICE_UUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
 		if(gattServer.getService(IMMEDIATE_ALERT_SERVICE_UUID) == null){
@@ -508,7 +508,8 @@ public class GattServerPlugin extends CordovaPlugin
 		serverRunningCallbackContext = callbackContext;
 		
 		// Add Immediate Alert service (this will call the implementation od the onServiceAdded callback)
-		gattServer.addService(immediateAlertService); 
+		gattServer.addService(immediateAlertService);
+		showDebugMsgBox("startServerAction() 3");
 	}
 	
 	private void resetAlarmAction(CallbackContext callbackContext)
