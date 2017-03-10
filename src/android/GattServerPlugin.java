@@ -203,7 +203,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
-				
+				showDebugMsgBox("Hej!");
 				int alertLevel = (int)value[0];
 				characteristic.setValue(value);
 				if(!iasInitialized && alertLevel != 0){
