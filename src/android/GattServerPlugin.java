@@ -1224,6 +1224,11 @@ public class GattServerPlugin extends CordovaPlugin
 		 super.onStart();
     	}*/
 	
+	/*@Override
+	public void onRestart() {
+		
+   	}*/
+	 
 	@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
