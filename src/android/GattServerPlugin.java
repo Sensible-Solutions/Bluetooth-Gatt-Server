@@ -737,17 +737,17 @@ public class GattServerPlugin extends CordovaPlugin
 			mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use for all sounds (so volume easily can be changed with the device's notification volume controller)
 			*/
 			//NotificationManager mNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-			showDebugMsgBox("Hej 1");
-			/*stopPlaying();			// Added 2017-02-20
+
+			stopPlaying();			// Added 2017-02-20
 			// Show local notification or update any on going one (no need to stop any sound playing since it will be replaced with the new sound)
 			alarmNotification.when = System.currentTimeMillis();		// Set the time of the notification since was set when building the notification (default)
-			alarmNotificationManager.notify(1665, alarmNotification);*/	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
+			alarmNotificationManager.notify(1665, alarmNotification);	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 			//alarmNotificationManager.notify(1665, mBuilder.build());	// mId (here 1665) allows you to update any current notification with same mId (no need to stop sound)
 		}
 		else if((!isInBackground) && (myAppSettings.sound != AlarmSound.SOUND_OFF)){
 			// Manually play alarm sound if app is in the foreground and alarm sound is not off
-			showDebugMsgBox("Hej 2");
-			/*if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
+			
+			if (mPlayerState == MediaPlayerState.PREPARED || mPlayerState == MediaPlayerState.PAUSED ||
 			    mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || mPlayerState == MediaPlayerState.STARTED){
 				try {
 					if (!mPlayer.isPlaying()){
@@ -766,7 +766,7 @@ public class GattServerPlugin extends CordovaPlugin
 					mPlayerState = MediaPlayerState.ERROR;
 					initMediaPlayer();	// Reset and reinitialize the MediaPlayer
 				}
-			}*/
+			}
 			
 			/*Uri soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");	// Use when playing own sound file (important: do NOT include file type extension!)
 			// Below compiles if you import com.sensiblesolutions.sensesoftnotificationsmini.R (do NOT import android.R!)
@@ -1228,9 +1228,20 @@ public class GattServerPlugin extends CordovaPlugin
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		isInBackground = true;			// App is put in background
 		alarmNotificationManager.cancelAll();
 		super.onStop();
-		showDebugMsgBox("onStop() called!");
+		//showDebugMsgBox("onStop() called!");
+		// Release the wake lock if it has been acquired but not yet released
+		if (wakeLock.isHeld()){
+			wakeLock.release();
+			wakeLock = null;
+		}
+		// Release the MediaPlayer
+		if (mPlayer != null){
+			mPlayer.release();
+			mPlayer = null;
+		}
    	 }
 	
 	@Override
