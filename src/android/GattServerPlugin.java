@@ -1229,25 +1229,10 @@ public class GattServerPlugin extends CordovaPlugin
 		
    	}*/
 	 
-	@Override
+	/*@Override
 	 public void onStop() {
 		// Called when the activity is no longer visible to the user
-		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		isInBackground = true;			// App is put in background
-		alarmNotificationManager.cancelAll();
-		super.onStop();
-		//showDebugMsgBox("onStop() called!");
-		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock.isHeld()){
-			wakeLock.release();
-			wakeLock = null;
-		}
-		// Release the MediaPlayer
-		if (mPlayer != null){
-			mPlayer.release();
-			mPlayer = null;
-		}
-   	 }
+   	 }*/
 	
 	@Override
 	public void onPause(boolean multitasking) {
