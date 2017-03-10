@@ -1270,7 +1270,7 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("onResume() called!");
 		
 		final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-		List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
+		List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT_SERVER);
 		if (!clientClips.isEmpty())
 			showDebugMsgBox("not empty!");
 			showDebugMsgBox(clientClips.get(0).getAddress());
