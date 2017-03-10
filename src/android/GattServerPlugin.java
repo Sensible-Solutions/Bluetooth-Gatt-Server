@@ -293,7 +293,7 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			
-			//showDebugMsgBox("onServiceAdded called!");
+			showDebugMsgBox("onServiceAdded called!");
 			
 			JSONObject returnObj = new JSONObject();
 			
@@ -305,7 +305,7 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
-				//showDebugMsgBox("onServiceAdded error!");
+				showDebugMsgBox("onServiceAdded error!");
 				//return;
 			}
 			else {
@@ -315,7 +315,7 @@ public class GattServerPlugin extends CordovaPlugin
 				// Save the callback so it can be invoked several times
 				pluginResult.setKeepCallback(true);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
-				//showDebugMsgBox("onServiceAdded success!");
+				showDebugMsgBox("onServiceAdded success!");
 			}
 			
 		}
@@ -415,7 +415,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
 		// reseted when calling this function.
-		//showDebugMsgBox("startServerAction() called!");
+		showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
 		
 		// Acquire the wake lock if it hasn't been acquired but not yet released
