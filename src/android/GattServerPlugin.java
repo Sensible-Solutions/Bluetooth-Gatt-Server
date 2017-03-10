@@ -1206,7 +1206,7 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	public void onDestroy() {
 		 // The final call you receive before your activity is destroyed
-		super.onDestroy();
+		
 		// Release the wake lock if it has been acquired but not yet released
 		if (wakeLock.isHeld()){
 			wakeLock.release();
@@ -1217,6 +1217,11 @@ public class GattServerPlugin extends CordovaPlugin
 			mPlayer.release();
 			mPlayer = null;
 		}
+		// Close the GATT server instance (Added 2017-03-10)
+		if (gattServer != null)
+			gattServer.close();
+			
+		super.onDestroy();
 	}
 	
 	/*@Override
