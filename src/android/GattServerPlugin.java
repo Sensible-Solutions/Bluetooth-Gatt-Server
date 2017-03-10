@@ -223,12 +223,7 @@ public class GattServerPlugin extends CordovaPlugin
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
-					/*try {
 					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
-					}
-					catch (Exception e) {
-						showDebugMsgBox("Hej: " + e.getMessage());
-					}*/
 				}
 				
 				if (responseNeeded)
@@ -818,14 +813,14 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Notify user of started server and save callback
-		JSONObject returnObj = new JSONObject();
+		/*JSONObject returnObj = new JSONObject();
 		addProperty(returnObj, keyStatus, statusWriteRequest);
 		addProperty(returnObj, "device", deviceUUID);
 		addProperty(returnObj, "characteristic", ALERT_LEVEL_CHAR_UUID.toString());
 		addProperty(returnObj, "value", alertLevel);
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 		pluginResult.setKeepCallback(true);		// Save the callback so it can be invoked several times
-		serverRunningCallbackContext.sendPluginResult(pluginResult);
+		serverRunningCallbackContext.sendPluginResult(pluginResult);*/
 	}
 	
 	private void initAlarmNotification()
