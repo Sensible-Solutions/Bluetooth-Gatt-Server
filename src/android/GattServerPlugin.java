@@ -203,7 +203,7 @@ public class GattServerPlugin extends CordovaPlugin
 			//showDebugMsgBox("Write request: " + "value=" + String.valueOf((int)value[0]) + " offset=" + String.valueOf(offset));
 			
 			if(characteristic.getUuid() ==  ALERT_LEVEL_CHAR_UUID){
-				showDebugMsgBox("Hej!");
+				//showDebugMsgBox("Hej!");
 				int alertLevel = (int)value[0];
 				characteristic.setValue(value);
 				if(!iasInitialized && alertLevel != 0){
@@ -223,12 +223,12 @@ public class GattServerPlugin extends CordovaPlugin
 					// Ignore first value(s) received. When a nRF8002 module connects to the GATT server
 					// running Immediate Alert Service, it writes it's current alert level (sometimes twice).
 					// This must not be interpreted as an alert.
-					try {
+					/*try {
 					alarm(parseCharacteristicValue(alertLevel), device.getAddress()); // Added 2017-01-27 just to test sounds without having to manually trigger an alarm. Remove when done!!!
 					}
 					catch (Exception e) {
 						showDebugMsgBox("Hej: " + e.getMessage());
-					}
+					}*/
 				}
 				
 				if (responseNeeded)
@@ -293,7 +293,7 @@ public class GattServerPlugin extends CordovaPlugin
 		@Override
 		public void onServiceAdded(int status, BluetoothGattService service) {
 			
-			showDebugMsgBox("onServiceAdded called!");
+			//showDebugMsgBox("onServiceAdded called!");
 			
 			JSONObject returnObj = new JSONObject();
 			
@@ -305,7 +305,7 @@ public class GattServerPlugin extends CordovaPlugin
 				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
-				showDebugMsgBox("onServiceAdded error!");
+				//showDebugMsgBox("onServiceAdded error!");
 				//return;
 			}
 			else {
@@ -315,7 +315,7 @@ public class GattServerPlugin extends CordovaPlugin
 				// Save the callback so it can be invoked several times
 				pluginResult.setKeepCallback(true);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
-				showDebugMsgBox("onServiceAdded success!");
+				//showDebugMsgBox("onServiceAdded success!");
 			}
 			
 		}
