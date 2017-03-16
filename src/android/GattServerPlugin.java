@@ -1268,7 +1268,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = true;		// App is put in background
 		//stopPlaying();	// If used, might stop playback when enters lock screen if an alarm was received right before
 		super.onPause(multitasking);
-		showDebugMsgBox("onPause() called!");
+		//showDebugMsgBox("onPause() called!");
     	}
 	
 	@Override
@@ -1279,7 +1279,7 @@ public class GattServerPlugin extends CordovaPlugin
 		alarmNotificationManager.cancelAll();
 		stopPlaying();			// Added 2017-02-15
 		super.onResume(multitasking);
-		showDebugMsgBox("onResume() called!");
+		//showDebugMsgBox("onResume() called!");
     	}
 	
 	@Override
@@ -1287,6 +1287,6 @@ public class GattServerPlugin extends CordovaPlugin
 		// Called when the WebView does a top-level navigation or refreshes
 		// Plugins should stop any long-running processes and clean up internal state
 		super.onReset();
-		showDebugMsgBox("onReset() called!");
+		//showDebugMsgBox("onReset() called!");
 	}
 }
