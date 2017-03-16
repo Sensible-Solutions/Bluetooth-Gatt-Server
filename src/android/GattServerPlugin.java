@@ -556,14 +556,26 @@ public class GattServerPlugin extends CordovaPlugin
 		// Releases the plugin's claim to the CPU by releasing acquired wake lock.
 		// In Android, a wake lock is needed to keep the cpu running so bluetooth
 		// connection doesn't disconnects when the device goes to "sleep".
-		// Android version only
+		// Also first disconnects any connection to the gatt server (otherwise a clip and the device can
+		// remain connected even after the bluetoothGatt instance part has closed its connection with a clip).
+		// Android version only!
 		
-		//showDebugMsgBox("wakeLock released 0!");
+		// Disconnects an established connection or cancels a connection attempt currently in progress 
+		if (gattServer != null){	// If and its codeblock added 2017-03-16
+			final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
+			//if (!clientClips.isEmpty())
+			//	gattServer.cancelConnection(clientClips.get(0));
+			for (int i = 0; i < clientClips.size(); i++){
+				gattServer.cancelConnection(clientClips.get(i));
+			}
+		}
+		
 		// Release the wake lock if it has been acquired but not yet released
 		if (wakeLock != null){
 			if (wakeLock.isHeld()){
 				wakeLock.release();
-				showDebugMsgBox("wakeLock released!");
+				//showDebugMsgBox("wakeLock released!");
 			}
 		}
 	}
@@ -1211,9 +1223,11 @@ public class GattServerPlugin extends CordovaPlugin
 		 // The final call you receive before your activity is destroyed
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock.isHeld()){
-			wakeLock.release();
-			wakeLock = null;
+		if (wakelock != null){
+			if (wakeLock.isHeld()){
+				wakeLock.release();
+				wakeLock = null;
+			}
 		}
 		// Release the MediaPlayer
 		if (mPlayer != null){
