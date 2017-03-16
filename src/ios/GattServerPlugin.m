@@ -507,9 +507,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 5!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"peripheralManagerDidUpdateState called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
-	return;
 	
     switch ([peripheral state]) {
         case CBPeripheralManagerStatePoweredOff: {
