@@ -507,6 +507,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 5!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+	return;
+	
     switch ([peripheral state]) {
         case CBPeripheralManagerStatePoweredOff: {
             //NSLog(@"BLE is turned off for device");
@@ -523,9 +527,6 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
             break;
 		}
         case CBPeripheralManagerStatePoweredOn: {
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 5!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[debugAlert show];
-		return;
             //NSLog(@"BLE is on");
             		// BLE is turned on for device
             		// Add Immediate Alert service if not already added and GATT server is running
