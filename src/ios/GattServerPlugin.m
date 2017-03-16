@@ -135,8 +135,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		//return;	// Removed 2017-01-18
 	}
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 2!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 2!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
+	return;*/
 	
 	//If GATT server has been initialized or the GATT server is already running, don't start it again
 	 //if (serverRunningCallback != nil)
