@@ -176,9 +176,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	iasInitialized = false;
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 3!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 3!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
-	return;
+	return;*/
 	
 	 //Set the callback
     	serverRunningCallback = command.callbackId;
@@ -202,6 +202,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[pluginResult setKeepCallbackAsBool:true];
 	        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+	return;
 }
 
 - (void) resetAlarm:(CDVInvokedUrlCommand *)command
