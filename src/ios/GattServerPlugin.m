@@ -186,6 +186,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	// Initialize GATT server (if not has been initialized already), that is create a peripheral manager. This will call peripheralManagerDidUpdateState
 	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	if (peripheralManager == nil){
+		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[debugAlert show];
+		return;
 		iasAdded = false;
 		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
@@ -202,9 +205,6 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[pluginResult setKeepCallbackAsBool:true];
 	        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
-	return;
 }
 
 - (void) resetAlarm:(CDVInvokedUrlCommand *)command
