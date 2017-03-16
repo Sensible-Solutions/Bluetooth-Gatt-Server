@@ -1223,7 +1223,7 @@ public class GattServerPlugin extends CordovaPlugin
 		 // The final call you receive before your activity is destroyed
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakelock != null){
+		if (wakeLock != null){
 			if (wakeLock.isHeld()){
 				wakeLock.release();
 				wakeLock = null;
