@@ -188,9 +188,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	if (peripheralManager == nil){
 		iasAdded = false;
 		
-		UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[debugAlert show];
-		return;
+		return;*/
 		
 		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
