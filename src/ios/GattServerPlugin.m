@@ -120,9 +120,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}	
 	}
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
-	return;
+	return;*/
 	
 	UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
@@ -134,6 +134,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		//return;	// Removed 2017-01-18
 	}
+	
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 2!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 	
 	//If GATT server has been initialized or the GATT server is already running, don't start it again
 	 //if (serverRunningCallback != nil)
@@ -172,6 +175,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	iasInitialized = false;
 	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug" message:@"iasInitialized to false" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	//[debugAlert show];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 3!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
+	return;
 	
 	 //Set the callback
     	serverRunningCallback = command.callbackId;
