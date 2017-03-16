@@ -997,8 +997,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
 	
-	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	//[debugAlert show];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
