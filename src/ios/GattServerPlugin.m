@@ -507,7 +507,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 #pragma mark Delegates
 
 // CBPeripheralManager Delegate Methods
-/*-(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
+-(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"peripheralManagerDidUpdateState called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
@@ -593,7 +593,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
             break;
 		}
     }
-}*/
+}
 
 // Test if clip subscribes to the alert notification service
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
