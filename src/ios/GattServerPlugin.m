@@ -507,7 +507,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 #pragma mark Delegates
 
 // CBPeripheralManager Delegate Methods
--(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
+/*-(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
 	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"peripheralManagerDidUpdateState called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
@@ -545,22 +545,22 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 				[peripheralManager addService:service];
 				
 				// Add Alert Notification Service if not already provided by the device (service not used by SenseSoft Mini)
-				/*CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
-				CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
-				unsigned char bytes[] = { 0xff};
-	    			NSData *data = [NSData dataWithBytes:bytes length:1];
-				CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:data permissions:CBAttributePermissionsReadable];
-				CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
-				service2.characteristics = @[characteristic2,characteristic3,characteristic4];
-				[peripheralManager addService:service2];*/
+				//CBMutableService *service2 = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:@"1811"] primary:YES];
+				//CBMutableCharacteristic *characteristic2 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a46"] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
+				//unsigned char bytes[] = { 0xff};
+	    			//NSData *data = [NSData dataWithBytes:bytes length:1];
+				//CBMutableCharacteristic *characteristic3 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a47"] properties:CBCharacteristicPropertyRead value:data permissions:CBAttributePermissionsReadable];
+				//CBMutableCharacteristic *characteristic4 = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:@"2a44"] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
+				//service2.characteristics = @[characteristic2,characteristic3,characteristic4];
+				//[peripheralManager addService:service2];
 			}
 			//else {
 				// Notify user and save callback
-				/*NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
-        			CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];[pluginResult setKeepCallbackAsBool:true];
-				[pluginResult setKeepCallbackAsBool:true];
-				[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
-			}*/
+				//NSDictionary* returnObj = [NSDictionary dictionaryWithObjectsAndKeys: statusServiceExists, keyStatus, logServerAlreadyRunning, keyMessage, nil];
+        			//CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnObj];[pluginResult setKeepCallbackAsBool:true];
+				//[pluginResult setKeepCallbackAsBool:true];
+				//[self.commandDelegate sendPluginResult:pluginResult callbackId:serverRunningCallback];
+			//}
             break;
         }
 		case CBPeripheralManagerStateUnsupported: {
@@ -593,7 +593,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
             break;
 		}
     }
-}
+}*/
 
 // Test if clip subscribes to the alert notification service
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
