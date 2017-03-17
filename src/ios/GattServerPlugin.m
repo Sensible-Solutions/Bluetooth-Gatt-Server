@@ -192,7 +192,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[debugAlert show];
 		return;*/
 		
-		peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:NO] }];
+		//peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
 	else if(!iasAdded) {
 		// Try publish Immediate Alert service to the local peripheral’s GATT database if it isn't published already
