@@ -80,9 +80,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Plugin actions
 - (void) startServer:(CDVInvokedUrlCommand *)command
 {
-	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 0!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 0!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
-	return;*/
 	
 	// Check that BLE is supported and on
 	if(peripheralManager != nil){
@@ -120,9 +119,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}	
 	}
 	
-	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
-	return;*/
 	
 	UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
