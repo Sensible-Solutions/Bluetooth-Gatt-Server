@@ -589,7 +589,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     }
 }
 
-- (void)peripheralManage:(CBPeripheralManager *)peripheral willRestoreState:(NSDictionary *)dict
+- (void)peripheralManager:(CBPeripheralManager *)peripheral willRestoreState:(NSDictionary *)dict
 {
 	/* Do not remove! */
     	// Needed to support background mode with state preservation and restoration
