@@ -80,8 +80,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Plugin actions
 - (void) startServer:(CDVInvokedUrlCommand *)command
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 0!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 0!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 	
 	// Check that BLE is supported and on
 	if(peripheralManager != nil){
@@ -185,6 +185,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//self.peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	if (peripheralManager == nil){
 		iasAdded = false;
+		 // Note: Need to implement the willStoreState peripheral manager delegate if a peripheral manager is instantiated with the state preservation and restoration option (in iOS 8, maybe also in iOS 9...in iOS 10 it works anyway)
 		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralManagerOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:NO] }]; // Added 2017-03-17
 		//peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil]; 	// Removed 2017-03-17
 	}
