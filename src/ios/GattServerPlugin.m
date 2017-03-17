@@ -119,7 +119,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}	
 	}
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[debugAlert show];
 	
 	UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
@@ -757,7 +757,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 
 // Called after a local notification was received (if the app is the foreground
 // or after the user has clicked on the notification, with an alert/action button or slider, when app was in the background)
-- (void) didReceiveLocalNotification:(UILocalNotification*) notification
+/*- (void) didReceiveLocalNotification:(UILocalNotification*) notification	// Removed 2017-03-17
 { 
 	// If the app is running while the notification is delivered, there is no alert displayed on screen and no sound played.
 	// Manually display alert message and play sound.
@@ -772,14 +772,14 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	//application.applicationIconBadgeNumber = 0; 
 	 //[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications
 	
-	/*UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
-	UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-18
-	if (currentState == UIApplicationStateInactive) { 	// If statement and its code added 2017-01-18
+	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didRegisterUserNotificationSettings called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	//[debugMessage show];
+	//UIApplicationState currentState = [[UIApplication sharedApplication] applicationState];		// Added 2017-01-18
+	//if (currentState == UIApplicationStateInactive) { 	// If statement and its code added 2017-01-18
 		// User clicked on notification while the app was in the background
-		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications from notification center
-	}*/
-}
+	//	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];		// Also clears the notifications from notification center
+	//}
+}*/
 
 // Called when notification registration is completed (registration for local notifications is needed in IOS >= 8.0)
 - (void) didRegisterUserNotificationSettings:(UIUserNotificationSettings*) settings
@@ -972,10 +972,10 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 
     	//eventQueue = [[NSMutableArray alloc] init];
 
-    	[center addObserver:self
+    	/*[center addObserver:self	// Removed 2017-03-17
         	selector:@selector(didReceiveLocalNotification:)
               	name:CDVLocalNotification
-               	object:nil];
+               	object:nil];*/
 
     	[center addObserver:self
                	selector:@selector(didFinishLaunchingWithOptions:)
