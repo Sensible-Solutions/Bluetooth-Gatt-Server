@@ -589,6 +589,14 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     }
 }
 
+- (void)peripheralManage:(CBPeripheralManager *)peripheral willRestoreState:(NSDictionary *)dict
+{
+	/* Do not remove! */
+    	// Needed to support background mode with state preservation and restoration
+	// Note: In iOS 8 (possible also iOS 9 but not in iOS 10), this delegate has to be implemented if the peripheral manager
+	// is being instantiated with the state restoration option.
+}
+
 // Test if clip subscribes to the alert notification service
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
 {
