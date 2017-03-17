@@ -192,7 +192,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[debugAlert show];
 		return;*/
 		
-		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:NO] }];
+		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralManagerOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:NO] }];
 		//peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
 	}
 	else if(!iasAdded) {
