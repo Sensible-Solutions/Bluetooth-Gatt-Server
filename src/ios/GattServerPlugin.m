@@ -192,8 +192,11 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		[debugAlert show];
 		return;*/
 		
-		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralManagerOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:YES] }];
+		peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:@{ CBPeripheralManagerOptionRestoreIdentifierKey:pluginName, CBPeripheralManagerOptionShowPowerAlertKey:[NSNumber numberWithBool:NO] }];
 		//peripheralManager = [[CBPeripheralManager alloc]initWithDelegate:self queue:nil];
+		*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 4!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[debugAlert show];
+		return;
 	}
 	else if(!iasAdded) {
 		// Try publish Immediate Alert service to the local peripheral’s GATT database if it isn't published already
