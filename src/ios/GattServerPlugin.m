@@ -119,8 +119,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}	
 	}
 	
-	debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	//debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"check point 1!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	//[debugAlert show];
 	
 	UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
 	if (grantedSettings.types == UIUserNotificationTypeNone) {
