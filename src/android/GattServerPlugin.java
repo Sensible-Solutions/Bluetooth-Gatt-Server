@@ -562,12 +562,21 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Disconnects an established connection or cancels a connection attempt currently in progress 
 		if (gattServer != null){	// If and its codeblock added 2017-03-16
+			showDebugMsgBox("releaseCpuAction 0");
 			final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
 			//if (!clientClips.isEmpty())
 			//	gattServer.cancelConnection(clientClips.get(0));
 			for (int i = 0; i < clientClips.size(); i++){
 				gattServer.cancelConnection(clientClips.get(i));
+			}
+			// Close the GATT server instance if bluetooth is not enabled
+			if (BluetoothAdapter.getDefaultAdapter() != null){	// If and its code block added 2017-03-22
+				if (!BluetoothAdapter.getDefaultAdapter().isEnabled()){
+					showDebugMsgBox("releaseCpuAction 1");
+					gattServer.close();
+					gattServer = null;
+				}
 			}
 		}
 		
