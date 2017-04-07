@@ -171,7 +171,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		//public boolean alert = true;			// Alarm on/off flag
 		public AlarmSound sound = AlarmSound.SOUND_0;	// Sound flag
-		public boolean vibration = true;		// Vibration on/off flag
+		public boolean vibration = false;		// Vibration on/off flag
 		public boolean log = true;			// Alarm logging on/off flag
 	}
 	
