@@ -250,7 +250,7 @@ public class GattServerPlugin extends CordovaPlugin
 			JSONObject returnObj = new JSONObject();
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
-				showDebugMsgBox("STATE_CONNECTED!");
+				//showDebugMsgBox("STATE_CONNECTED!");
 				//clipDevice = device;		// Added 2017-03-10
 				// Acquire the wake lock if it hasn't been acquired but not yet released
 				//if (!wakeLock.isHeld())
@@ -264,7 +264,7 @@ public class GattServerPlugin extends CordovaPlugin
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-				showDebugMsgBox("STATE_DISCONNECTED!");
+				//showDebugMsgBox("STATE_DISCONNECTED!");
 				
 				// Release the wake lock if it has been acquired but not yet released
 				//if (wakeLock.isHeld())
@@ -413,7 +413,7 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
 		// reseted when calling this function.
-		showDebugMsgBox("startServerAction() called!");
+		//showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
 		
 		// Acquire the wake lock if it hasn't been acquired but not yet released
@@ -674,7 +674,7 @@ public class GattServerPlugin extends CordovaPlugin
 			}
 		}
 		catch (Exception e) {
-			showDebugMsgBox("getAppSetting exception thrown!");
+			//showDebugMsgBox("getAppSetting exception thrown!");
 			// Notify user of error
 			if (callbackContext != null){
 				//returnObj = new JSONObject();
@@ -1224,7 +1224,7 @@ public class GattServerPlugin extends CordovaPlugin
 		this.initMediaPlayer();
 
 		super.pluginInitialize();
-		showDebugMsgBox("pluginInitialize() called!");
+		//showDebugMsgBox("pluginInitialize() called!");
 	 }
 	
 	@Override
