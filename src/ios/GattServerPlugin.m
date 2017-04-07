@@ -756,8 +756,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
          	[NSNotification notificationWithName:CDVLocalNotification
                                        object:localNotification]];
     	}*/
-	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didFinishLaunchingWithOptions called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
+	/*UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"didFinishLaunchingWithOptions called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];*/
 	
     	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];	// Also clears the notifications in the notification center
     	//return YES;
@@ -806,8 +806,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[audioPlayer prepareToPlay];
 	//[self initAudioPlayer];
 	
-   	UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"audioPlayerDidFinishPlaying called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
+   	/*UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNM" message:@"audioPlayerDidFinishPlaying called!"delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];*/
 }
 
 #pragma mark -
@@ -1022,8 +1022,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
 	
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];*/
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
