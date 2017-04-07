@@ -488,9 +488,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     	NSNumber *myNumber = [command.arguments objectAtIndex:0];
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[myNumber intValue]];	// Also clears the notifications in the notification center if set to 0
 	
-	//UIAlertView *debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:myNumber delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[myNumber stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
-	[debugMessage show];
+	/*UIAlertView* debugMessage = [[UIAlertView alloc] initWithTitle: @"Debug SSNMM" message:[myNumber stringValue] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil]; 
+	[debugMessage show];*/
 	
 	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];		// Added 2017-01-19
 	[pluginResult setKeepCallbackAsBool:false];							// Added 2017-01-19
@@ -504,8 +503,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // CBPeripheralManager Delegate Methods
 -(void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
-	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"peripheralManagerDidUpdateState called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];
+	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug startServer" message:@"peripheralManagerDidUpdateState called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];*/
 	
     switch ([peripheral state]) {
         case CBPeripheralManagerStatePoweredOff: {
