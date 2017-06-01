@@ -106,7 +106,9 @@ public class SensesoftMiniService extends Service {
     protected void updateOngoingNotification(String contentText) {
 
         Notification notification = makeOngoingNotification(contentText);
-        getNotificationManager().notify(ONGOING_NOTIFICATION_ID, notification);
+        NotificationManager serviceNotificationManager;
+        serviceNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        serviceNotificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
     }
 
 
