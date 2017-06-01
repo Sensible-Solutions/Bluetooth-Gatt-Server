@@ -13,7 +13,10 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class SensesoftMiniService extends Service {
-
+  
+  // The identifier for the ongoing 'foreground' notification
+  public static final int ONGOING_NOTIFICATION_ID = 846729;
+  
   // Interface for clients that bind
   private final IBinder mBinder = new SensesoftMiniBinder(); 
   
@@ -38,7 +41,16 @@ public class SensesoftMiniService extends Service {
     return mBinder;
   }
 
- 
+  /*
+  * Called when the service is being created.
+  */
+  @Override
+  public void onCreate() {
+     super.onCreate();
+    // Make the service run in the foreground to prevent app from being killed by OS
+    startForeground(NOTIFICATION_ID, makeNotification());
+  }
+
   
   
 
