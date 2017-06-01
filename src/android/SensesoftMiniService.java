@@ -79,6 +79,8 @@ public class SensesoftMiniService extends Service {
       .setContentText(ONGOING_NOTIFICATION_TEXT)
        //.setTicker(ONGOING_NOTIFICATION_TICKER)
       .setOngoing(true)
+      .setColorized(true)       // Recommended to use background color for ongoing foreground service notifications
+      .setColor(0x800000ff)     // Semi transparent blue (argb). Only works if setColorized(true)
       .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
       .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
       .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT))
