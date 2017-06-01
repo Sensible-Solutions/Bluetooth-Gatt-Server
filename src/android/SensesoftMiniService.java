@@ -25,8 +25,10 @@ public class SensesoftMiniService extends Service {
     public static final int ONGOING_NOTIFICATION_ID = 846729;
     // Title of the ongoing 'foreground service' notification
     private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
-    // Default text of the ongoing 'foreground service' notification
-    private static final String ONGOING_NOTIFICATION_TEXT = "Connected with alarm clip.";
+    // Default text of the ongoing 'foreground service' notification while connected
+    private static final String ONGOING_NOTIFICATION_TEXT_CONNECTED = "Connected with alarm clip.";
+    // Default text of the ongoing 'foreground service' notification while connecting
+    private static final String ONGOING_NOTIFICATION_TEXT_CONNECTING = "Connecting to alarm clip.";
     // Default ticker text of the ongoing 'foreground service' notification
     //private static final String ONGOING_NOTIFICATION_TEXT = "SenseSoft Mini";
 
@@ -49,7 +51,7 @@ public class SensesoftMiniService extends Service {
     * When binding to the service, return an interface for sending messages to the service.
     */
     @Override
-    public IBinder onBind (Intent intent) {
+    public IBinder onBind(Intent intent) {
         // A client is binding to the service with bindService()
         return mBinder;
     }
@@ -59,16 +61,26 @@ public class SensesoftMiniService extends Service {
     */
     @Override
     public void onCreate() {
-         super.onCreate();
+        super.onCreate();
         // Make the service run in the foreground to prevent app from being killed by OS
         startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification());
+    }
+    
+     /*
+     * Called when the service is no longer used and is being destroyed
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Remove the service from the foreground state
+        stopForeground(true);
     }
 
     /*
     * A foreground service must provide a notification for the status bar, which is placed under the Ongoing heading.
     * This means that the notification cannot be dismissed unless the service is either stopped or removed from the foreground.
     */
-    private Notification makeOngoingNotification() {
+    private Notification makeOngoingNotification(boolean connected) {
 
         Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
         appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -76,7 +88,7 @@ public class SensesoftMiniService extends Service {
         //Notification notification = new Notification.Builder(this)
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
           .setContentTitle(ONGOING_NOTIFICATION_TITLE)
-          .setContentText(ONGOING_NOTIFICATION_TEXT)
+          //.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTED)
            //.setTicker(ONGOING_NOTIFICATION_TICKER)
           .setOngoing(true)
           .setColorized(true)       // Recommended to use background color for ongoing foreground service notifications
@@ -85,10 +97,22 @@ public class SensesoftMiniService extends Service {
           .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
           .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+        if (connected)
+          mbuilder.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTED);
+        else
+          mbuilder.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTING);
+      
         return mBuilder.build();
     }
   
-  
+    /**
+     * Update the ongoing notification.
+    */
+    protected void updateOngoingNotification() {
+
+        Notification notification = makeOngoingNotification();
+        getNotificationManager().notify(ONGOING_NOTIFICATION_ID, notification);
+    }
 
 
     /*
