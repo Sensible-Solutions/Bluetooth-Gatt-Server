@@ -15,6 +15,8 @@ import android.os.IBinder;
 import android.app.PendingIntent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.app.NotificationManager;
+import android.app.Notification;
 
 
 public class SensesoftMiniService extends Service {
@@ -78,11 +80,11 @@ public class SensesoftMiniService extends Service {
        //.setTicker(ONGOING_NOTIFICATION_TICKER)
       .setOngoing(true)
       .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-      .setPriority(Notification.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
+      .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
       .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT))
       .build();
 
-    
+    return mBuilder;
   }
   
   
