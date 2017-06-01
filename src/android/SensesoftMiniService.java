@@ -14,8 +14,12 @@ import android.os.IBinder;
 
 public class SensesoftMiniService extends Service {
   
-  // The identifier for the ongoing 'foreground' notification
+  // The identifier for the ongoing 'foreground service' notification
   public static final int ONGOING_NOTIFICATION_ID = 846729;
+  // Title of the ongoing 'foreground service' notification
+  private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
+  // Default text of the background notification
+  private static final String ONGOING_NOTIFICATION_TEXT = "Connected with alarm clip.";
   
   // Interface for clients that bind
   private final IBinder mBinder = new SensesoftMiniBinder(); 
@@ -48,9 +52,25 @@ public class SensesoftMiniService extends Service {
   public void onCreate() {
      super.onCreate();
     // Make the service run in the foreground to prevent app from being killed by OS
-    startForeground(NOTIFICATION_ID, makeNotification());
+    startForeground(NOTIFICATION_ID, makeOngoingNotification());
   }
 
+  /*
+  * A foreground service must provide a notification for the status bar, which is placed under the Ongoing heading.
+  * This means that the notification cannot be dismissed unless the service is either stopped or removed from the foreground.
+  */
+  private Notification makeOngoingNotification() {
+    
+    Notification notification = new Notification.Builder(this)
+      .setContentTitle(ONGOING_NOTIFICATION_TITLE)
+      .setContentText(getText(R.string.notification_message))
+    .setSmallIcon(R.drawable.icon)
+    .setContentIntent(pendingIntent)
+    .setTicker(getText(R.string.ticker_text))
+    .build();
+
+    
+  }
   
   
 
