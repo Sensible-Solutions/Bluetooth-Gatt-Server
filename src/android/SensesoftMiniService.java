@@ -12,6 +12,11 @@ import android.app.Service;
 import android.os.Binder;
 import android.os.IBinder;
 
+import android.app.PendingIntent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+
+
 public class SensesoftMiniService extends Service {
   
   // The identifier for the ongoing 'foreground service' notification
@@ -63,13 +68,18 @@ public class SensesoftMiniService extends Service {
   */
   private Notification makeOngoingNotification() {
     
-    Notification notification = new Notification.Builder(this)
+    Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
+    appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    
+    //Notification notification = new Notification.Builder(this)
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
       .setContentTitle(ONGOING_NOTIFICATION_TITLE)
       .setContentText(ONGOING_NOTIFICATION_TEXT)
+       //.setTicker(ONGOING_NOTIFICATION_TICKER)
       .setOngoing(true)
-      //.setSmallIcon(R.drawable.icon)
-      //.setContentIntent(pendingIntent)
-      //.setTicker(ONGOING_NOTIFICATION_TICKER)
+      .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+      .setPriority(Notification.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
+      .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT))
       .build();
 
     
