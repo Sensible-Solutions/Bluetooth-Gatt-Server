@@ -18,8 +18,10 @@ public class SensesoftMiniService extends Service {
   public static final int ONGOING_NOTIFICATION_ID = 846729;
   // Title of the ongoing 'foreground service' notification
   private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
-  // Default text of the background notification
+  // Default text of the ongoing 'foreground service' notification
   private static final String ONGOING_NOTIFICATION_TEXT = "Connected with alarm clip.";
+  // Default ticker text of the ongoing 'foreground service' notification
+  //private static final String ONGOING_NOTIFICATION_TEXT = "SenseSoft Mini";
   
   // Interface for clients that bind
   private final IBinder mBinder = new SensesoftMiniBinder(); 
@@ -63,11 +65,12 @@ public class SensesoftMiniService extends Service {
     
     Notification notification = new Notification.Builder(this)
       .setContentTitle(ONGOING_NOTIFICATION_TITLE)
-      .setContentText(getText(R.string.notification_message))
-    .setSmallIcon(R.drawable.icon)
-    .setContentIntent(pendingIntent)
-    .setTicker(getText(R.string.ticker_text))
-    .build();
+      .setContentText(ONGOING_NOTIFICATION_TEXT)
+      .setOngoing(true)
+      //.setSmallIcon(R.drawable.icon)
+      //.setContentIntent(pendingIntent)
+      //.setTicker(ONGOING_NOTIFICATION_TICKER)
+      .build();
 
     
   }
