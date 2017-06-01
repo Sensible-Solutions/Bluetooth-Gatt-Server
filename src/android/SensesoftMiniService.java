@@ -8,29 +8,39 @@
 
 package com.sensiblesolutions.gattserver;
 
+import android.app.Service;
+import android.os.Binder;
+import android.os.IBinder;
+
 public class SensesoftMiniService extends Service {
 
   // Interface for clients that bind
-  private final IBinder mBinder = new ForegroundBinder(); 
-
+  private final IBinder mBinder = new SensesoftMiniBinder(); 
+  
+  
+  /*
+  * Class used for the client Binder. Because we know this service always
+  * runs in the same process as its clients, we don't need to deal with IPC.
+  */
+  public class SensesoftMiniBinder extends Binder {
+    SensesoftMiniService getService() {
+      // Return this instance of SensesoftMiniService so clients can call its public methods
+      return SensesoftMiniService.this;
+    }
+  }
+  
   /*
   * When binding to the service, return an interface for sending messages to the service.
   */
   @Override
   public IBinder onBind (Intent intent) {
-        return mBinder;
+    // A client is binding to the service with bindService()
+    return mBinder;
   }
 
-  /*
-  * Class used for the client Binder.  Because we know this service always
-  * runs in the same process as its clients, we don't need to deal with IPC.
-  */
-  public class SensesoftMiniBinder extends Binder {
-    LocalService getService() {
-      // Return this instance of LocalService so clients can call public methods
-      return LocalService.this;
-    }
-  }
+ 
+  
+  
 
 
     /*
