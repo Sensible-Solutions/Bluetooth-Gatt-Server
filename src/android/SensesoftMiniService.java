@@ -63,7 +63,7 @@ public class SensesoftMiniService extends Service {
     public void onCreate() {
         super.onCreate();
         // Make the service run in the foreground to prevent app from being killed by OS
-        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification());
+        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT_CONNECTED));
     }
     
      /*
@@ -80,7 +80,7 @@ public class SensesoftMiniService extends Service {
     * A foreground service must provide a notification for the status bar, which is placed under the Ongoing heading.
     * This means that the notification cannot be dismissed unless the service is either stopped or removed from the foreground.
     */
-    private Notification makeOngoingNotification(boolean connected) {
+    private Notification makeOngoingNotification(String contentText) {
 
         Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
         appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -88,7 +88,7 @@ public class SensesoftMiniService extends Service {
         //Notification notification = new Notification.Builder(this)
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
           .setContentTitle(ONGOING_NOTIFICATION_TITLE)
-          //.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTED)
+          .setContentText(contentText)
            //.setTicker(ONGOING_NOTIFICATION_TICKER)
           .setOngoing(true)
           .setColorized(true)       // Recommended to use background color for ongoing foreground service notifications
@@ -96,11 +96,6 @@ public class SensesoftMiniService extends Service {
           .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
           .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
           .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-
-        if (connected)
-          mbuilder.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTED);
-        else
-          mbuilder.setContentText(ONGOING_NOTIFICATION_TEXT_CONNECTING);
       
         return mBuilder.build();
     }
@@ -108,64 +103,11 @@ public class SensesoftMiniService extends Service {
     /**
      * Update the ongoing notification.
     */
-    protected void updateOngoingNotification() {
+    protected void updateOngoingNotification(String contentText) {
 
-        Notification notification = makeOngoingNotification();
+        Notification notification = makeOngoingNotification(contentText);
         getNotificationManager().notify(ONGOING_NOTIFICATION_ID, notification);
     }
 
-
-    /*
-     * Put the service in a foreground state to prevent app from being killed
-     * by the OS.
-     */
-    @Override
-    public void onCreate () {
-        super.onCreate();
-        keepAwake();
-    }
-
-    /**
-     * No need to run headless on destroy.
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sleepWell();
-    }
-
-    /**
-     * Put the service in a foreground state to prevent app from being killed
-     * by the OS.
-     */
-    private void keepAwake() {
-        JSONObject settings = BackgroundMode.getSettings();
-        boolean isSilent    = settings.optBoolean("silent", false);
-
-        if (!isSilent) {
-            startForeground(NOTIFICATION_ID, makeNotification());
-        }
-
-        PowerManager pm = (PowerManager)
-                getSystemService(POWER_SERVICE);
-
-        wakeLock = pm.newWakeLock(
-                PARTIAL_WAKE_LOCK, "BackgroundMode");
-
-        wakeLock.acquire();
-    }
-
-    /**
-     * Stop background mode.
-     */
-    private void sleepWell() {
-        stopForeground(true);
-        getNotificationManager().cancel(NOTIFICATION_ID);
-
-        if (wakeLock != null) {
-            wakeLock.release();
-            wakeLock = null;
-        }
-    }
 
 }
