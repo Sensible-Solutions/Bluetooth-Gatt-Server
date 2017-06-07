@@ -8,6 +8,8 @@
 
 package com.sensiblesolutions.gattserver;
 
+import org.apache.cordova;
+
 import android.app.Service;
 import android.os.Binder;
 import android.os.IBinder;
