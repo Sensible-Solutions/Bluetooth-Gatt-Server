@@ -8,6 +8,7 @@
 
 package com.sensiblesolutions.gattserver;
 
+
 import org.apache.cordova.CordovaPlugin;
 
 import android.app.Service;
