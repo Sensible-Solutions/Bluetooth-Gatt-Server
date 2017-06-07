@@ -190,7 +190,30 @@ public class GattServerPlugin extends CordovaPlugin
 		ERROR;
 	}
 	
-	MediaPlayerState mPlayerState;				// MediaPlayer state
+	//MediaPlayerState mPlayerState;				// MediaPlayer state // Removed 2017-06-07
+	private MediaPlayerState mPlayerState;				// MediaPlayer state // Added 2017-06-07
+	
+	// Section Added 2017-06-07
+	private SensesoftMiniService mService;				// Foreground service that keeps the app awake
+    	private boolean isBound = false;				// Flag indicating if the service is bound
+	// Used to bind/unbind the foreground service with the activity
+    	private final ServiceConnection mConnection = new ServiceConnection() {
+		// Callback for service binding, passed to bindService()
+		@Override
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			// We've bound to SensesoftMiniService, cast the IBinder and get SensesoftMiniService instance
+            		SensesoftMiniBinder binder = (SensesoftMiniBinder) service;
+            		mService = binder.getService();
+            		isBound = true;
+		}
+		// Callback for service unbinding, passed to unbindService()
+        	@Override
+		public void onServiceDisconnected(ComponentName name) {
+		    	isBound = false;
+		}
+	};
+	// End section Added 2017-06-07
+	
 	
 	/*********************************************************************************************************************
 	Bluetooth GATT interface callbacks
