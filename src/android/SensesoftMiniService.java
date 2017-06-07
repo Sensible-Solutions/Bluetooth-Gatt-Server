@@ -8,19 +8,17 @@
 
 package com.sensiblesolutions.gattserver;
 
-
-import org.apache.cordova.CordovaPlugin;
-
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
-
-import android.content.Intent;
-import android.app.PendingIntent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.app.NotificationManager;
-import android.app.Notification;
 
 
 public class SensesoftMiniService extends Service {
@@ -86,21 +84,20 @@ public class SensesoftMiniService extends Service {
     */
     private Notification makeOngoingNotification(String contentText) {
 
-        Intent appIntent   = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
-        //Intent appIntent = CordovaPlugin.cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
+        Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, will start app if not running otherwise bring it to the foreground
         appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //Notification notification = new Notification.Builder(this)
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cordova.getActivity().getApplicationContext())
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
           .setContentTitle(ONGOING_NOTIFICATION_TITLE)
           .setContentText(contentText)
            //.setTicker(ONGOING_NOTIFICATION_TICKER)
           .setOngoing(true)
           .setColorized(true)       // Recommended to use background color for ongoing foreground service notifications
           .setColor(0x800000ff)     // Semi transparent blue (argb). Only works if setColorized(true)
-          .setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+          .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
           .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
-          .setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+          .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
         return mBuilder.build();
     }
@@ -112,7 +109,7 @@ public class SensesoftMiniService extends Service {
 
         Notification notification = makeOngoingNotification(contentText);
         NotificationManager serviceNotificationManager;
-        serviceNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        serviceNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         serviceNotificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
     }
 
