@@ -12,6 +12,7 @@ import android.app.Service;
 import android.os.Binder;
 import android.os.IBinder;
 
+import android.content.Intent;
 import android.app.PendingIntent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
