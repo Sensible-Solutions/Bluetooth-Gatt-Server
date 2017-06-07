@@ -1226,7 +1226,46 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}*/
 	
+	// Added 2017-06-07
+    	private void startService() {
+    	
+		// Bind the activity to a SenseSoftMini foreground service (starts the service)
+
+		Activity context = cordova.getActivity();
+
+		if (isBound)
+		    	return;
+
+		Intent intent = new Intent(context, SensesoftMiniService.class);
+
+		try {
+			context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		    	//context.startService(intent);
+		} catch (Exception e) {
+			showDebugMsgBox("Exception thrown binding service!");
+		}
+
+		isBound = true;
+	}
 	
+	// Added 2017-06-07
+    	private void stopService() {
+    
+    		// Unbind the activity from service (stops service if there are no activities bound)
+	
+        	Activity context = cordova.getActivity();
+        	//Intent intent = new Intent(context, SensesoftMiniService.class);
+
+        	if (!isBound)
+			return;
+
+        	context.unbindService(mConnection);
+        	//context.stopService(intent);
+
+        	isBound = false;
+    	}
+
+
 	/*********************************************************************************************************************
 	Cordova Plugin (see CordovaPlugin.java)
 	*********************************************************************************************************************/
