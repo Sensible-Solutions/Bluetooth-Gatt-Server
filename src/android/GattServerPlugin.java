@@ -44,7 +44,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.app.NotificationManager;
 import android.app.Notification;
-//import android.app.Activity;			// Added 2017-03-06 for shared preferences
 import android.app.AlertDialog;			// For showing debug messaages
 import android.app.PendingIntent;
 import android.content.DialogInterface;		// For showing debug messaages
@@ -63,6 +62,12 @@ import java.lang.System;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.sensiblesolutions.gattserver.SensesoftMiniService.SensesoftMiniBinder;	// Added 2017-06-07
+import android.app.Activity;								// Added 2017-06-07
+import android.content.ComponentName;							// Added 2017-06-07
+import android.content.ServiceConnection;						// Added 2017-06-07
+import android.os.IBinder;								// Added 2017-06-07
 
 
 public class GattServerPlugin extends CordovaPlugin
