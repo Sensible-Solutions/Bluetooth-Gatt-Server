@@ -86,7 +86,7 @@ public class SensesoftMiniService extends Service {
     */
     private Notification makeOngoingNotification(String contentText) {
 
-        Intent appIntent = cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
+        Intent appIntent = CordovaPlugin.cordova.getActivity().getIntent();	// If used, will start app if not running otherwise bring it to the foreground
         appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //Notification notification = new Notification.Builder(this)
