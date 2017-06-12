@@ -612,12 +612,12 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock != null){
+		/*if (wakeLock != null){	// Removed 2017-06-12
 			if (wakeLock.isHeld()){
 				wakeLock.release();
 				//showDebugMsgBox("wakeLock released!");
 			}
-		}
+		}*/
 	}
 	
 	private void setAppSettingsAction(CallbackContext callbackContext, JSONArray settings)
