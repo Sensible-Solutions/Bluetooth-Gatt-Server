@@ -284,6 +284,9 @@ public class GattServerPlugin extends CordovaPlugin
 				//if (!wakeLock.isHeld())
 				//	wakeLock.acquire();
 				
+				// Start the foreground service if not already started
+				startService();			// Added 2017-06-12
+				
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "state", "connected");
@@ -1229,7 +1232,7 @@ public class GattServerPlugin extends CordovaPlugin
 	// Added 2017-06-07
     	private void startService() {
     	
-		// Bind the activity to a SenseSoftMini foreground service (starts the service)
+		// Bind the activity to a SenseSoftMini foreground service (starts the service if not already started)
 		
 		if (isBound)
 		    	return;		// Service is already started
@@ -1250,7 +1253,7 @@ public class GattServerPlugin extends CordovaPlugin
 	// Added 2017-06-07
     	private void stopService() {
     
-    		// Unbind the activity from service (stops service if there are no activities bound)
+    		// Unbind the activity from service if bounded
 	
 		if (!isBound)
 			return;		// Service is not started
@@ -1258,7 +1261,7 @@ public class GattServerPlugin extends CordovaPlugin
         	Activity context = cordova.getActivity();
         	//Intent intent = new Intent(context, SensesoftMiniService.class);
 
-        	context.unbindService(mConnection);
+        	context.unbindService(mConnection);	// Stops service if there are no activities bound
         	//context.stopService(intent);
 
         	isBound = false;
