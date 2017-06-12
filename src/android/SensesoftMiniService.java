@@ -121,7 +121,7 @@ public class SensesoftMiniService extends Service {
     private Notification makeOngoingNotification(String contentText) {
 
         //Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, app will always be started (even if it's already running)
-        Intent appIntent = getIntent(); // If used, will start app if not running otherwise bring it to the foreground
+        Intent appIntent = getActivity().getIntent(); // If used, will start app if not running otherwise bring it to the foreground
 	appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //Notification notification = new Notification.Builder(this)
