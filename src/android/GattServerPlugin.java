@@ -618,6 +618,8 @@ public class GattServerPlugin extends CordovaPlugin
 				//showDebugMsgBox("wakeLock released!");
 			}
 		}*/
+		// Stops the service if it is running
+		stopService();		// Added 2017-06-12
 	}
 	
 	private void setAppSettingsAction(CallbackContext callbackContext, JSONArray settings)
