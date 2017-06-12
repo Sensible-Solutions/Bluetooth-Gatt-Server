@@ -448,8 +448,8 @@ public class GattServerPlugin extends CordovaPlugin
 		JSONObject returnObj = new JSONObject();
 		
 		// Acquire the wake lock if it hasn't been acquired but not yet released
-		if (!wakeLock.isHeld())
-			wakeLock.acquire();
+		//if (!wakeLock.isHeld())			// Removed 2017-06-12
+		//	wakeLock.acquire();		// Removed 2017-06-12
 		
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
