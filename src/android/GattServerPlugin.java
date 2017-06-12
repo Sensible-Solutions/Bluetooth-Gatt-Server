@@ -1278,9 +1278,9 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
 		// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep" 
-		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
-		wakeLock.setReferenceCounted(false);
+		//PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);	// Removed 2017-06-12
+		//wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");			// Removed 2017-06-12
+		//wakeLock.setReferenceCounted(false);										// Removed 2017-06-12
 		
 		// Get shared preference objects used for retrieving and storing the user's app preferences
 		appPreferences = cordova.getActivity().getSharedPreferences(APP_SETTINGS_NAME, Context.MODE_PRIVATE);
@@ -1319,12 +1319,12 @@ public class GattServerPlugin extends CordovaPlugin
 		super.onDestroy();
 		
 		// Release the wake lock if it has been acquired but not yet released
-		if (wakeLock != null){
+		/*if (wakeLock != null){	// Removed 2017-06-12
 			if (wakeLock.isHeld()){
 				wakeLock.release();
 				wakeLock = null;
 			}
-		}
+		}*/
 	}
 	
 	/*@Override
