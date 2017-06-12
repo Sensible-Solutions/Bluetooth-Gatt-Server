@@ -127,7 +127,7 @@ public class SensesoftMiniService extends Service {
            //.setTicker(ONGOING_NOTIFICATION_TICKER)
           .setOngoing(true)
           //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (Android O)
-          .setColor(0xff00ffff)     // Semi transparent blue (argb). Only works if setColorized(true)
+          .setColor(0x0000ffff)     // Semi transparent blue (argb). Only works if setColorized(true)
           .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
           .setPriority(NotificationCompat.PRIORITY_MIN);     // Prevents the notification from being visable on the lockscreen
           //.setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
