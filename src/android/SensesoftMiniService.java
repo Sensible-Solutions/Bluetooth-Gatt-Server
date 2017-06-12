@@ -118,7 +118,8 @@ public class SensesoftMiniService extends Service {
 
         //Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, app will always be started (even if it's already running)
         //Intent appIntent = org.apache.cordova.CordovaPlugin.cordova.getActivity().getIntent(); // If used, will start app if not running otherwise bring it to the foreground
-	//appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	Intent appIntent = new Intent(getApplicationContext(), CordovaActivity.class);
+	appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //Notification notification = new Notification.Builder(this)
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
@@ -129,8 +130,8 @@ public class SensesoftMiniService extends Service {
           //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (Android O)
           .setColor(0xffffffff)     // Non transparent white (argb). Only works if setColorized(true)
           .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
-          .setPriority(NotificationCompat.PRIORITY_MIN);     // Prevents the notification from being visable on the lockscreen
-          //.setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+          .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
+          .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
         return mBuilder.build();
     }
