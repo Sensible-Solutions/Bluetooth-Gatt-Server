@@ -50,8 +50,8 @@ import android.content.DialogInterface;		// For showing debug messaages
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
-import android.os.PowerManager;
-//import android.os.PowerManager.WakeLock;	// removed 2017-06-12
+//import android.os.PowerManager;		// Removed 2017-06-12
+//import android.os.PowerManager.WakeLock;	// Removed 2017-06-12
 import android.os.SystemClock;
 import android.Manifest.permission;
 //import android.R;
