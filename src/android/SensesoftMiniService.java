@@ -29,12 +29,8 @@ public class SensesoftMiniService extends Service {
     public static final int ONGOING_NOTIFICATION_ID = 846729;
     // Title of the ongoing 'foreground service' notification
     private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
-    // Default text of the ongoing 'foreground service' notification while connected
-    private static final String ONGOING_NOTIFICATION_TEXT_CONNECTED = "Connected with alarm clip.";
-    // Default text of the ongoing 'foreground service' notification while connecting
-    private static final String ONGOING_NOTIFICATION_TEXT_CONNECTING = "Connecting to alarm clip.";
-    // Default ticker text of the ongoing 'foreground service' notification
-    //private static final String ONGOING_NOTIFICATION_TEXT = "SenseSoft Mini";
+    // Default text of the ongoing 'foreground service' notification
+    private static final String ONGOING_NOTIFICATION_TEXT = "You are connected/connecting to an alarm clip.";
 
      // Interface for clients that bind
     private final IBinder mBinder = new SensesoftMiniBinder(); 
@@ -92,7 +88,7 @@ public class SensesoftMiniService extends Service {
     public void onCreate() {
         super.onCreate();
         // Configure the service run in the foreground to prevent app from being killed by OS
-        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT_CONNECTED));
+        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT));
     }
     
      /*
