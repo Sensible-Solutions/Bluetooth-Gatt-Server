@@ -51,7 +51,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
+//import android.os.PowerManager.WakeLock;	// removed 2017-06-12
 import android.os.SystemClock;
 import android.Manifest.permission;
 //import android.R;
@@ -141,7 +141,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
 	//private BluetoothDevice clipDevice = null;		// Added 2017-03-10
-	private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep
+	//private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep // Removed 2017-06-12
 	private NotificationManager alarmNotificationManager = null;
 	//private NotificationCompat.Builder mBuilder = null;
 	private Notification alarmNotification = null;
