@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -34,10 +35,11 @@ public class SensesoftMiniService extends Service {
     // Default ticker text of the ongoing 'foreground service' notification
     //private static final String ONGOING_NOTIFICATION_TEXT = "SenseSoft Mini";
 
-    // Interface for clients that bind
+     // Interface for clients that bind
     private final IBinder mBinder = new SensesoftMiniBinder(); 
   
-  
+    // Wakelock used to prevent CPU from going to sleep
+    private WakeLock wakeLock = null;
     /*
     * Class used for the client Binder. Because we know this service always
     * runs in the same process as its clients, we don't need to deal with IPC.
@@ -55,6 +57,11 @@ public class SensesoftMiniService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // A client is binding to the service with bindService()
+      
+        // Acquire the wake lock if it hasn't been acquired but not yet released
+		    if (!wakeLock.isHeld())
+          wakeLock.acquire();
+      
         return mBinder;
     }
 
@@ -64,7 +71,7 @@ public class SensesoftMiniService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Make the service run in the foreground to prevent app from being killed by OS
+        // Configure the service run in the foreground to prevent app from being killed by OS
         startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT_CONNECTED));
     }
     
