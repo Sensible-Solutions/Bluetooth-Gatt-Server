@@ -56,7 +56,7 @@ public class SensesoftMiniService extends Service {
     */
     @Override
     public IBinder onBind(Intent intent) {
-        // A client is binding to the service with bindService()
+        // Called after the first client is binding to the service with bindService()
       
         // Acquire the wake lock if it hasn't been acquired but not yet released
 		    if (!wakeLock.isHeld())
@@ -64,6 +64,13 @@ public class SensesoftMiniService extends Service {
       
         return mBinder;
     }
+	
+    @Override
+    public boolean onUnbind(Intent intent) {
+        // Called when all clients have unbound with unbindService()
+        return false;
+    }
+
 
     /*
     * Called when the service is being created.
@@ -76,7 +83,8 @@ public class SensesoftMiniService extends Service {
     }
     
      /*
-     * Called when the service is no longer used and is being destroyed
+     * Called when the service is no longer used and is being destroyed (when the
+     * last client unbinds from the service, the system destroys the service).
      */
     @Override
     public void onDestroy() {
