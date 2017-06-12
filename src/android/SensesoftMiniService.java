@@ -60,7 +60,7 @@ public class SensesoftMiniService extends Service {
       
 	// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep"
 	if (wakeLock == null){
-		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
+		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
 		wakeLock.setReferenceCounted(false);
 		wakeLock.acquire();
