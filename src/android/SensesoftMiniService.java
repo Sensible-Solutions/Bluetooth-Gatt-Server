@@ -32,7 +32,7 @@ public class SensesoftMiniService extends Service {
     // Default text of the ongoing 'foreground service' notification
     private static final String ONGOING_NOTIFICATION_TEXT = "You are connected/connecting to an alarm clip.";
 
-    private Intent appIntent;
+    //private Intent appIntent;
 
      // Interface for clients that bind
     private final IBinder mBinder = new SensesoftMiniBinder(); 
@@ -57,7 +57,7 @@ public class SensesoftMiniService extends Service {
     public IBinder onBind(Intent intent) {
         // Called after the first client (only) is binding to the service with bindService()
       
-	appIntent = intent;	// The intent that started the activity that bound this service
+	//appIntent = intent;	// The intent that started the activity that bound this service
 	    
 	// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep"
 	if (wakeLock == null){
@@ -121,7 +121,7 @@ public class SensesoftMiniService extends Service {
     private Notification makeOngoingNotification(String contentText) {
 
         //Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, app will always be started (even if it's already running)
-        //Intent appIntent = getIntent(); // If used, will start app if not running otherwise bring it to the foreground
+        Intent appIntent = getIntent(); // If used, will start app if not running otherwise bring it to the foreground
 	appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //Notification notification = new Notification.Builder(this)
