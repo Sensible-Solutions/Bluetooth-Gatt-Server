@@ -56,11 +56,15 @@ public class SensesoftMiniService extends Service {
     */
     @Override
     public IBinder onBind(Intent intent) {
-        // Called after the first client is binding to the service with bindService()
+        // Called after the first client (only) is binding to the service with bindService()
       
-        // Acquire the wake lock if it hasn't been acquired but not yet released
-		    if (!wakeLock.isHeld())
-          wakeLock.acquire();
+	// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep"
+	if (wakeLock == null){
+		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
+		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");
+		wakeLock.setReferenceCounted(false);
+		wakeLock.acquire();
+	}
       
         return mBinder;
     }
@@ -68,9 +72,17 @@ public class SensesoftMiniService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         // Called when all clients have unbound with unbindService()
+	    
+	// Release the wake lock if it has been acquired but not yet released
+	if (wakeLock != null){
+		if (wakeLock.isHeld()){
+			wakeLock.release();
+		}
+		wakeLock = null;
+	}
+	    
         return false;
     }
-
 
     /*
     * Called when the service is being created.
@@ -91,6 +103,14 @@ public class SensesoftMiniService extends Service {
         super.onDestroy();
         // Remove the service from the foreground state
         stopForeground(true);
+	//getNotificationManager().cancel(ONGOING_NOTIFICATION_ID);
+	// Release the wake lock if it has been acquired but not yet released
+	if (wakeLock != null){
+		if (wakeLock.isHeld()){
+			wakeLock.release();
+		}
+		wakeLock = null;
+	}
     }
 
     /*
