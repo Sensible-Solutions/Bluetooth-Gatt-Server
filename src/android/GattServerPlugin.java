@@ -210,6 +210,7 @@ public class GattServerPlugin extends CordovaPlugin
             		SensesoftMiniBinder binder = (SensesoftMiniBinder) service;
             		mService = binder.getService();
             		isBound = true;
+			mService.enableForegroundService(cordova.getActivity().getIntent());	// Intent will start app if not running otherwise bring it to the foreground
 		}
 		// Callback for service unbinding, passed to unbindService()
         	@Override
