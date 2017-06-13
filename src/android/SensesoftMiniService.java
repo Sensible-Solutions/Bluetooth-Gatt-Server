@@ -69,6 +69,9 @@ public class SensesoftMiniService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         // Called when all clients have unbound with unbindService()
+	
+	// Remove the service from the foreground state
+        stopForeground(true);
 	    
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
@@ -88,7 +91,7 @@ public class SensesoftMiniService extends Service {
     public void onCreate() {
         super.onCreate();
         // Configure the service run in the foreground to prevent app from being killed by OS
-        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT));
+        //startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT));
     }
     
      /*
@@ -98,8 +101,10 @@ public class SensesoftMiniService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Remove the service from the foreground state
-        stopForeground(true);
+        
+	// Remove the service from the foreground state
+        //stopForeground(true);
+	
 	//getNotificationManager().cancel(ONGOING_NOTIFICATION_ID);
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
@@ -114,7 +119,7 @@ public class SensesoftMiniService extends Service {
     * A foreground service must provide a notification for the status bar, which is placed under the Ongoing heading.
     * This means that the notification cannot be dismissed unless the service is either stopped or removed from the foreground.
     */
-    private Notification makeOngoingNotification(String contentText) {
+    private Notification makeOngoingNotification(String contentText, Intent appIntent) {
 
         //Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, app will always be started (even if it's already running)
         //Intent appIntent = org.apache.cordova.CordovaPlugin.cordova.getActivity().getIntent(); // If used, will start app if not running otherwise bring it to the foreground
@@ -131,7 +136,8 @@ public class SensesoftMiniService extends Service {
           //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (Android O)
           .setColor(0xffffffff)     // Non transparent white (argb). Only works if setColorized(true)
           .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
-          .setPriority(NotificationCompat.PRIORITY_MIN);     // Prevents the notification from being visable on the lockscreen
+          .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
+          .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
           //.setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
         return mBuilder.build();
@@ -140,13 +146,29 @@ public class SensesoftMiniService extends Service {
     /**
      * Update the ongoing notification.
     */
-    protected void updateOngoingNotification(String contentText) {
+    protected void updateOngoingNotification(String contentText, Intent appIntent) {
 
-        Notification notification = makeOngoingNotification(contentText);
+        Notification notification = makeOngoingNotification(contentText, appIntent);
         NotificationManager serviceNotificationManager;
         serviceNotificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         serviceNotificationManager.notify(ONGOING_NOTIFICATION_ID, notification);
     }
 
+    /**
+     * Puts this service in foreground state to prevent app from being killed by OS. 
+    */
+    protected void enableForegroundService(Intent appIntent) {
 
+        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT, appIntent));
+	
+    }
+
+     /**
+     * Removes this service from foreground state. 
+    */
+    protected void disableForegroundService(Intent appIntent) {
+
+        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT, appIntent));
+	
+    }
 }
