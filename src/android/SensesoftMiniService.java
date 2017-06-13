@@ -166,9 +166,9 @@ public class SensesoftMiniService extends Service {
      /**
      * Removes this service from foreground state. 
     */
-    protected void disableForegroundService(Intent appIntent) {
+    protected void disableForegroundService() {
 
-        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT, appIntent));
+        stopForeground(true);
 	
     }
 }
