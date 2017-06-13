@@ -166,9 +166,9 @@ public class SensesoftMiniService extends Service {
      /**
      * Removes this service from foreground state. 
     */
-    protected void disableForegroundService() {
+    /*protected void disableForegroundService() {
 
         stopForeground(true);
 	
-    }
+    }*/
 }
