@@ -37,6 +37,9 @@ public class SensesoftMiniService extends Service {
   
     // Wakelock used to prevent CPU from going to sleep
     private WakeLock wakeLock = null;
+
+    private boolean isForegroundService = false;
+	
     /*
     * Class used for the client Binder. Because we know this service always
     * runs in the same process as its clients, we don't need to deal with IPC.
@@ -72,6 +75,7 @@ public class SensesoftMiniService extends Service {
 	
 	// Remove the service from the foreground state
         stopForeground(true);
+	isForegroundService = false;
 	    
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
@@ -106,6 +110,7 @@ public class SensesoftMiniService extends Service {
         //stopForeground(true);
 	
 	//getNotificationManager().cancel(ONGOING_NOTIFICATION_ID);
+	
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
 		if (wakeLock.isHeld()){
@@ -159,8 +164,10 @@ public class SensesoftMiniService extends Service {
     */
     protected void enableForegroundService(Intent appIntent) {
 
-        startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT, appIntent));
-	
+	if (!isForegroundService){
+		startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT, appIntent));
+		isForegroundService = true;
+	}
     }
 
      /**
