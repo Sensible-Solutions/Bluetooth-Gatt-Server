@@ -1,8 +1,8 @@
 /*
 * Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
-* Foreground service to keep bluetooth connection alive when system
-* enters doze mode (Android 6.0+).
+* Service to keep bluetooth connection alive when system enters
+* doze mode (Android 6.0+) and the app is running in background.
 * 
 */
 
@@ -149,7 +149,8 @@ public class SensesoftMiniService extends Service {
     }
 
     /**
-     * Puts this service in foreground state to prevent app from being killed by OS. 
+     * Puts this service in foreground state to prevent app from being killed by OS when system
+     * enters doze mode (Android 6.0+) and the app is in the background. 
     */
     protected void enableForegroundService(Intent appIntent) {
 
