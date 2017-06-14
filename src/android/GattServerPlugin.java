@@ -422,12 +422,9 @@ public class GattServerPlugin extends CordovaPlugin
 	{
 		// Note: the flag indicating that Immediate Alert Service has been initialized (iasInitialized) will also be
 		// reseted when calling this function.
+		
 		//showDebugMsgBox("startServerAction() called!");
 		JSONObject returnObj = new JSONObject();
-		
-		// Acquire the wake lock if it hasn't been acquired but not yet released
-		//if (!wakeLock.isHeld())			// Removed 2017-06-12
-		//	wakeLock.acquire();		// Removed 2017-06-12
 		
 		if(BluetoothAdapter.getDefaultAdapter() == null){
 		    	// Device does not support Bluetooth, notify user of unsupported Bluetooth
