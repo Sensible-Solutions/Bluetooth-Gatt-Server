@@ -1241,10 +1241,6 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		myAppSettings = new AppSettings();
-		// Need a wakelock to keep the cpu running so bluetooth connection doesn't disconnects when device goes to "sleep" 
-		//PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);	// Removed 2017-06-12
-		//wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SSMWakelockTag");			// Removed 2017-06-12
-		//wakeLock.setReferenceCounted(false);										// Removed 2017-06-12
 		
 		// Get shared preference objects used for retrieving and storing the user's app preferences
 		appPreferences = cordova.getActivity().getSharedPreferences(APP_SETTINGS_NAME, Context.MODE_PRIVATE);
@@ -1254,7 +1250,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-		alarmNotificationManager.cancelAll();	// Added 2017-03-10
+		alarmNotificationManager.cancelAll();
 		
 		this.initMediaPlayer();
 
@@ -1271,7 +1267,7 @@ public class GattServerPlugin extends CordovaPlugin
 			mPlayer.release();
 			mPlayer = null;
 		}
-		// Close the GATT server instance (Added 2017-03-10)
+		// Close the GATT server instance
 		if (gattServer != null){
 			/*final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
@@ -1281,14 +1277,6 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 			
 		super.onDestroy();
-		
-		// Release the wake lock if it has been acquired but not yet released
-		/*if (wakeLock != null){	// Removed 2017-06-12
-			if (wakeLock.isHeld()){
-				wakeLock.release();
-				wakeLock = null;
-			}
-		}*/
 	}
 	
 	/*@Override
@@ -1311,7 +1299,7 @@ public class GattServerPlugin extends CordovaPlugin
 	public void onPause(boolean multitasking) {
 		// Called when the system is about to start resuming a previous activity
 		isInBackground = true;		// App is put in background
-		//stopPlaying();	// If used, might stop playback when enters lock screen if an alarm was received right before
+		//stopPlaying();		// If used, might stop playback when enters lock screen if an alarm was received right before
 		super.onPause(multitasking);
 		//showDebugMsgBox("onPause() called!");
     	}
@@ -1322,7 +1310,7 @@ public class GattServerPlugin extends CordovaPlugin
 		isInBackground = false;		// App is put in foreground
 		//NotificationManager alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
-		stopPlaying();			// Added 2017-02-15
+		stopPlaying();
 		super.onResume(multitasking);
 		//showDebugMsgBox("onResume() called!");
     	}
