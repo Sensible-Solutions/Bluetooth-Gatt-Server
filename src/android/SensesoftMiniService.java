@@ -2,6 +2,10 @@
 * Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
 * Service to keep bluetooth connection alive when the app is put in background.
+*
+* A wake lock is needed to keep the cpu running so bluetooth connection doesn't disconnects when the device goes to "sleep".
+* The doze mode in Android 6.0+ does not honour wake locks (even if the app is excluded from such battery optimization).
+* Apps that have running foreground services (with the associated notification) are not restricted by doze mode.
 * 
 */
 
