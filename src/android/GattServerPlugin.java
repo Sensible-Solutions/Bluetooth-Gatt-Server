@@ -12,7 +12,8 @@
  
 package com.sensiblesolutions.gattserver;
 
-//import com.sensiblesolutions.sensesoftnotificationsmini.R;
+import com.sensiblesolutions.gattserver.SensesoftMiniService.SensesoftMiniBinder;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
@@ -21,53 +22,47 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.content.Context;
-import android.content.SharedPreferences;		// Added 2017-03-06
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattServer;
-import android.bluetooth.BluetoothGattServerCallback;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGattDescriptor;
-import android.media.AudioAttributes;
-import android.media.RingtoneManager;
-import android.media.Ringtone;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
-//import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
-import android.app.NotificationManager;
-import android.app.Notification;
-import android.app.AlertDialog;			// For showing debug messaages
-import android.app.PendingIntent;
-import android.content.DialogInterface;		// For showing debug messaages
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Vibrator;
-//import android.os.PowerManager;		// Removed 2017-06-12
-//import android.os.PowerManager.WakeLock;	// Removed 2017-06-12
-import android.os.SystemClock;
-import android.Manifest.permission;
-//import android.R;
-
 import java.lang.Enum;
 import java.lang.System;
-//import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.sensiblesolutions.gattserver.SensesoftMiniService.SensesoftMiniBinder;	// Added 2017-06-07
-import android.app.Activity;								// Added 2017-06-07
-import android.content.ComponentName;							// Added 2017-06-07
-import android.content.ServiceConnection;						// Added 2017-06-07
-import android.os.IBinder;								// Added 2017-06-07
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothGattServerCallback;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
+
+import android.app.Activity;
+import android.app.AlertDialog;			// For showing debug messages
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;		// For showing debug messages
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.os.IBinder;
+import android.os.Vibrator;
+import android.os.SystemClock;
+import android.Manifest.permission;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 
 
 public class GattServerPlugin extends CordovaPlugin
