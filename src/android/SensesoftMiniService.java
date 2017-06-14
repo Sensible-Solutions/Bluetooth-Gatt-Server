@@ -1,8 +1,7 @@
 /*
 * Copyright (C) 2015-2017 Sensible Solutions Sweden AB
 *
-* Service to keep bluetooth connection alive when system enters
-* doze mode (Android 6.0+) and the app is running in background.
+* Service to keep bluetooth connection alive when the app is put in background.
 * 
 */
 
