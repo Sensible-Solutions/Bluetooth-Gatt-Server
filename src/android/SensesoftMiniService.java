@@ -30,7 +30,7 @@ public class SensesoftMiniService extends Service {
     // Title of the ongoing 'foreground service' notification
     private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
     // Default text of the ongoing 'foreground service' notification
-    private static final String ONGOING_NOTIFICATION_TEXT = "You are connected/connecting to an alarm clip.";
+    private static final String ONGOING_NOTIFICATION_TEXT = "You are connecting/connected to an alarm clip.";
 
      // Interface for clients that bind
     private final IBinder mBinder = new SensesoftMiniBinder(); 
@@ -74,8 +74,10 @@ public class SensesoftMiniService extends Service {
         // Called when all clients have unbound with unbindService()
 	
 	// Remove the service from the foreground state
-        stopForeground(true);
-	isForegroundService = false;
+        if (isForegroundService){
+		stopForeground(true);
+		isForegroundService = false;
+	}
 	    
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
@@ -93,9 +95,9 @@ public class SensesoftMiniService extends Service {
     */
     @Override
     public void onCreate() {
+	
         super.onCreate();
-        // Configure the service run in the foreground to prevent app from being killed by OS
-        //startForeground(ONGOING_NOTIFICATION_ID, makeOngoingNotification(ONGOING_NOTIFICATION_TEXT));
+      
     }
     
      /*
@@ -104,12 +106,8 @@ public class SensesoftMiniService extends Service {
      */
     @Override
     public void onDestroy() {
+	    
         super.onDestroy();
-        
-	// Remove the service from the foreground state
-        //stopForeground(true);
-	
-	//getNotificationManager().cancel(ONGOING_NOTIFICATION_ID);
 	
 	// Release the wake lock if it has been acquired but not yet released
 	if (wakeLock != null){
@@ -126,24 +124,15 @@ public class SensesoftMiniService extends Service {
     */
     private Notification makeOngoingNotification(String contentText, Intent appIntent) {
 
-        //Intent appIntent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName()); // If used, app will always be started (even if it's already running)
-        //Intent appIntent = org.apache.cordova.CordovaPlugin.cordova.getActivity().getIntent(); // If used, will start app if not running otherwise bring it to the foreground
-	//Intent appIntent = new Intent(getApplicationContext(), org.apache.cordova.CordovaActivity.class);
-	//appIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	//appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        //Notification notification = new Notification.Builder(this)
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
           .setContentTitle(ONGOING_NOTIFICATION_TITLE)
           .setContentText(contentText)
-           //.setTicker(ONGOING_NOTIFICATION_TICKER)
           .setOngoing(true)
-          //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (Android O)
-          .setColor(0xffffffff)     // Non transparent white (argb). Only works if setColorized(true)
+          //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (only Android O and above)
+          .setColor(0xffffffff)     // Non transparent white (argb). Only works with setColorized(true) if available
           .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
-          .setPriority(NotificationCompat.PRIORITY_MIN)     // Prevents the notification from being visable on the lockscreen
+          .setPriority(NotificationCompat.PRIORITY_MIN)     // Minimum priority prevents the notification from being visable on the lockscreen
           .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-          //.setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
         return mBuilder.build();
     }
@@ -170,12 +159,14 @@ public class SensesoftMiniService extends Service {
 	}
     }
 
-     /**
+    /**
      * Removes this service from foreground state. 
     */
     /*protected void disableForegroundService() {
-
-        stopForeground(true);
 	
+	if (isForegroundService){
+        	stopForeground(true);
+		isForegroundService = false;
+	}
     }*/
 }
