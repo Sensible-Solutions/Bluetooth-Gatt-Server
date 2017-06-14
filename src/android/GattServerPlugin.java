@@ -1199,10 +1199,9 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}*/
 	
-	// Added 2017-06-07
     	private void startService() {
     	
-		// Bind the activity to a SenseSoftMini foreground service (starts the service if not already started)
+		// Bind the activity to a SenseSoftMini foreground service (starts the service if not already bound)
 		
 		if (isBound)
 		    	return;		// Service is already started
@@ -1212,7 +1211,6 @@ public class GattServerPlugin extends CordovaPlugin
 
 		try {
 			context.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-		    	//context.startService(intent);
 		} catch (Exception e) {
 			showDebugMsgBox("Exception thrown binding service!");
 		}
@@ -1220,7 +1218,6 @@ public class GattServerPlugin extends CordovaPlugin
 		isBound = true;
 	}
 	
-	// Added 2017-06-07
     	private void stopService() {
     
     		// Unbind the activity from service if bounded
@@ -1229,11 +1226,8 @@ public class GattServerPlugin extends CordovaPlugin
 			return;		// Service is not started
 			
         	Activity context = cordova.getActivity();
-        	//Intent intent = new Intent(context, SensesoftMiniService.class);
 
         	context.unbindService(mConnection);	// Stops service if there are no activities bound
-        	//context.stopService(intent);
-
         	isBound = false;
     	}
 
