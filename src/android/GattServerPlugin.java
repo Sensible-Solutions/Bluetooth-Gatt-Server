@@ -86,7 +86,6 @@ public class GattServerPlugin extends CordovaPlugin
 	private CallbackContext serverRunningCallbackContext = null;
 	
 	// Action Name Strings
-	//private final String initializeActionName = "initialize";
 	private final static String START_GATT_SERVER = "startServer";
 	private final static String RESET_ALARM = "resetAlarm";
 	private final static String STOP_SOUND = "stopAlarmSound";
@@ -105,14 +104,10 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String statusWriteRequest = "characteristicWriteRequest";
 	private final static String statusConnectionState = "serverConnectionState";
 	private final static String statusAlarmReseted = "alarmReseted";
-	//private final String statusServerStopped = "scanStopped";
   
 	// Error Types
-	//private final String errorInitialize = "initialize";
-	//private final static String errorStartServer = "startServer";
 	private final static String errorConnectionState = "serverConnectionState";
 	private final static String errorNoPermission = "noPermission";
-	//private final static String errorGattServer = "gattServer";
 	private final static String errorServerState = "serverState";
 	private final static String errorServerStateOff = "serverStateOff";
 	private final static String errorServerStateUnsupported = "serverStateUnsupported";
@@ -135,10 +130,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private boolean isInBackground = false;			// Flag indicating if app is in the background
 	private boolean iasInitialized = false; 		// Flag indicating if Immediate Alert Service has been initialized
 	private BluetoothGattServer gattServer = null;
-	//private BluetoothDevice clipDevice = null;		// Added 2017-03-10
-	//private WakeLock wakeLock = null;			// Wakelock used to prevent CPU from going to sleep // Removed 2017-06-12
 	private NotificationManager alarmNotificationManager = null;
-	//private NotificationCompat.Builder mBuilder = null;
 	private Notification alarmNotification = null;
 	private MediaPlayer mPlayer = null;
 	
@@ -190,12 +182,11 @@ public class GattServerPlugin extends CordovaPlugin
 		ERROR;
 	}
 	
-	//MediaPlayerState mPlayerState;				// MediaPlayer state // Removed 2017-06-07
-	private MediaPlayerState mPlayerState;				// MediaPlayer state // Added 2017-06-07
+	private MediaPlayerState mPlayerState;				// MediaPlayer state
 	
-	// Section Added 2017-06-07
 	private SensesoftMiniService mService;				// Foreground service that keeps the app awake
     	private boolean isBound = false;				// Flag indicating if the service is bound
+	
 	// Used to bind/unbind the foreground service with the activity
     	private final ServiceConnection mConnection = new ServiceConnection() {
 		// Callback for service binding, passed to bindService()
@@ -215,7 +206,6 @@ public class GattServerPlugin extends CordovaPlugin
 		    	isBound = false;
 		}
 	};
-	// End section Added 2017-06-07
 	
 	
 	/*********************************************************************************************************************
@@ -277,13 +267,9 @@ public class GattServerPlugin extends CordovaPlugin
 			// Notify user of connection status change
 			if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
 				//showDebugMsgBox("STATE_CONNECTED!");
-				//clipDevice = device;		// Added 2017-03-10
-				// Acquire the wake lock if it hasn't been acquired but not yet released
-				//if (!wakeLock.isHeld())
-				//	wakeLock.acquire();
 				
 				// Start the foreground service if not already started
-				startService();			// Added 2017-06-12
+				startService();
 				
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
@@ -293,12 +279,7 @@ public class GattServerPlugin extends CordovaPlugin
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 			}
 			else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-				//showDebugMsgBox("STATE_DISCONNECTED!");
-				
-				// Release the wake lock if it has been acquired but not yet released
-				//if (wakeLock.isHeld())
-				//	wakeLock.release();
-				
+				//showDebugMsgBox("STATE_DISCONNECTED!");				
 				addProperty(returnObj, keyStatus, statusConnectionState);
 				addProperty(returnObj, "device", device.getAddress());
 				addProperty(returnObj, "state", "disconnected");
@@ -310,7 +291,6 @@ public class GattServerPlugin extends CordovaPlugin
 				addProperty(returnObj, keyError, errorConnectionState);
 				addProperty(returnObj, keyMessage, logConnectionState + " " + status);
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, returnObj);
-				//pluginResult.setKeepCallback(true);
 				pluginResult.setKeepCallback(false);
 				serverRunningCallbackContext.sendPluginResult(pluginResult);
 				serverRunningCallbackContext = null;
