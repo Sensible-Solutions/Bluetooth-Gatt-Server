@@ -874,8 +874,8 @@ public class GattServerPlugin extends CordovaPlugin
 		.setCategory(NotificationCompat.CATEGORY_ALARM)
 		.setGroup("SENSESOFT_MINI")
 		.setTicker("SenseSoft Mini")
-		//.setColorized(true)      // Only recommended to use background color for high priority events (Android O)
-      		.setColor(0x800000ff)    // Semi transparent blue (argb). Only works if setColorized(true)
+		//.setColorized(true)      	// Only recommended to use background color for high priority events (only Android O and above)
+      		 .setColor(0xffffffff) 		// Non transparent white (argb). Only works with setColorized(true) if available
 		.setShowWhen(true);			// Default is false in Android >= 5 and true in Android < 5
 		/*if (myAppSettings.vibration){
 			mBuilder.setVibrate(pattern_on);	// Will vibrate on a notification if device has hardware vibrator and it's turned on in the app settings
