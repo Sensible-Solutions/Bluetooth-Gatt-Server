@@ -559,15 +559,17 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void releaseCpuAction(CallbackContext callbackContext)
 	{
-		// Releases the plugin's claim to the CPU by releasing acquired wake lock.
-		// In Android, a wake lock is needed to keep the cpu running so bluetooth
-		// connection doesn't disconnects when the device goes to "sleep".
-		// Also first disconnects any connection to the gatt server (otherwise a clip and the device can
+		// Stops the SenseSoftMini service (which releases its claim to the CPU by releasing acquired wake lock).
+		// In Android, a wake lock is needed to keep the cpu running so bluetooth connection doesn't disconnects when
+		// the device goes to "sleep". The doze mode in Android 6.0+ does not honour wake locks (even if the app is
+		// excluded from such battery optimization). Apps that have running foreground services (with the associated
+		// notification) are not restricted by doze mode.
+		// Also, this function first disconnects any connection to the gatt server (otherwise a clip and the device can
 		// remain connected even after the bluetoothGatt instance part has closed its connection with a clip).
-		// Android version only!
+		// Note: Android version only!
 		
 		// Disconnects an established connection or cancels a connection attempt currently in progress 
-		if (gattServer != null){	// If and its codeblock added 2017-03-16
+		if (gattServer != null){
 			//showDebugMsgBox("releaseCpuAction 0");
 			final BluetoothManager bluetoothManager = (BluetoothManager) cordova.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
 			List<BluetoothDevice> clientClips = bluetoothManager.getConnectedDevices(android.bluetooth.BluetoothProfile.GATT);
@@ -577,7 +579,7 @@ public class GattServerPlugin extends CordovaPlugin
 				gattServer.cancelConnection(clientClips.get(i));
 			}
 			// Close the GATT server instance if bluetooth is not enabled (need to close on some devices)
-			if (BluetoothAdapter.getDefaultAdapter() != null){	// If and its code block added 2017-03-22
+			if (BluetoothAdapter.getDefaultAdapter() != null){
 				if (!BluetoothAdapter.getDefaultAdapter().isEnabled()){
 					//showDebugMsgBox("releaseCpuAction 1");
 					gattServer.close();
