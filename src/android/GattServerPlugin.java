@@ -92,6 +92,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String RELEASE_CPU = "releaseCpu";
 	private final static String SET_APP_SETTINGS = "setAppSettings";
 	private final static String GET_APP_SETTINGS = "getAppSettings";
+	private final static String PLAY_SOUND = "playSound";
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -404,6 +405,10 @@ public class GattServerPlugin extends CordovaPlugin
 				//});
 				return true;
 			}
+			else if (PLAY_SOUND.equals(action)){
+				playSoundAction(callbackContext, sound);
+				return true;
+			}
 			else if (action.equals("alarm")){
 				alarmAction(callbackContext);
 				return true;
@@ -690,6 +695,30 @@ public class GattServerPlugin extends CordovaPlugin
 				return;
 			}
 		}
+	}
+	
+	private void playSoundAction(CallbackContext callbackContext, integer sound)
+	{
+		//JSONObject appSettings = settings.getJSONObject(0);
+		myAppSettings.sound = AlarmSound.values()[sound];
+		initMediaPlayer(false);
+		if (mPlayerState == MediaPlayerState.PREPARED){
+			try {
+				if (!mPlayer.isPlaying()){
+					mPlayer.start();
+					mPlayerState = MediaPlayerState.STARTED;
+				}
+			} catch (Exception ex) {
+				showDebugMsgBox("Error playing sound: " + ex.getMessage());
+				mPlayerState = MediaPlayerState.ERROR;
+				initMediaPlayer(true);	// Reset and reinitialize the MediaPlayer
+			}
+		}
+		
+		// Notify user
+		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
+		pluginResult.setKeepCallback(false);
+		callbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
