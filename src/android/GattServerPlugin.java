@@ -697,7 +697,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	private void playSoundAction(CallbackContext callbackContext, integer sound)
+	private void playSoundAction(CallbackContext callbackContext, int sound)
 	{
 		//PluginResult pluginResult;
 		myAppSettings.sound = AlarmSound.values()[sound];
