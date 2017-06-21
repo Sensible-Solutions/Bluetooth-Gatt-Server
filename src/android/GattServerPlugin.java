@@ -699,7 +699,7 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void playSoundAction(CallbackContext callbackContext, integer sound)
 	{
-		PluginResult pluginResult;
+		//PluginResult pluginResult;
 		myAppSettings.sound = AlarmSound.values()[sound];
 		initMediaPlayer(false);
 		if (mPlayerState == MediaPlayerState.PREPARED){
@@ -712,17 +712,17 @@ public class GattServerPlugin extends CordovaPlugin
 				showDebugMsgBox("Error playing sound: " + ex.getMessage());
 				mPlayerState = MediaPlayerState.ERROR;
 				initMediaPlayer(true);	// Reset and reinitialize the MediaPlayer
-				pluginResult = new PluginResult(PluginResult.Status.OK, false);
-				pluginResult.setKeepCallback(false);
-				callbackContext.sendPluginResult(pluginResult);
+				//pluginResult = new PluginResult(PluginResult.Status.OK, false);
+				//pluginResult.setKeepCallback(false);
+				//callbackContext.sendPluginResult(pluginResult);
 				return;
 			}
 		}
 		
 		// Notify user
-		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
-		pluginResult.setKeepCallback(false);
-		callbackContext.sendPluginResult(pluginResult);
+		//pluginResult = new PluginResult(PluginResult.Status.OK, true);
+		//pluginResult.setKeepCallback(false);
+		//callbackContext.sendPluginResult(pluginResult);
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
