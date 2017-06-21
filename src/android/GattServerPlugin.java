@@ -406,7 +406,7 @@ public class GattServerPlugin extends CordovaPlugin
 				return true;
 			}
 			else if (PLAY_SOUND.equals(action)){
-				playSoundAction(callbackContext, sound);
+				playSoundAction(callbackContext, args.getInt(0));
 				return true;
 			}
 			else if (action.equals("alarm")){
@@ -699,7 +699,6 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void playSoundAction(CallbackContext callbackContext, integer sound)
 	{
-		//JSONObject appSettings = settings.getJSONObject(0);
 		myAppSettings.sound = AlarmSound.values()[sound];
 		initMediaPlayer(false);
 		if (mPlayerState == MediaPlayerState.PREPARED){
