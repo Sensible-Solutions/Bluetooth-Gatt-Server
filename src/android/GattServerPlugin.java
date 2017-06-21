@@ -1102,7 +1102,7 @@ public class GattServerPlugin extends CordovaPlugin
 			} catch (Exception ex) {
 				showDebugMsgBox("Error pausing sound: " + ex.getMessage());
 				mPlayerState = MediaPlayerState.ERROR;
-				initMediaPlayer();	// Reset and reinitialize the MediaPlayer
+				initMediaPlayer(true);	// Reset and reinitialize the MediaPlayer
 			}
 		}
 	}
@@ -1261,7 +1261,7 @@ public class GattServerPlugin extends CordovaPlugin
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
 		
-		this.initMediaPlayer();
+		this.initMediaPlayer(true);
 
 		super.pluginInitialize();
 		//showDebugMsgBox("pluginInitialize() called!");
