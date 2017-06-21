@@ -967,10 +967,11 @@ public class GattServerPlugin extends CordovaPlugin
 			alarmNotification.vibrate = pattern_off;
 	}
 	
-	private void initMediaPlayer()
+	private void initMediaPlayer(boolean prepareSoundAsync)
 	{
 		// Creates and initializes the MediaPlayer object if not already created. If already created, it resets the
-		// MediaPlayer object to its uninitialized state and reinitializes it.
+		// MediaPlayer object to its uninitialized state and reinitializes it. After it has been initialized, it prepares
+		// the player for playback, synchronously or asynchronously depending on the prepareSoundAsync argument.
 		// Note: To change sound (prepare another sound), just call this method again after the app sound setting has changed
 		
 		if (mPlayer == null)
@@ -1023,8 +1024,14 @@ public class GattServerPlugin extends CordovaPlugin
 
 			mPlayerState = MediaPlayerState.INITIALIZED;
 			try {
-				mPlayer.prepareAsync();		// Prepare async to not block main thread
-				mPlayerState = MediaPlayerState.PREPARING;
+				if (prepareSoundAsync){
+					mPlayer.prepareAsync();		// Prepare async to not block main thread
+					mPlayerState = MediaPlayerState.PREPARING;
+				}
+				else {
+					mPlayer.prepare();
+					mPlayerState = MediaPlayerState.PREPARED;
+				}
 			} catch (Exception ex) {
 				mPlayerState = MediaPlayerState.ERROR;
 				showDebugMsgBox("Error preparing sound: " + ex.getMessage());
