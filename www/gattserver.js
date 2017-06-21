@@ -39,6 +39,10 @@ var gattserver = {
 		// Note: JS object parameter (params)
 		cordova.exec(successCallback, errorCallback, gattServerName, "setAppSettings", [params]);
 	},
+	playSound: function(successCallback, params) {
+		// Note: JS object parameter (params)
+		cordova.exec(successCallback, successCallback, gattServerName, "playSound", [params]);
+	},
 	setApplicationBadgeNumber: function(successCallback, badgeNumber) {
 		cordova.exec(successCallback, successCallback, gattServerName, "setApplicationBadgeNumber", [badgeNumber]);
 	}	
