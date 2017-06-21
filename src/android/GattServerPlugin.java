@@ -791,7 +791,7 @@ public class GattServerPlugin extends CordovaPlugin
 				} catch (Exception ex) {
 					showDebugMsgBox("Error playing sound: " + ex.getMessage());
 					mPlayerState = MediaPlayerState.ERROR;
-					initMediaPlayer();	// Reset and reinitialize the MediaPlayer
+					initMediaPlayer(true);	// Reset and reinitialize the MediaPlayer
 				}
 			}
 			
