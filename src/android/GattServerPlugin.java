@@ -93,6 +93,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String SET_APP_SETTINGS = "setAppSettings";
 	private final static String GET_APP_SETTINGS = "getAppSettings";
 	private final static String PLAY_SOUND = "playSound";
+	private final static String RESET_SOUND = "resetSound";
 	
 	// Object keys
 	private final static String keyStatus = "status";
@@ -406,7 +407,11 @@ public class GattServerPlugin extends CordovaPlugin
 				return true;
 			}
 			else if (PLAY_SOUND.equals(action)){
-				playSoundAction(callbackContext, args.getInt(0));
+				playSoundAction(args.getInt(0));
+				return true;
+			}
+			else if (RESET_SOUND.equals(action)){
+				resetSoundAction(args.getInt(0));
 				return true;
 			}
 			else if (action.equals("alarm")){
@@ -697,7 +702,7 @@ public class GattServerPlugin extends CordovaPlugin
 		}
 	}
 	
-	private void playSoundAction(CallbackContext callbackContext, int sound)
+	private void playSoundAction(int sound)
 	{
 		//PluginResult pluginResult;
 		myAppSettings.sound = AlarmSound.values()[sound];
@@ -723,6 +728,12 @@ public class GattServerPlugin extends CordovaPlugin
 		//pluginResult = new PluginResult(PluginResult.Status.OK, true);
 		//pluginResult.setKeepCallback(false);
 		//callbackContext.sendPluginResult(pluginResult);
+	}
+	
+	private void resetSoundAction(int sound)
+	{
+		myAppSettings.sound = AlarmSound.values()[sound];
+		initMediaPlayer(true);
 	}
 	
 	private void alarmAction(CallbackContext callbackContext)
