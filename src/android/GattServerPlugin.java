@@ -704,6 +704,9 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void playSoundAction(int sound)
 	{
+		// Plays the sound given by the sound argument by first reseting the media player and prepare it
+		// with the new sound.
+		
 		//PluginResult pluginResult;
 		myAppSettings.sound = AlarmSound.values()[sound];
 		initMediaPlayer(false);
@@ -732,6 +735,8 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private void resetSoundAction(int sound)
 	{
+		// Resets the media player and prepare it with the sound given by the sound argument
+		
 		myAppSettings.sound = AlarmSound.values()[sound];
 		initMediaPlayer(true);
 	}
