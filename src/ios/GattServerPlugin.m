@@ -496,6 +496,16 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
+// Plays the sound given by the sound argument by first reseting the media player and prepare it
+// with the new sound.
+- (void) playSound:(CDVInvokedUrlCommand *)command	// Function added 2017-06-28
+{
+	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
+	// Set the sound
+	[self setAlarmNotificationSound:[alarmSound intValue]];
+	[self initAudioPlayer];
+}
+
 
 #pragma mark -
 #pragma mark Delegates
