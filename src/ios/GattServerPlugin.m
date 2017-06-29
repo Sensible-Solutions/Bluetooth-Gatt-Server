@@ -501,9 +501,16 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) playSound:(CDVInvokedUrlCommand *)command	// Function added 2017-06-28
 {
 	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
-	// Set the sound
-	[self setAlarmNotificationSound:[alarmSound intValue]];
-	[self initAudioPlayer];
+	
+	if (audioPlayer != nil){
+		if (audioPlayer.playing){
+			[audioPlayer stop];		// Stops playback and undoes the preparation needed for playback (but doesn't reset the playback position)
+		}
+		// Set the sound
+		[self setAlarmNotificationSound:[alarmSound intValue]];
+		[self initAudioPlayer];
+		[audioPlayer play];
+	}
 }
 
 
