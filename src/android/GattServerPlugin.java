@@ -1046,16 +1046,18 @@ public class GattServerPlugin extends CordovaPlugin
 						//mp.reset();
 					}
 				});
-				mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-					@Override
-					public void onPrepared(MediaPlayer mp) {
-						// Called when MediaPlayer is ready for playback
-						mPlayerState = MediaPlayerState.PREPARED;
-						//mp.start();
-						// Vibrate the device if it has hardware vibrator and permission
-						//vibrateDevice();
-					 }
-				});
+				if (prepareSoundAsync){
+					mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+						@Override
+						public void onPrepared(MediaPlayer mp) {
+							// Called when MediaPlayer is ready for playback
+							mPlayerState = MediaPlayerState.PREPARED;
+							//mp.start();
+							// Vibrate the device if it has hardware vibrator and permission
+							//vibrateDevice();
+						 }
+					});
+				}
 				mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 					@Override
 					public boolean onError(MediaPlayer mp,  int what, int extra) {
@@ -1140,13 +1142,10 @@ public class GattServerPlugin extends CordovaPlugin
 	private void stopPlaying()
 	{
 		// Stops playback of any sound the MediaPlayer is playing
-		showDebugMsgBox("Debug 0: " + mPlayerState);
 		if (mPlayerState == MediaPlayerState.PAUSED || mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || 
 		    mPlayerState == MediaPlayerState.STARTED){
-		    	showDebugMsgBox("Debug 1");
 			try {
 				if (mPlayer.isPlaying()){
-					showDebugMsgBox("Debug 2");
 					mPlayer.pause();
 					mPlayerState = MediaPlayerState.PAUSED;
 					mPlayer.seekTo(0);	// Seek to the beginning of the sound (asynchronuous operation)
