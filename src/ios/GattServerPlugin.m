@@ -496,21 +496,39 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];		// Added 2017-01-19
 }
 
-// Plays the sound given by the sound argument by first reseting the media player and prepare it
-// with the new sound.
-- (void) playSound:(CDVInvokedUrlCommand *)command	// Function added 2017-06-28
+// Plays the sound given by the sound argument using the media player
+- (void) playSound:(CDVInvokedUrlCommand *)command	// Function added 2017-06-29
 {
+	// Construct URL to sound file
 	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
+	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];
 	
 	if (audioPlayer != nil){
 		if (audioPlayer.playing){
 			[audioPlayer stop];		// Stops playback and undoes the preparation needed for playback (but doesn't reset the playback position)
 		}
-		// Set the sound
-		[self setAlarmNotificationSound:[alarmSound intValue]];
-		[self initAudioPlayer];
-		[audioPlayer play];
 	}
+	// Create audio player object (don't set a delegate) and initialize with URL to sound (ARC takes care of the memory management)
+   	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+	
+	// Prepare and play the sound
+	if (soundUrl != nil)
+		[audioPlayer play];
+}
+
+// Resets the alarm sound by preparing the media player with the sound given by the sound argument
+- (void) resetSound:(CDVInvokedUrlCommand *)command	// Function added 2017-06-29
+{
+	// Construct URL to sound file
+	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
+	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];
+	
+	if (audioPlayer != nil){
+		if (audioPlayer.playing){
+			[audioPlayer stop];		// Stops playback and undoes the preparation needed for playback (but doesn't reset the playback position)
+		}
+	}
+	
 }
 
 
@@ -912,7 +930,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
     
 	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
    	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
-	audioPlayer.delegate = self;
+	audioPlayer.delegate = self;	// Sets the delegate (optional) so audioPlayerDidFinishPlaying is called when a sound has finished playing (or stopped)
 	
 	// Prepare the audio player for playback by preloading its buffers
 	if (soundUrl != nil)
