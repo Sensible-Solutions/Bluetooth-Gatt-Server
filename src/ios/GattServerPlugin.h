@@ -14,6 +14,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <AudioToolbox/AudioServices.h>	
 #import <AVFoundation/AVFoundation.h>		// Added 2017-02-15 for testing AVAudioPlayer
+#import <MediaPlayer/MediaPlayer.h>		// Added 2017-06-29
 
 
 /*typedef enum {
