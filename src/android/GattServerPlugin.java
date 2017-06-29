@@ -1140,11 +1140,13 @@ public class GattServerPlugin extends CordovaPlugin
 	private void stopPlaying()
 	{
 		// Stops playback of any sound the MediaPlayer is playing
-		
+		showDebugMsgBox("Debug 0");
 		if (mPlayerState == MediaPlayerState.PAUSED || mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || 
 		    mPlayerState == MediaPlayerState.STARTED){
+		    	showDebugMsgBox("Debug 1");
 			try {
 				if (mPlayer.isPlaying()){
+					showDebugMsgBox("Debug 2");
 					mPlayer.pause();
 					mPlayerState = MediaPlayerState.PAUSED;
 					mPlayer.seekTo(0);	// Seek to the beginning of the sound (asynchronuous operation)
