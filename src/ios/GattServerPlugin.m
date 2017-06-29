@@ -529,6 +529,13 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 		}
 	}
 	
+	// Create audio player object and initialize with URL to sound (ARC takes care of the memory management)
+   	audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+	audioPlayer.delegate = self;	// Sets the delegate (optional) so audioPlayerDidFinishPlaying is called when a sound has finished playing (or stopped)
+	
+	// Prepare the audio player for playback by preloading its buffers
+	if (soundUrl != nil)
+		[audioPlayer prepareToPlay];
 }
 
 
