@@ -1058,6 +1058,15 @@ public class GattServerPlugin extends CordovaPlugin
 						 }
 					});
 				}
+				else {
+					mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+						@Override
+						public void onPrepared(MediaPlayer mp) {
+							// Reseting the media player does not remove registered listeners
+							// so provide an empty callback
+						 }
+					});
+				}
 				mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 					@Override
 					public boolean onError(MediaPlayer mp,  int what, int extra) {
