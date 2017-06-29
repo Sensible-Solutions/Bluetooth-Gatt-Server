@@ -1060,6 +1060,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 	//[self getAppSettings:nil];	// Just a test of the function (remove the call later)
 	
+	MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];	// Added 2017-06-29
+	commandCenter.pauseCommand.enabled = NO;						// Added 2017-06-29
 	
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
