@@ -501,7 +501,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	// Construct URL to sound file
 	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
-	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];
+	NSURL *soundUrl = [self getAlarmSoundUrl:[alarmSound intValue]];
 	
 	if (audioPlayer != nil){
 		if (audioPlayer.playing){
@@ -521,7 +521,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 {
 	// Construct URL to sound file
 	NSNumber *alarmSound = [command.arguments objectAtIndex:0];
-	NSURL *soundUrl = [self getAlarmSoundUrl:[sound intValue]];
+	NSURL *soundUrl = [self getAlarmSoundUrl:[alarmSound intValue]];
 	
 	if (audioPlayer != nil){
 		if (audioPlayer.playing){
