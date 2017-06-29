@@ -77,5 +77,6 @@ typedef NS_ENUM(NSInteger, AlarmSound) {
 - (void)isBluetoothSharingAuthorized:(CDVInvokedUrlCommand *)command;	// Added 2017-02-20
 - (void)setApplicationBadgeNumber:(CDVInvokedUrlCommand *)command;	// Added 2017-01-19
 - (void)playSound:(CDVInvokedUrlCommand *)command;			// Added 2017-06-29
+- (void)resetSound:(CDVInvokedUrlCommand *)command;			// Added 2017-06-29
 
 @end
