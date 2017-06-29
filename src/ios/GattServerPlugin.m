@@ -1060,11 +1060,31 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 	//[self getAppSettings:nil];	// Just a test of the function (remove the call later)
 	
+	// Disable all the playback etc MPRemoteCommand objects (playback controls showed on the lock screen when a sound is played with the media player
+	// while the screen is locked).
 	MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];	// Added 2017-06-29
 	commandCenter.playCommand.enabled = NO;							// Added 2017-06-29
 	commandCenter.pauseCommand.enabled = NO;						// Added 2017-06-29
 	commandCenter.stopCommand.enabled = NO;							// Added 2017-06-29
 	commandCenter.togglePlayPauseCommand.enabled = NO;					// Added 2017-06-29
+	commandCenter.nextTrackCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.previousTrackCommand.enabled = NO;					// Added 2017-06-29
+	commandCenter.changePlaybackRateCommand.enabled = NO;					// Added 2017-06-29
+	commandCenter.seekForwardCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.seekBackwardCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.skipForwardCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.skipBackwardCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.bookmarkCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.ratingCommand.enabled = NO;						// Added 2017-06-29
+	commandCenter.likeCommand.enabled = NO;							// Added 2017-06-29
+	commandCenter.dislikeCommand.enabled = NO;						// Added 2017-06-29
+	if ([commandCenter respondsToSelector:@selector(enableLanguageOptionCommand)]){		// Checks if it's iOS 9.0+
+		commandCenter.enableLanguageOptionCommand.enabled = NO;		// iOS 9.0+	// Added 2017-06-29
+		commandCenter.changePlaybackPositionCommand.enabled = NO;  	// iOS 9.1+	// Added 2017-06-29
+		commandCenter.disableLanguageOptionCommand.enabled = NO;	// iOS 9.0+	// Added 2017-06-29
+		commandCenter.changeRepeatModeCommand.enabled = NO;		// iOS 10.0+	// Added 2017-06-29
+		commandCenter.changeShuffleModeCommand.enabled = NO; 	 	// iOS 10.0+	// Added 2017-06-29
+	}
 	
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
