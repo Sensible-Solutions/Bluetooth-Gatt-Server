@@ -1140,7 +1140,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private void stopPlaying()
 	{
 		// Stops playback of any sound the MediaPlayer is playing
-		showDebugMsgBox("Debug 0");
+		showDebugMsgBox("Debug 0: " + mPlayerState);
 		if (mPlayerState == MediaPlayerState.PAUSED || mPlayerState == MediaPlayerState.PLAYBACK_COMPLETED || 
 		    mPlayerState == MediaPlayerState.STARTED){
 		    	showDebugMsgBox("Debug 1");
