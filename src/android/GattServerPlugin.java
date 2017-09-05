@@ -652,11 +652,9 @@ public class GattServerPlugin extends CordovaPlugin
 	{	
 		// Returns the app settings from the shared preferences if callbackContext is not null. 
 		// Otherwise, it "loads" the user's app preferneces from the shared preferences.
-		showDebugMsgBox("getAppSettingsAction called 0!");
 		JSONObject returnObj;
 		try {
 			String settingsString = appPreferences.getString(KEY_APP_SETTINGS, "NA");
-			showDebugMsgBox("getAppSettingsAction called 1!");
 			if (settingsString.equals("NA")){
 				
 				// Shared preferences don't exist yet, notify user with defaults
@@ -1314,14 +1312,15 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called 0!");
 		isInBackground = false;		// App is in foreground
 		
-		/*View decorView = cordova.getActivity().getWindow().getDecorView();
+		View decorView = cordova.getActivity().getWindow().getDecorView();
 		// Hide the status bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		//ActionBar actionBar = getActionBar();
-		//actionBar.hide();*/
+		//actionBar.hide();
 		showDebugMsgBox("pluginInitialize() called 1!");
 
 		myAppSettings = new AppSettings();
@@ -1331,7 +1330,6 @@ public class GattServerPlugin extends CordovaPlugin
 		appPreferencesEditor = appPreferences.edit();
 		// "Load" the app preferences from the shared preferences
 		this.getAppSettingsAction(null);
-		showDebugMsgBox("pluginInitialize() called 2!");
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
