@@ -1311,19 +1311,19 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
-		showDebugMsgBox("pluginInitialize() called 0!");
+		//showDebugMsgBox("pluginInitialize() called 0!");
 		isInBackground = false;		// App is in foreground
 		
-		// Hide the status bar
-		cordova.getActivity().runOnUiThread(new Runnable() {
+		// Hides the status bar
+		/*cordova.getActivity().runOnUiThread(new Runnable() {
                 	@Override
                 	public void run() {
 				cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                     		//cordova.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 				cordova.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
                 	}
-		});
-		showDebugMsgBox("pluginInitialize() called 1!");
+		});*/
+		//showDebugMsgBox("pluginInitialize() called 1!");
 
 		myAppSettings = new AppSettings();
 		
@@ -1339,7 +1339,7 @@ public class GattServerPlugin extends CordovaPlugin
 		this.initMediaPlayer(true);
 
 		super.pluginInitialize();
-		showDebugMsgBox("pluginInitialize() called end!");
+		//showDebugMsgBox("pluginInitialize() called end!");
 	 }
 	
 	@Override
