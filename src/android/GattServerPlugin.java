@@ -1314,14 +1314,14 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called 0!");
 		isInBackground = false;		// App is in foreground
 		
-		View decorView = cordova.getActivity().getWindow().getDecorView();
+		/*View decorView = cordova.getActivity().getWindow().getDecorView();
 		// Hide the status bar.
 		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		//ActionBar actionBar = getActionBar();
-		//actionBar.hide();
+		//actionBar.hide();*/
 		showDebugMsgBox("pluginInitialize() called 1!");
 
 		myAppSettings = new AppSettings();
