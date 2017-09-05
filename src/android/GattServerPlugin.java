@@ -652,10 +652,11 @@ public class GattServerPlugin extends CordovaPlugin
 	{	
 		// Returns the app settings from the shared preferences if callbackContext is not null. 
 		// Otherwise, it "loads" the user's app preferneces from the shared preferences.
-		
+		showDebugMsgBox("getAppSettingsAction called 0!");
 		JSONObject returnObj;
 		try {
 			String settingsString = appPreferences.getString(KEY_APP_SETTINGS, "NA");
+			showDebugMsgBox("getAppSettingsAction called 1!");
 			if (settingsString.equals("NA")){
 				
 				// Shared preferences don't exist yet, notify user with defaults
