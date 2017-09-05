@@ -1311,6 +1311,7 @@ public class GattServerPlugin extends CordovaPlugin
 	@Override
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
+		showDebugMsgBox("pluginInitialize() called 0!");
 		isInBackground = false;		// App is in foreground
 		
 		View decorView = cordova.getActivity().getWindow().getDecorView();
@@ -1337,7 +1338,7 @@ public class GattServerPlugin extends CordovaPlugin
 		this.initMediaPlayer(true);
 
 		super.pluginInitialize();
-		showDebugMsgBox("pluginInitialize() called!");
+		showDebugMsgBox("pluginInitialize() called end!");
 	 }
 	
 	@Override
