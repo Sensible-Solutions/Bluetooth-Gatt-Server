@@ -63,8 +63,10 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
+
 import android.view.View;
-import android.view.Window;
+//import android.view.Window;
+import android.view.WindowManager;
 
 
 public class GattServerPlugin extends CordovaPlugin
@@ -1312,15 +1314,23 @@ public class GattServerPlugin extends CordovaPlugin
 		showDebugMsgBox("pluginInitialize() called 0!");
 		isInBackground = false;		// App is in foreground
 		
-		View decorView = cordova.getActivity().getWindow().getDecorView();
+		cordova.getActivity().runOnUiThread(new Runnable() {
+                	@Override
+                	public void run() {
+				cordova.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+                    		cordova.getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                	}
+		});
+		/*View decorView = cordova.getActivity().getWindow().getDecorView();
 		// Hide the status bar.
 		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+		//int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+		int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		//ActionBar actionBar = getActionBar();
-		//actionBar.hide();
+		//actionBar.hide();*/
 		showDebugMsgBox("pluginInitialize() called 1!");
 
 		myAppSettings = new AppSettings();
