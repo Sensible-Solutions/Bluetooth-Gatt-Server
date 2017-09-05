@@ -1336,7 +1336,7 @@ public class GattServerPlugin extends CordovaPlugin
 		this.initMediaPlayer(true);
 
 		super.pluginInitialize();
-		//showDebugMsgBox("pluginInitialize() called!");
+		showDebugMsgBox("pluginInitialize() called!");
 	 }
 	
 	@Override
