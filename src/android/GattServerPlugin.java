@@ -1312,7 +1312,7 @@ public class GattServerPlugin extends CordovaPlugin
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
 		
-		View decorView = getWindow().getDecorView();
+		View decorView = cordova.getActivity().getWindow().getDecorView();
 		// Hide the status bar.
 		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
