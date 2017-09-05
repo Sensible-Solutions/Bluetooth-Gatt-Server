@@ -1322,6 +1322,7 @@ public class GattServerPlugin extends CordovaPlugin
 		// status bar is hidden, so hide that too if necessary.
 		//ActionBar actionBar = getActionBar();
 		//actionBar.hide();
+		showDebugMsgBox("pluginInitialize() called 1!");
 
 		myAppSettings = new AppSettings();
 		
@@ -1330,7 +1331,7 @@ public class GattServerPlugin extends CordovaPlugin
 		appPreferencesEditor = appPreferences.edit();
 		// "Load" the app preferences from the shared preferences
 		this.getAppSettingsAction(null);
-		
+		showDebugMsgBox("pluginInitialize() called 2!");
 		this.initAlarmNotification();
 		alarmNotificationManager = (NotificationManager) cordova.getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		alarmNotificationManager.cancelAll();
