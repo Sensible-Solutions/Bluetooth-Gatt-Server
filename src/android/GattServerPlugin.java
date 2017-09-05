@@ -63,6 +63,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 
 public class GattServerPlugin extends CordovaPlugin
@@ -1309,6 +1310,16 @@ public class GattServerPlugin extends CordovaPlugin
 	 protected void pluginInitialize() {
 	 	// Called after plugin construction and fields have been initialized
 		isInBackground = false;		// App is in foreground
+		
+		View decorView = getWindow().getDecorView();
+		// Hide the status bar.
+		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView.setSystemUiVisibility(uiOptions);
+		// Remember that you should never show the action bar if the
+		// status bar is hidden, so hide that too if necessary.
+		//ActionBar actionBar = getActionBar();
+		//actionBar.hide();
+
 		myAppSettings = new AppSettings();
 		
 		// Get shared preference objects used for retrieving and storing the user's app preferences
