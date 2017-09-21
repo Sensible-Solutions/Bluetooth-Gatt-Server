@@ -138,6 +138,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private BluetoothGattServer gattServer = null;
 	private NotificationManager alarmNotificationManager = null;
 	private Notification alarmNotification = null;
+	private final static String NOTIFICATION_ALARM_ICON = "notification_alarm_icon";
 	private MediaPlayer mPlayer = null;
 	
 	private long elapsedAlarmTime = 0;			// Elapsed time in milliseconds since boot (including time spent in sleep)
@@ -919,7 +920,7 @@ public class GattServerPlugin extends CordovaPlugin
 		.setContentText("Incoming SenseSoft Mini alarm.")
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 		//.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
-		.setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier("notification_icon", "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
+		.setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_ALARM_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
 		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
