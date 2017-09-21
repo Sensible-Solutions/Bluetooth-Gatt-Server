@@ -38,11 +38,11 @@
     </config-file>
     <resource-file src="www/res/sounds/alarm.mp3" target="res/raw/alarm.mp3" /> -->
     <resource-file src="www/res/sounds/crash_short.mp3" target="res/raw/crash_short.mp3" />
-    <resource-file src="www/res/icons/notification_icon-mdpi.png" target="res/drawable-mdpi/notification_icon.png" />
-    <resource-file src="www/res/icons/notification_icon-hdpi.png" target="res/drawable-hdpi/notification_icon.png" />
-    <resource-file src="www/res/icons/notification_icon-xhdpi.png" target="res/drawable-xhdpi/notification_icon.png" />
-    <resource-file src="www/res/icons/notification_icon-xxhdpi.png" target="res/drawable-xxhdpi/notification_icon.png" />
-    <resource-file src="www/res/icons/notification_icon-xxxhdpi.png" target="res/drawable-xxxhdpi/notification_icon.png" />
+    <resource-file src="www/res/icons/notification_icon-mdpi.png" target="res/drawable-mdpi/notification_alarm_icon.png" />
+    <resource-file src="www/res/icons/notification_icon-hdpi.png" target="res/drawable-hdpi/notification_alarm_icon.png" />
+    <resource-file src="www/res/icons/notification_icon-xhdpi.png" target="res/drawable-xhdpi/notification_alarm_icon.png" />
+    <resource-file src="www/res/icons/notification_icon-xxhdpi.png" target="res/drawable-xxhdpi/notification_alarm_icon.png" />
+    <resource-file src="www/res/icons/notification_icon-xxxhdpi.png" target="res/drawable-xxxhdpi/notification_alarm_icon.png" />
   </platform>
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
