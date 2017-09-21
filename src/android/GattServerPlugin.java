@@ -918,7 +918,8 @@ public class GattServerPlugin extends CordovaPlugin
 		.setContentTitle("SenseSoft Mini")
 		.setContentText("Incoming SenseSoft Mini alarm.")
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
-		.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+		//.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
+		.setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier(icon, DRAWABLE, packageName))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
 		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
