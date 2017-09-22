@@ -50,6 +50,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.os.SystemClock;
@@ -139,6 +140,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private NotificationManager alarmNotificationManager = null;
 	private Notification alarmNotification = null;
 	private final static String NOTIFICATION_ALARM_ICON = "notification_alarm_icon";
+	private final static String NOTIFICATION_LARGE_ICON = "notification_large_icon";
 	private MediaPlayer mPlayer = null;
 	
 	private long elapsedAlarmTime = 0;			// Elapsed time in milliseconds since boot (including time spent in sleep)
@@ -921,6 +923,7 @@ public class GattServerPlugin extends CordovaPlugin
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 		//.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 		.setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_ALARM_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
+		.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_LARGE_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
 		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
