@@ -137,7 +137,8 @@ public class SensesoftMiniService extends Service {
           .setColor(0xffffffff)     // Non transparent white (argb). Only works with setColorized(true) if available
           //.setSmallIcon(getApplicationContext().getApplicationInfo().icon)
 	  .setSmallIcon(getApplicationContext().getResources().getIdentifier(NOTIFICATION_BT_ICON, "drawable", getApplicationContext().getPackageName()))
-          .setPriority(NotificationCompat.PRIORITY_MIN)     // Minimum priority prevents the notification from being visable on the lockscreen
+          .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), getApplicationContext().getResources().getIdentifier(NOTIFICATION_LARGE_ICON, "drawable", getApplicationContext().getPackageName())))
+	  .setPriority(NotificationCompat.PRIORITY_MIN)     // Minimum priority prevents the notification from being visable on the lockscreen
           .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
         return mBuilder.build();
