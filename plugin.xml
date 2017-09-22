@@ -42,7 +42,8 @@
     <resource-file src="www/res/icons/notification_icon-hdpi.png" target="res/drawable-hdpi/notification_alarm_icon.png" />
     <resource-file src="www/res/icons/notification_icon-xhdpi.png" target="res/drawable-xhdpi/notification_alarm_icon.png" />
     <resource-file src="www/res/icons/notification_icon-xxhdpi.png" target="res/drawable-xxhdpi/notification_alarm_icon.png" />
-    <resource-file src="www/res/icons/notification_icon-xxxhdpi.png" target="res/drawable-xxxhdpi/notification_alarm_icon.png" />  
+    <resource-file src="www/res/icons/notification_icon-xxxhdpi.png" target="res/drawable-xxxhdpi/notification_alarm_icon.png" />
+    <resource-file src="www/res/icons/notification_large_icon-xxxhdpi.png" target="res/drawable-xxxhdpi/notification_large_icon.png" />
     <resource-file src="www/res/icons/notification_bt_icon-mdpi.png" target="res/drawable-mdpi/notification_bt_icon.png" />
     <resource-file src="www/res/icons/notification_bt_icon-hdpi.png" target="res/drawable-hdpi/notification_bt_icon.png" />
     <resource-file src="www/res/icons/notification_bt_icon-xhdpi.png" target="res/drawable-xhdpi/notification_bt_icon.png" />
