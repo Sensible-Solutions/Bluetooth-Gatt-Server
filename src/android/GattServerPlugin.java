@@ -923,7 +923,7 @@ public class GattServerPlugin extends CordovaPlugin
 		.setContentIntent(PendingIntent.getActivity(cordova.getActivity().getApplicationContext(), 0, appIntent, 0))
 		//.setSmallIcon(cordova.getActivity().getApplicationContext().getApplicationInfo().icon)
 		.setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_ALARM_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
-		.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_LARGE_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
+		.setLargeIcon(BitmapFactory.decodeResource(cordova.getActivity().getApplicationContext().getResources(), cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_LARGE_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName())))
 		.setPriority(NotificationCompat.PRIORITY_HIGH)			// PRIORITY_HIGH and PRIORITY_MAX will result in a heads-up notification in Android >= 5
 		//.setOngoing(true)
 		.setAutoCancel(true)			// Not really needed since also clearing notifications when app is brought to foreground
