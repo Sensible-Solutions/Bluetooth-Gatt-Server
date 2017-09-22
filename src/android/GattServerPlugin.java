@@ -139,6 +139,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private NotificationManager alarmNotificationManager = null;
 	private Notification alarmNotification = null;
 	private final static String NOTIFICATION_ALARM_ICON = "notification_alarm_icon";
+	private final static String NOTIFICATION_BT_ICON = "notification_bt_icon";
 	private MediaPlayer mPlayer = null;
 	
 	private long elapsedAlarmTime = 0;			// Elapsed time in milliseconds since boot (including time spent in sleep)
