@@ -133,7 +133,8 @@ public class SensesoftMiniService extends Service {
           .setOngoing(true)
           //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (only Android O and above)
           .setColor(0xffffffff)     // Non transparent white (argb). Only works with setColorized(true) if available
-          .setSmallIcon(getApplicationContext().getApplicationInfo().icon)
+          //.setSmallIcon(getApplicationContext().getApplicationInfo().icon)
+	  .setSmallIcon(cordova.getActivity().getApplicationContext().getResources().getIdentifier(NOTIFICATION_BT_ICON, "drawable", cordova.getActivity().getApplicationContext().getPackageName()))
           .setPriority(NotificationCompat.PRIORITY_MIN)     // Minimum priority prevents the notification from being visable on the lockscreen
           .setContentIntent(PendingIntent.getActivity(getApplicationContext(), ONGOING_NOTIFICATION_ID, appIntent, PendingIntent.FLAG_UPDATE_CURRENT));
       
