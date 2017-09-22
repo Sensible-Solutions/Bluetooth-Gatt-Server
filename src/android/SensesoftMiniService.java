@@ -34,8 +34,9 @@ public class SensesoftMiniService extends Service {
     private static final String ONGOING_NOTIFICATION_TITLE = "SenseSoft Mini";
     // Default text of the ongoing 'foreground service' notification
     private static final String ONGOING_NOTIFICATION_TEXT = "You are connecting/connected to an alarm clip.";
-    // Notification icon for the ongoing 'foreground service' notification
+    // Notification icons for the ongoing 'foreground service' notification
     private static final String NOTIFICATION_BT_ICON = "notification_bt_icon";
+    private static final String NOTIFICATION_LARGE_ICON = "notification_large_icon";
 
      // Interface for clients that bind
     private final IBinder mBinder = new SensesoftMiniBinder(); 
