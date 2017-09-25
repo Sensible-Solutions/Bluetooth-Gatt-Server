@@ -135,9 +135,8 @@ public class SensesoftMiniService extends Service {
           .setContentTitle(ONGOING_NOTIFICATION_TITLE)
           .setContentText(contentText)
           .setOngoing(true)
-          //.setColorized(true)     // Recommended to use background color for ongoing foreground service notifications (only Android O and above)
-          //.setColor(0xffffffff)     // Non transparent white (argb). Only works with setColorized(true) if available
-	  //.setColor(0x0027a1c6)
+          //.setColorized(true)      	// Recommended to use background color for ongoing foreground service notifications (only Android O and above)
+	  //.setColor(0x0027a1c6)	// Sets the background color of the small icon where it's used other than the in the system bar (always whiteish there)
           //.setSmallIcon(getApplicationContext().getApplicationInfo().icon)
 	  .setSmallIcon(getApplicationContext().getResources().getIdentifier(NOTIFICATION_BT_ICON, "drawable", getApplicationContext().getPackageName()))
           .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), getApplicationContext().getResources().getIdentifier(NOTIFICATION_LARGE_ICON, "drawable", getApplicationContext().getPackageName())))
