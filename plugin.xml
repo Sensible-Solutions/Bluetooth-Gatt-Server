@@ -19,7 +19,8 @@
         <param name="android-package" value="com.sensiblesolutions.gattserver.GattServerPlugin" />
       </feature>
     </config-file>
-    <framework src="com.android.support:support-v4:+" />		<!-- Test instead of using lib file below -->
+    <framework src="com.android.support:support-v4:27.1.0" />	
+    <!--<framework src="com.android.support:support-v4:+" />	-->	<!-- Test instead of using lib file below -->
     <!-- <lib-file src="libs/android/android-support-v4.jar" /> -->
     <source-file src="src/android/GattServerPlugin.java" target-dir="src/com/sensiblesolutions/gattserver" />
     <source-file src="src/android/SensesoftMiniService.java" target-dir="src/com/sensiblesolutions/gattserver" />
