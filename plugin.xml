@@ -19,9 +19,9 @@
         <param name="android-package" value="com.sensiblesolutions.gattserver.GattServerPlugin" />
       </feature>
     </config-file>
-    <framework src="com.android.support:support-v4:27.1.0" />	
-    <!--<framework src="com.android.support:support-v4:+" />	-->	<!-- Test instead of using lib file below -->
-    <!-- <lib-file src="libs/android/android-support-v4.jar" /> -->
+    <framework src="com.android.support:support-v4:27.1.0" />	<!-- The plugin is currently not compatible with the lastest release of the support libraries (28.0.0-alpha1). Can later try to use the line below instead to see if it has been fixed -->
+    <!-- <framework src="com.android.support:support-v4:+" /> --> <!-- Pulls the lastest support libraries -->
+    <!-- <lib-file src="libs/android/android-support-v4.jar" /> -->  <!-- Can remove line and the the folder "libs"...not used anymore -->
     <source-file src="src/android/GattServerPlugin.java" target-dir="src/com/sensiblesolutions/gattserver" />
     <source-file src="src/android/SensesoftMiniService.java" target-dir="src/com/sensiblesolutions/gattserver" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
