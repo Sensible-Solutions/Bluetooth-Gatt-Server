@@ -165,9 +165,9 @@ public class GattServerPlugin extends CordovaPlugin
 		SOUND_2,			// Custom alarm sound
 		SOUND_3,			// Custom alarm sound
 		SOUND_4,			// Custom alarm sound
-		SOUND_NOTIFICATION,		// Default notification sound
 		SOUND_RINGTONE,			// Default ringtone sound
 		SOUND_ALARM,			// Default alarm sound
+		SOUND_NOTIFICATION,		// Default notification sound
 		SOUND_OFF;			// No alarm sound
 	}
 	
@@ -977,11 +977,18 @@ public class GattServerPlugin extends CordovaPlugin
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_ALARM);	// If using this then the volume has to be changed with the device's alarm volume controllers
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
-			case SOUND_NOTIFICATION:
-				// Device default notification sound
-				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+			case SOUND_2:
+				// Custom sound 3
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/car");
 				break;
+			case SOUND_3:
+				// Custom sound 4
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/fire_truck");
+				break;
+			case SOUND_4:
+				// Custom sound 5
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/space_ship");
+				break;	
 			case SOUND_RINGTONE:
 				// Device default ringtone (only available on phones and not tablets)
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
@@ -990,6 +997,11 @@ public class GattServerPlugin extends CordovaPlugin
 			case SOUND_ALARM:
 				// Device default alarm sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
+				break;
+			case SOUND_NOTIFICATION:
+				// Device default notification sound
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 				//mBuilder.setSound(soundPath, AudioManager.STREAM_NOTIFICATION);	// Use the notification stream for playback so volume easily can be changed with the device's notification volume controller
 				break;
 			case SOUND_OFF:
@@ -1133,9 +1145,17 @@ public class GattServerPlugin extends CordovaPlugin
 				//soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
 				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/bells");
 				break;
-			case SOUND_NOTIFICATION:
-				// Device default notification sound
-				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			case SOUND_2:
+				// Custom sound 3
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/car");
+				break;
+			case SOUND_3:
+				// Custom sound 4
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/fire_truck");
+				break;
+			case SOUND_4:
+				// Custom sound 5
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/space_ship");
 				break;
 			case SOUND_RINGTONE:
 				// Device default ringtone (only available on phones and not tablets)
@@ -1144,6 +1164,10 @@ public class GattServerPlugin extends CordovaPlugin
 			case SOUND_ALARM:
 				// Device default alarm sound
 				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+				break;
+			case SOUND_NOTIFICATION:
+				// Device default notification sound
+				soundPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 				break;
 			case SOUND_OFF:
 				// No sound
