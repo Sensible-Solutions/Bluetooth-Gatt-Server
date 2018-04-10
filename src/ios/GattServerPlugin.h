@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2018 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin header for the Bluetooth GATT Profile server role.
