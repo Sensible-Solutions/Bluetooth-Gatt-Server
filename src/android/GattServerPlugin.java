@@ -1123,12 +1123,12 @@ public class GattServerPlugin extends CordovaPlugin
 			case SOUND_0:
 				// Custom sound 1
 				//soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/alarm");
-				oundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/horn");
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/horn");
 				break;
 			case SOUND_1:
 				// Custom sound 2
 				//soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/crash_short");
-				oundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/bells");
+				soundPath = Uri.parse("android.resource://" + cordova.getActivity().getApplicationContext().getPackageName() + "/raw/bells");
 				break;
 			case SOUND_NOTIFICATION:
 				// Device default notification sound
