@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2018 Sensible Solutions Sweden AB
 *
 * Service to keep bluetooth connection alive when the app is put in background.
 *
