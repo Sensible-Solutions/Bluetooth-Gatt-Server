@@ -77,8 +77,13 @@
     </config-file>
     <header-file src="src/ios/GattServerPlugin.h" />
     <source-file src="src/ios/GattServerPlugin.m" />
-    <resource-file src="www/res/sounds/alarm.mp3" target="Resources/alarm.mp3" />
-    <resource-file src="www/res/sounds/crash_short.mp3" target="Resources/crash_short.mp3" />
+    <!--<resource-file src="www/res/sounds/alarm.mp3" target="Resources/alarm.mp3" />
+    <resource-file src="www/res/sounds/crash_short.mp3" target="Resources/crash_short.mp3" /> -->
+    <resource-file src="www/res/sounds/horn.wav" target="Resources/horn.wav" />
+    <resource-file src="www/res/sounds/bells.wav" target="Resources/bells.wav" />
+    <resource-file src="www/res/sounds/car.wav" target="Resources/car.wav" />
+    <resource-file src="www/res/sounds/fire_truck.wav" target="Resources/fire_truck.wav" />
+    <resource-file src="www/res/sounds/space_ship.wav" target="Resources/space_ship.wav" />
     <framework src="CoreBluetooth.framework" />
   </platform>
   <info>This plugin only adds Bluetooth LE GATT server with Immediate Alerts service added to your cordova app. To use your cordova app also as a GATT client, you need to use a 3rd party plugin for that</info>
