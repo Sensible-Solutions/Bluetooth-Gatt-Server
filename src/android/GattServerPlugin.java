@@ -160,8 +160,11 @@ public class GattServerPlugin extends CordovaPlugin
 	
 	private enum AlarmSound
 	{
-		SOUND_0,			// custom mp3 sound
-		SOUND_1,			// custom mp3 sound
+		SOUND_0,			// Custom alarm sound
+		SOUND_1,			// Custom alarm sound
+		SOUND_2,			// Custom alarm sound
+		SOUND_3,			// Custom alarm sound
+		SOUND_4,			// Custom alarm sound
 		SOUND_NOTIFICATION,		// Default notification sound
 		SOUND_RINGTONE,			// Default ringtone sound
 		SOUND_ALARM,			// Default alarm sound
