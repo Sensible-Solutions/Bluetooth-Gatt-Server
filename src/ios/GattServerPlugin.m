@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2015-2017 Sensible Solutions Sweden AB
+* Copyright (C) 2015-2018 Sensible Solutions Sweden AB
 *
 *
 * Cordova Plugin implementation for the Bluetooth GATT Profile server role.
@@ -954,21 +954,31 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	switch (alarmSound) {
         	case AlarmSound_0:
-			alarmNotification.soundName = @"alarm.mp3";
+			alarmNotification.soundName = @"horn.wav";
 			break;
 		case AlarmSound_1:
-			alarmNotification.soundName = @"crash_short.mp3";
+			alarmNotification.soundName = @"bells.wav";
+        		break;
+		case AlarmSound_2:
+			alarmNotification.soundName = @"car.wav";
+        		break;
+		case AlarmSound_3:
+			alarmNotification.soundName = @"fire_truck.wav";
+        		break;
+		case AlarmSound_4:
+			alarmNotification.soundName = @"space_ship.wav";
         		break;
 		case AlarmSoundNotification_0:
-			alarmNotification.soundName =  UILocalNotificationDefaultSoundName; // Change to the notification sound file name later
-        		break;
+			//alarmNotification.soundName =  UILocalNotificationDefaultSoundName; // Change to the notification sound file name later
+        		alarmNotification.soundName = @"sensesoft_notification.wav";
+			break;
 		case AlarmSoundOff:
 			alarmNotification.soundName = nil;	// Should work (test it!)
         		break;
         	default:
-			// Change to the notification sound file name later
-			alarmNotification.soundName =  UILocalNotificationDefaultSoundName;
-           		break;
+			//alarmNotification.soundName =  UILocalNotificationDefaultSoundName; // Change to the notification sound file name later
+           		alarmNotification.soundName = @"sensesoft_notification.wav";
+			break;
     	}
 }
 
@@ -978,17 +988,21 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	
 	switch (alarmSound) {
         	case AlarmSound_0:
-			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"horn" ofType:@"wav"]];
 		case AlarmSound_1:
-			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"crash_short" ofType:@"mp3"]];
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"bells" ofType:@"wav"]];
+		case AlarmSound_2:
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"car" ofType:@"wav"]];
+		case AlarmSound_3:
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"fire_truck" ofType:@"wav"]];
+		case AlarmSound_4:
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"space_ship" ofType:@"wav"]];
 		case AlarmSoundNotification_0:
-			// Change to the notification sound file name later
-			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"sensesoft_notification" ofType:@"wav"]];
 		case AlarmSoundOff:
 			return nil;
         	default:
-			// Change to the notification sound file name later
-			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"alarm" ofType:@"mp3"]];
+			return [NSURL fileURLWithPath :  [[NSBundle mainBundle] pathForResource:@"sensesoft_notification" ofType:@"wav"]];
            		break;
     	}
 }
