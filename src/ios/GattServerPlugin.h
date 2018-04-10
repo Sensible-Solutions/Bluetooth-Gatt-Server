@@ -27,7 +27,10 @@
 } AlarmSound;*/
 typedef NS_ENUM(NSInteger, AlarmSound) {
 	AlarmSound_0,			// Custom alarm sound
-   	AlarmSound_1,			// custom alarm sound
+   	AlarmSound_1,			// Custom alarm sound
+	AlarmSound_2,			// Custom alarm sound
+	AlarmSound_3,			// Custom alarm sound
+	AlarmSound_4,			// Custom alarm sound
     	AlarmSoundNotification_0,	// Notification sound
     	//AlarmSoundRingtone,		// Default ringtone sound (no way to acess default ringtone in iOS)
 	//AlarmSoundAlarm,		// Default alarm sound (alarm sounds are not available in iOS)
