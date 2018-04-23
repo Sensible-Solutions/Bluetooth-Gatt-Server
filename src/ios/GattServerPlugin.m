@@ -852,6 +852,12 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[debugMessage show];*/
 }
 
+// Called after the webview controller has loaded
+- (void) viewDidLoad
+{
+	self.webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+}
+
 #pragma mark -
 #pragma mark General helpers
 
