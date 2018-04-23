@@ -73,7 +73,7 @@
   	<true/>
     </config-file>
     <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
-      <string>This app uses Bluetooth Smart to connect and communicate with SenseSoft Mini incontinence alarm clips</string> <!-- Needed in iOS 10+ or the app exits -->
+      <string>This app uses Bluetooth Smart to connect and communicate with SenseSoft Mini incontinence alarm clips.</string> <!-- Needed in iOS 10+ or the app exits -->
     </config-file>
     <header-file src="src/ios/GattServerPlugin.h" />
     <source-file src="src/ios/GattServerPlugin.m" />
