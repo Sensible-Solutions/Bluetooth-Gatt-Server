@@ -853,7 +853,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 }
 
 // Called after the webview controller has loaded
-- (void) viewDidLoad
+- (void) CDVViewController: viewDidLoad
 {	
 	[self.viewController viewDidLoad];
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0){
