@@ -855,6 +855,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Called after the webview controller has loaded
 - (void) viewDidLoad		// Added 2018-04-23
 {	
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"Debug Native" message:@"viewDidLoad called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 	//CDVViewController
 	[self.viewController viewDidLoad];
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0){	// Checks if it's iOS 11+
@@ -1114,8 +1116,8 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 	[self initAlarmNotification];	// Added 2017-02-17
 	[self initAudioPlayer];		// Added 2017-02-20
 	
-	/*UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[debugAlert show];*/
+	UIAlertView *debugAlert = [[UIAlertView alloc] initWithTitle: @"pluginInitialize" message:@"pluginInitialize called!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[debugAlert show];
 }
 
 // Called when the system is about to start resuming a previous activity (application is put in the background)
