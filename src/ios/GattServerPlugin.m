@@ -1043,6 +1043,7 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 - (void) pluginInitialize
 {
 	// Added 2018-04-23 to fix statusbar display problems in iOS 11.0+
+	// Need to test so it doesn't introduce other display artifacts (like when scrolling etc)
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0){	// Checks if it's iOS 11+
 		self.webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 	}
