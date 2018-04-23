@@ -855,7 +855,9 @@ NSTimeInterval const MIN_ALARM_INTERVAL = 3.0;		// Minimum allowed time interval
 // Called after the webview controller has loaded
 - (void) viewDidLoad
 {
-	self.webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+	if ([[UIApplication sharedApplication] respondsToSelector:@selector(contentInsetAdjustmentBehavior)]){ // Checks if it's iOS 11+
+		self.webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+	}
 }
 
 #pragma mark -
