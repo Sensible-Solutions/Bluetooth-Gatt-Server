@@ -1216,7 +1216,7 @@ public class GattServerPlugin extends CordovaPlugin
 			Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 			if (vib.hasVibrator()){
 				showDebugMsgBox("has vibrator!");
-				if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) != PackageManager.PERMISSION_GRANTED){
+				if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
 					showDebugMsgBox("vibrate!");
 					// Vibrate (works async)
 					//long[] pattern = {0, 1000, 1000};
