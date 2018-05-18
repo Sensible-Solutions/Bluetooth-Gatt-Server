@@ -648,6 +648,7 @@ public class GattServerPlugin extends CordovaPlugin
 		
 		// Set the sound
 		setAlarmNotificationSound(myAppSettings.sound);
+		setAlarmNotificationVibrate(myAppSettings.vibration);		// Added 2018-05-18
 		//setAlarmNotificationSound(AlarmSound.values()[getAppSetting(KEY_SOUND_SETTING)]);
 		initMediaPlayer(true);
 		
