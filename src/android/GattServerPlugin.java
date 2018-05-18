@@ -677,6 +677,8 @@ public class GattServerPlugin extends CordovaPlugin
 						if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
 							addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, true);
 						}
+						else
+							addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
 					}
 					else {
 						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
@@ -698,6 +700,8 @@ public class GattServerPlugin extends CordovaPlugin
 					if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
 						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, true);
 					}
+					else
+						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
 				}
 				else {
 					addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
