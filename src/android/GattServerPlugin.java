@@ -671,15 +671,16 @@ public class GattServerPlugin extends CordovaPlugin
 					returnObj = new JSONObject();
 					addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound.ordinal());
 					addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
-					// Check if device has vibrator and permission (added 2018-05-18)
+					// Check if device has vibrator and permission (if and else added 2018-05-18)
 					Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 					if (vib.hasVibrator()){
 						if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
 							addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, true);
 						}
 					}
-					else
+					else {
 						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
+					}
 					addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
 					PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 					pluginResult.setKeepCallback(false);
@@ -691,7 +692,16 @@ public class GattServerPlugin extends CordovaPlugin
 		
 			if (callbackContext != null){
 				// Notify user
-				//returnObj.getBoolean(KEY_VIBRATION_SETTING);
+				// Check if device has vibrator and permission (if and else added 2018-05-18)
+				Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+				if (vib.hasVibrator()){
+					if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
+						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, true);
+					}
+				}
+				else {
+					addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
+				}
 				PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 				pluginResult.setKeepCallback(false);
 				callbackContext.sendPluginResult(pluginResult);
