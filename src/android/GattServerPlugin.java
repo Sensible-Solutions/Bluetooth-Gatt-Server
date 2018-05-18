@@ -155,6 +155,7 @@ public class GattServerPlugin extends CordovaPlugin
 	private final static String KEY_SOUND_SETTING = "sound";
 	private final static String KEY_VIBRATION_SETTING = "vibration";
 	private final static String KEY_LOG_SETTING = "log";
+	private final static String KEY_VIBRATOR_AVAILABLE = "vibrator_available";	// Added 2018-05-18 (android specific only)
 	
 	private AppSettings myAppSettings = null;
 	
@@ -670,6 +671,15 @@ public class GattServerPlugin extends CordovaPlugin
 					returnObj = new JSONObject();
 					addProperty(returnObj, KEY_SOUND_SETTING, myAppSettings.sound.ordinal());
 					addProperty(returnObj, KEY_VIBRATION_SETTING, myAppSettings.vibration);
+					// Check if device has vibrator and permission (added 2018-05-18)
+					Vibrator vib = (Vibrator) cordova.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+					if (vib.hasVibrator()){
+						if (ContextCompat.checkSelfPermission(cordova.getActivity(), permission.VIBRATE) == PackageManager.PERMISSION_GRANTED){
+							addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, true);
+						}
+					}
+					else
+						addProperty(returnObj, KEY_VIBRATOR_AVAILABLE, false);
 					addProperty(returnObj, KEY_LOG_SETTING, myAppSettings.log);
 					PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
 					pluginResult.setKeepCallback(false);
